@@ -1,0 +1,69 @@
+:mod:`python-payment_processor` -- Documentation
+=======================================
+
+.. autoclass:: paymentProcessor.TransactionError
+    :members:
+
+.. autoclass:: paymentProcessor.TransactionDeclined
+    :members:
+
+.. autoclass:: paymentProcessor.TransactionHeld
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidCardNumber
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidCardExpirationDate
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidCardSecurityCode
+    :members:
+
+.. autoclass:: paymentProcessor.InsufficientFunds
+    :members:
+
+.. autoclass:: paymentProcessor.ExpiredCard
+    :members:
+
+.. autoclass:: paymentProcessor.DuplicateTransaction
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidBillingAddress
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidBillingZipcode
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidRoutingNumber
+    :members:
+
+.. autoclass:: paymentProcessor.InvalidAccountNumber
+    :members:
+
+.. autoclass:: paymentProcessor.GatewayError
+    :members:
+
+.. autoclass:: paymentProcessor.TransactionFailed
+    :members:
+
+.. autoclass:: paymentProcessor.ConnectionError
+    :members:
+
+.. autoclass:: paymentProcessor.LimitExceeded
+    :members:
+
+.. autoclass:: paymentProcessor.MultiGateway
+    :members:
+    :special-members:
+    :private-members:
+
+.. autoclass:: paymentProcessor.AuthorizeNetAIM
+    :members:
+    :special-members:
+    :private-members:
+
+.. autoclass:: paymentProcessor.NationalProcessing
+    :members:
+    :special-members:
+    :private-members:
+

@@ -111,7 +111,6 @@ class AuthorizeNetAIM(BaseGateway):
         params['x_ship_to_country'] = transaction.ship_country
         params['x_tax'] = transaction.tax
         params['x_freight'] = transaction.freight
-        params['x_duty'] = transaction.duty
         if transaction.tax_exempt == True:
             params['x_tax_exempt'] = 'TRUE'
 

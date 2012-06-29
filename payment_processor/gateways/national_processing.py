@@ -74,7 +74,7 @@ class NationalProcessing(BaseGateway):
         params['city'] = transaction.city
         params['state'] = transaction.state
         params['zip'] = transaction.zip
-        params['country'] = 'US'
+        params['country'] = transaction.country
         params['phone'] = transaction.phone
         params['fax'] = transaction.fax
         params['email'] = transaction.email
@@ -89,7 +89,7 @@ class NationalProcessing(BaseGateway):
         params['shipping_city'] = transaction.city
         params['shipping_state'] = transaction.state
         params['shipping_zip'] = transaction.zip
-        params['shipping_country'] = 'US'
+        params['shipping_country'] = transaction.ship_country
         params['shipping_email'] = transaction.email
 
     def _handle_response(self, transaction, response):

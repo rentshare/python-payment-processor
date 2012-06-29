@@ -1,68 +1,73 @@
 :mod:`python-payment_processor` -- Documentation
 ================================================
 
-.. autoclass:: paymentProcessor.TransactionError
+.. autoclass:: payment_processor.TransactionError
     :members:
 
-.. autoclass:: paymentProcessor.TransactionDeclined
+.. autoclass:: payment_processor.TransactionDeclined
     :members:
 
-.. autoclass:: paymentProcessor.TransactionHeld
+.. autoclass:: payment_processor.TransactionHeld
     :members:
 
-.. autoclass:: paymentProcessor.InvalidCardNumber
+.. autoclass:: payment_processor.InvalidCardNumber
     :members:
 
-.. autoclass:: paymentProcessor.InvalidCardExpirationDate
+.. autoclass:: payment_processor.InvalidCardExpirationDate
     :members:
 
-.. autoclass:: paymentProcessor.InvalidCardSecurityCode
+.. autoclass:: payment_processor.InvalidCardSecurityCode
     :members:
 
-.. autoclass:: paymentProcessor.InsufficientFunds
+.. autoclass:: payment_processor.InsufficientFunds
     :members:
 
-.. autoclass:: paymentProcessor.ExpiredCard
+.. autoclass:: payment_processor.ExpiredCard
     :members:
 
-.. autoclass:: paymentProcessor.DuplicateTransaction
+.. autoclass:: payment_processor.DuplicateTransaction
     :members:
 
-.. autoclass:: paymentProcessor.InvalidBillingAddress
+.. autoclass:: payment_processor.InvalidBillingAddress
     :members:
 
-.. autoclass:: paymentProcessor.InvalidBillingZipcode
+.. autoclass:: payment_processor.InvalidBillingZipcode
     :members:
 
-.. autoclass:: paymentProcessor.InvalidRoutingNumber
+.. autoclass:: payment_processor.InvalidRoutingNumber
     :members:
 
-.. autoclass:: paymentProcessor.InvalidAccountNumber
+.. autoclass:: payment_processor.InvalidAccountNumber
     :members:
 
-.. autoclass:: paymentProcessor.GatewayError
+.. autoclass:: payment_processor.GatewayError
     :members:
 
-.. autoclass:: paymentProcessor.TransactionFailed
+.. autoclass:: payment_processor.TransactionFailed
     :members:
 
-.. autoclass:: paymentProcessor.ConnectionError
+.. autoclass:: payment_processor.ConnectionError
     :members:
 
-.. autoclass:: paymentProcessor.LimitExceeded
+.. autoclass:: payment_processor.LimitExceeded
     :members:
 
-.. autoclass:: paymentProcessor.MultiGateway
-    :members:
-    :special-members:
-    :private-members:
-
-.. autoclass:: paymentProcessor.AuthorizeNetAIM
+.. autoclass:: payment_processor.MultiGateway
     :members:
     :special-members:
     :private-members:
 
-.. autoclass:: paymentProcessor.NationalProcessing
+.. autoclass:: payment_processor.AuthorizeNetAIM
+    :members:
+    :special-members:
+    :private-members:
+
+.. autoclass:: payment_processor.NationalProcessing
+    :members:
+    :special-members:
+    :private-members:
+
+.. autoclass:: payment_processor.Transaction
     :members:
     :special-members:
     :private-members:

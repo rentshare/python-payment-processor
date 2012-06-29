@@ -20,5 +20,5 @@ python setup.py install
 Documentation
 -------------
 
-http://rentshare.github.com/python-payment_processor
+http://rentshare.github.com/python-payment-processor
 

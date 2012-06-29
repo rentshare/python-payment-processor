@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Overview: module code &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    <title>payment_processor &mdash; python-payment_processor 0.1.0 beta documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,7 +26,8 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../index.html" /> 
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +36,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+        <li><a href="../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -44,9 +46,13 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="payment_processor.html">payment_processor</a></li>
-</ul>
+  <h1>Source code for payment_processor</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">payment_processor.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">payment_processor.gateway</span> <span class="kn">import</span> <span class="n">MultiGateway</span>
+<span class="kn">from</span> <span class="nn">payment_processor.gateways.authorize_net</span> <span class="kn">import</span> <span class="n">AuthorizeNetAIM</span>
+<span class="kn">from</span> <span class="nn">payment_processor.gateways.national_processing</span> <span class="kn">import</span> <span class="n">NationalProcessing</span>
+<span class="kn">from</span> <span class="nn">payment_processor.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+</pre></div>
 
           </div>
         </div>
@@ -76,7 +82,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+        <li><a href="../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

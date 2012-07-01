@@ -46,7 +46,7 @@ class AuthorizeNetAIM(BaseGateway):
         params['x_delim_char'] = self._delim_char
         params['x_encap_char'] = ''
         params['x_relay_response'] = 'FALSE'
-        params['x_duplicate_window'] = '1'
+        params['x_duplicate_window'] = '1' # TODO Testing default is 120
         if self._test_requests == True:
             params['x_test_request'] = 'TRUE'
 

@@ -1,6 +1,5 @@
 class TransactionError(Exception):
     """Execption is related to a transaction error."""
-    _type = 'transaction'
 
 class TransactionDeclined(TransactionError):
     """The transaction was declined."""
@@ -53,7 +52,6 @@ class InvalidAccountNumber(TransactionError):
 
 class GatewayError(Exception):
     """Execption is related to a gateway error."""
-    _type = 'gateway'
 
 class TransactionFailed(GatewayError):
     """Gateway failed to process transaction."""

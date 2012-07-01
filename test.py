@@ -1,4 +1,5 @@
 import payment_processor
+from payment_processor.counter import *
 import os
 
 # Get login and trans_key from ~/.authorizeNet
@@ -6,12 +7,18 @@ with open(os.path.expanduser('~/.authorizeNet')) as file:
     login = file.readline().rstrip('\n')
     trans_key = file.readline().rstrip('\n')
 
-gateway = payment_processor.AuthorizeNetAIM(
-        login=login, trans_key=trans_key, sandbox=True)
 
-gateway2 = payment_processor.NationalProcessing(
-        username='username', password='password')
+AuthorizeNetAIMCounted = counter_gateway(payment_processor.AuthorizeNetAIM,
+            10000.00, 10000.00, 1000, 1000)
 
+gateway = AuthorizeNetAIMCounted(login=login, trans_key=trans_key,
+                                 sandbox=True)
+
+#gateway = payment_processor.AuthorizeNetAIM(
+#        login=login, trans_key=trans_key, sandbox=True)
+#
+#gateway2 = payment_processor.NationalProcessing(
+#        username='username', password='password')
 
 # Authorize Capture Example
 transaction = gateway.new_transaction()
@@ -73,13 +80,13 @@ print 'transaction_id:', transaction_id
 # Capture Example
 transaction = gateway.new_transaction()
 transaction.transaction_id = transaction_id
+transaction.amount = 20
 
 transaction_id = transaction.capture()
 print 'transaction_id:', transaction_id
 
-
 # Multigateway example
-gateways = payment_processor.MultiGateway(gateway)
+gateways = payment_processor.MultiGateway(gateway, gateway)
 
 # Authorize Capture Example
 transaction = gateways.new_transaction()

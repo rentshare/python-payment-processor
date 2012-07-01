@@ -4,6 +4,9 @@ import urlparse
 
 class NationalProcessing(BaseGateway):
     """National Processing gateway."""
+
+    _name = 'NationalProcessing'
+
     def __init__(self, username, password):
         BaseGateway.__init__(self)
 

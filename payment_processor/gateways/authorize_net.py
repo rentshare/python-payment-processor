@@ -3,6 +3,9 @@ from payment_processor.gateway import BaseGateway
 
 class AuthorizeNetAIM(BaseGateway):
     """Authorize.Net AIM gateway."""
+
+    _name = 'AuthorizeNetAIM'
+
     def __init__(self, login, trans_key, sandbox=False, test_requests=False,
                  *args, **kwargs):
         BaseGateway.__init__(self, *args, **kwargs)
@@ -43,7 +46,7 @@ class AuthorizeNetAIM(BaseGateway):
         params['x_delim_char'] = self._delim_char
         params['x_encap_char'] = ''
         params['x_relay_response'] = 'FALSE'
-        params['x_duplicate_window'] = '120'
+        params['x_duplicate_window'] = '1'
         if self._test_requests == True:
             params['x_test_request'] = 'TRUE'
 

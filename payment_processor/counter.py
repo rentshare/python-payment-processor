@@ -1,111 +1,82 @@
 from payment_processor.gateway import BaseGateway
 import datetime
 
-def counter_gateway(base_gateway, day_amount_limit, month_amount_limit,
-            day_trans_limit, month_trans_limit):
+class CounterGateway:
+    day_amount_limit = 0
+    month_amount_limit = 0
+    day_trans_limit = 0
+    month_trans_limit = 0
+    _day_amount_count = [0, datetime.date.today().strftime('%Y%m%d')]
+    _month_amount_count = [0, datetime.date.today().strftime('%Y%m%d')]
+    _day_trans_count = [0, datetime.date.today().strftime('%Y%m')]
+    _month_trans_count = [0, datetime.date.today().strftime('%Y%m')]
+    _base_gateway = None
 
-    class CounterGateway(base_gateway):
-        _day_amount_limit = day_amount_limit
-        _month_amount_limit = month_amount_limit
-        _day_trans_limit = day_trans_limit
-        _month_trans_limit = month_trans_limit
-        _day_amount_count = [0, datetime.date.today().strftime('%Y%m%d')]
-        _month_amount_count = [0, datetime.date.today().strftime('%Y%m%d')]
-        _day_trans_count = [0, datetime.date.today().strftime('%Y%m')]
-        _month_trans_count = [0, datetime.date.today().strftime('%Y%m')]
+    def _charge(self, transaction):
+        # Check for transaction amount
+        if transaction.amount == None:
+            raise TypeError('Transaction.amount is required for ' +
+                            'counter gateways.')
 
-        def _charge(self, transaction):
-            # Check for transaction amount
-            if transaction.amount == None:
-                raise TypeError('Transaction.amount is required for ' +
-                                'counter gateways.')
+        # Increase counts
+        self.set_counts(transaction.amount, transaction.amount, 1, 1)
 
-            # Increase counts
-            self._increase_counts(1, transaction.amount)
+        try:
+            return self._base_gateway._charge(self, transaction)
+        except Exception:
+            # Undo counts then raise exception
+            self._increase_counts(-1, transaction.amount * -1)
+            raise
 
-            try:
-                return base_gateway._charge(self, transaction)
-            except Exception:
-                # Undo counts then raise exception
-                self._increase_counts(-1, transaction.amount * -1)
-                raise
+    def _capture(self, transaction):
+        # Check for transaction amount
+        if transaction.amount == None:
+            raise TypeError('Transaction.amount is required for ' +
+                            'counter gateways.')
 
-        def _capture(self, transaction):
-            # Check for transaction amount
-            if transaction.amount == None:
-                raise TypeError('Transaction.amount is required for ' +
-                                'counter gateways.')
+        # Increase counts
+        self.set_counts(transaction.amount, transaction.amount, 1, 1)
 
-            # Increase counts
-            self._increase_counts(1, transaction.amount)
+        try:
+            return self._base_gateway._capture(self, transaction)
+        except Exception:
+            # Undo counts then raise exception
+            self._increase_counts(-1, transaction.amount * -1)
+            raise
 
-            try:
-                return base_gateway._capture(self, transaction)
-            except Exception:
-                # Undo counts then raise exception
-                self._increase_counts(-1, transaction.amount * -1)
-                raise
+    def get_counts(self):
+        return (self._day_amount_count[0], self._month_amount_count[0],
+                self._day_trans_count[0], self._month_trans_count[0])
 
-        def get_day_amount_count(self):
-            return self._day_amount_count[0]
+    def set_counts(self, day_amount_change, month_amount_change,
+                   day_trans_change, month_trans_change):
+        current_date = datetime.date.today()
+        day_timestamp = current_date.strftime('%Y%m%d')
+        month_timestamp = current_date.strftime('%Y%m')
 
-        def get_month_amount_count(self):
-            return self._month_amount_count[0]
+        # If timestamp has changed reset count
+        if self._day_amount_count[1] != day_timestamp:
+            self._day_amount_count = [0, day_timestamp]
+        if self._month_amount_count[1] != month_timestamp:
+            self._month_amount_count = [0, month_timestamp]
+        if self._day_trans_count[1] != day_timestamp:
+            self._day_trans_count = [0, day_timestamp]
+        if self._month_trans_count[1] != month_timestamp:
+            self._month_trans_count = [0, month_timestamp]
 
-        def get_day_trans_count(self):
-            return self._day_trans_count[0]
+        # Increase counts
+        self._day_amount_count[0] += day_amount_change
+        self._month_amount_count[0] += month_amount_change
+        self._day_trans_count[0] += day_trans_change
+        self._month_trans_count[0] += month_trans_change
 
-        def get_month_trans_count(self):
-            return self._month_trans_count[0]
+        print self._day_amount_count
+        print self._month_amount_count
+        print self._day_trans_count
+        print self._month_trans_count
 
-        def increase_day_amount_count(self, amount):
-            current_date = datetime.date.today().strftime('%Y%m%d')
+def patch_gateway(base_gateway, counter_gateway):
+    class PatchedGateway(counter_gateway, base_gateway):
+        _base_gateway = base_gateway
 
-            # If date has changed reset count
-            if self._day_amount_count[1] != current_date:
-                self._day_amount_count[0] = 0
-
-            self._day_amount_count[0] += amount
-            print self._day_amount_count
-            return self._day_amount_count[0]
-
-        def increase_month_amount_count(self, amount):
-            current_date = datetime.date.today().strftime('%Y%m')
-
-            # If date has changed reset count
-            if self._month_amount_count[1] != current_date:
-                self._month_amount_count[0] = 0
-
-            self._month_amount_count[0] += amount
-            print self._month_amount_count
-            return self._month_amount_count[0]
-
-        def increase_day_trans_count(self, count):
-            current_date = datetime.date.today().strftime('%Y%m%d')
-
-            # If date has changed reset count
-            if self._day_trans_count[1] != current_date:
-                self._day_trans_count[0] = 0
-
-            self._day_trans_count[0] += count
-            print self._day_trans_count
-            return self._day_trans_count[0]
-
-        def increase_month_trans_count(self, count):
-            current_date = datetime.date.today().strftime('%Y%m')
-
-            # If date has changed reset count
-            if self._month_trans_count[1] != current_date:
-                self._month_trans_count[0] = 0
-
-            self._month_trans_count[0] += count
-            print self._month_trans_count
-            return self._month_trans_count[0]
-
-        def _increase_counts(self, count, amount):
-            self.increase_day_amount_count(amount)
-            self.increase_month_amount_count(amount)
-            self.increase_day_trans_count(count)
-            self.increase_month_trans_count(count)
-
-    return CounterGateway
+    return PatchedGateway

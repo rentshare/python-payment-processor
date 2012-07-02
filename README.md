@@ -1,5 +1,5 @@
-Python Payment Processor - (c) RentShare Inc 2012, Author: Ian Halpern
-======================================================================
+Python Payment Processor - (c) RentShare Inc 2012
+=================================================
 
 Description
 -----------

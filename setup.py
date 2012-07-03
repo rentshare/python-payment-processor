@@ -8,4 +8,3 @@ setup(name='payment_processor',
       packages=['payment_processor'],
       install_requires=['requests'],
      )
-

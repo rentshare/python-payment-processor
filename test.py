@@ -43,10 +43,10 @@ transaction.ship_state = 'NY'
 transaction.ship_zip_code = '10001'
 transaction.ship_phone = '222-333-4444'
 transaction.ship_email = 'email@example.com'
+transaction.custom_field('custom_field', 'custom_value')
 
 transaction_id = transaction.charge()
 print 'transaction_id:', transaction_id
-
 
 # Authorize Example
 transaction = gateway.new_transaction()

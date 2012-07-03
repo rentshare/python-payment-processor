@@ -4,7 +4,6 @@ import urlparse
 
 class NationalProcessing(BaseGateway):
     """National Processing gateway."""
-
     _provider = 'national_processing'
 
     def __init__(self, username, password):
@@ -114,7 +113,7 @@ class NationalProcessing(BaseGateway):
 
         Transaction ID.
         """
-        print response
+        print response # TODO Testing
 
         # Parse response
         response = urlparse.parse_qs(response)

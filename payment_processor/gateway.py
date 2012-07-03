@@ -24,6 +24,9 @@ class BaseGateway:
         Returns:
             Response from gateway.
         """
+        # Add custom fields to params
+        params = dict(params.items() + transaction._custom_fields.items())
+
         # Send request
         try:
             response = requests.get(self._url, params=params)
@@ -60,7 +63,6 @@ class MultiGateway(BaseGateway):
 
         "*args*", "class", "Instance of gateways to use."
     """
-
     _gateways = []
 
     def __init__(self, *args):

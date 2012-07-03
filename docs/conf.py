@@ -243,4 +243,3 @@ texinfo_documents = [
 
 # Order members by source
 autodoc_member_order = 'bysource'
-

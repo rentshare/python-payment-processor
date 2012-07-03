@@ -13,6 +13,7 @@ class Transaction:
         "*gateway*", "class", "Gateway instance."
     """
     _gateway = None
+    _custom_fields = {}
 
     transaction_id = None
     """Transaction ID."""
@@ -143,7 +144,7 @@ class Transaction:
             "*field*", "string", "Name of field."
             "*value*", "string|number", "Value of field."
         """
-        pass
+        self._custom_fields[field] = value
 
     def charge(self):
         """Authorize and capture the transaction.

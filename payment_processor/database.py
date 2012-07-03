@@ -15,14 +15,26 @@ except ImportError:
 TABLE_NAME = 'payment_processor'
 """Name of sql table for counters."""
 
+
 Session = sessionmaker()
 """SQL database session."""
+
 
 Base = declarative_base()
 """Base class for sql tables."""
 
+
 class CounterTable(Base):
-    """SQL counter table."""
+    """SQL counter table.
+
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*provider*", "string", "Gateway provider."
+    """
     __tablename__ = TABLE_NAME
 
     id = Column(Integer, primary_key=True)
@@ -38,7 +50,9 @@ class CounterTable(Base):
     month_trans_count = Column(Integer)
     """Total number of transactions for month."""
     day_count_timestamp = Column(String(8))
+    """Timestamp of day count YYYYMMDD."""
     month_count_timestamp = Column(String(6))
+    """Timestamp of month count YYYYMM."""
 
     def __init__(self, provider):
         self.provider = provider
@@ -48,6 +62,7 @@ class CounterTable(Base):
         self.month_trans_count = 0
         self.day_count_timestamp = datetime.date.today().strftime('%Y%m%d')
         self.month_count_timestamp = datetime.date.today().strftime('%Y%m')
+
 
 def connect_database(sql_connection):
     """Connection to sql database. If table doesn't exists on database it will

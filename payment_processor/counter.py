@@ -21,7 +21,6 @@ class GatewayCounter:
         "*month_trans_limit*", "number", "Number of transaction that can occur
         in one month."
     """
-
     day_amount_limit = None
     """Total amount of money that can be transferred in one day."""
     month_amount_limit = None
@@ -177,6 +176,7 @@ class GatewayCounter:
         self._day_trans_count[0] += day_trans_change
         self._month_trans_count[0] += month_trans_change
 
+
 def counted_gateway(base_gateway, gateway_counter):
     """Creates a counted gateway using given gateway and counter.
 
@@ -193,7 +193,6 @@ def counted_gateway(base_gateway, gateway_counter):
 
     Counted gateway class.
     """
-
     class CountedGateway(gateway_counter, base_gateway):
         _base_gateway = base_gateway
 

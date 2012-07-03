@@ -9,16 +9,15 @@ with open(os.path.expanduser('~/.authorizeNet')) as file:
     trans_key = file.readline().rstrip('\n')
 
 AuthorizeNetAIMCounted = payment_processor.counted_gateway(
-        payment_processor.AuthorizeNetAIM, payment_processor.SQLGatewayCounter)
+    payment_processor.AuthorizeNetAIM, payment_processor.SQLGatewayCounter)
+
+NationalProcessingCounted = payment_processor.counted_gateway(
+    payment_processor.NationalProcessing, payment_processor.SQLGatewayCounter)
 
 gateway = AuthorizeNetAIMCounted(login=login, trans_key=trans_key,
     sandbox=True, day_trans_limit=200, month_trans_limit=1000)
 
-#gateway = payment_processor.AuthorizeNetAIM(
-#        login=login, trans_key=trans_key, sandbox=True)
-#
-#gateway2 = payment_processor.NationalProcessing(
-#        username='username', password='password')
+gateway2 = NationalProcessingCounted(username='username', password='password')
 
 # Authorize Capture Example
 transaction = gateway.new_transaction()
@@ -87,7 +86,7 @@ print 'transaction_id:', transaction_id
 
 
 # Multigateway example
-gateways = payment_processor.MultiGateway(gateway, gateway)
+gateways = payment_processor.MultiGateway(gateway2, gateway)
 
 # Authorize Capture Example
 transaction = gateways.new_transaction()

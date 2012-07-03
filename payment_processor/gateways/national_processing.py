@@ -76,7 +76,7 @@ class NationalProcessing(BaseGateway):
         params['address2'] = transaction.address2
         params['city'] = transaction.city
         params['state'] = transaction.state
-        params['zip'] = transaction.zip
+        params['zip'] = transaction.zip_code
         params['country'] = transaction.country
         params['phone'] = transaction.phone
         params['fax'] = transaction.fax
@@ -91,9 +91,11 @@ class NationalProcessing(BaseGateway):
         params['shipping_address2'] = transaction.address2
         params['shipping_city'] = transaction.city
         params['shipping_state'] = transaction.state
-        params['shipping_zip'] = transaction.zip
+        params['shipping_zip'] = transaction.ship_zip_code
         params['shipping_country'] = transaction.ship_country
         params['shipping_email'] = transaction.email
+
+        return params
 
     def _handle_response(self, transaction, response):
         """Handles HTTP response from gateway.
@@ -143,7 +145,10 @@ class NationalProcessing(BaseGateway):
             response_text = None
 
         # Get avs response
-        avs_response = response['avsresponse'][0]
+        try:
+            avs_response = response['avsresponse'][0]
+        except KeyError:
+            avs_response = None
 
         # Check response code
         if response_num == 1:

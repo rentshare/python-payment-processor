@@ -1,4 +1,5 @@
 from payment_processor.exceptions import *
+import logging
 
 class Transaction:
     """Stores transaction information.
@@ -593,9 +594,14 @@ class MultiTransaction(Transaction):
 
         Data returned from transaction method.
         """
-        last_exception = TypeError('Gateway list is empty.')
+        last_exception = None
 
         for gateway in self._gateway:
+            # If an error occurred on previous gateway log error
+            if last_exception != None:
+                logging.warning('Recvied gateway error trying next ' +
+                    'gateway. Exception: %r', last_exception)
+
             try:
                 # Check limit
                 if (self.amount > gateway._trans_amount_limit and
@@ -612,4 +618,9 @@ class MultiTransaction(Transaction):
                 else:
                     raise
 
-        raise last_exception
+        # All gateways failed raise last exception
+        if last_exception != None:
+            raise last_exception
+        else:
+            raise TypeError('Gateway list is empty.')
+

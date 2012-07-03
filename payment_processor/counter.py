@@ -62,7 +62,8 @@ class GatewayCounter:
             return self._base_gateway._charge(self, transaction)
         except Exception:
             # Undo counts then raise exception
-            self._increase_counts(-1, transaction.amount * -1)
+            self.set_counts(
+                    transaction.amount * -1, transaction.amount * -1, -1, -1)
             raise
 
     def _capture(self, transaction):
@@ -79,7 +80,8 @@ class GatewayCounter:
             return self._base_gateway._capture(self, transaction)
         except Exception:
             # Undo counts then raise exception
-            self._increase_counts(-1, transaction.amount * -1)
+            self.set_counts(
+                    transaction.amount * -1, transaction.amount * -1, -1, -1)
             raise
 
     def get_counts(self):

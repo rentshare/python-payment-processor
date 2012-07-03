@@ -717,8 +717,28 @@ that one gateway fails the next one will be used.</p>
 
 <dl class="class">
 <dt id="payment_processor.Transaction">
-<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">Transaction</tt><a class="headerlink" href="#payment_processor.Transaction" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">Transaction</tt><big>(</big><em>gateway</em><big>)</big><a class="headerlink" href="#payment_processor.Transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores transaction information.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>gateway</em></td>
+<td>class</td>
+<td>Gateway instance.</td>
+</tr>
+</tbody>
+</table>
 <dl class="attribute">
 <dt id="payment_processor.Transaction.transaction_id">
 <tt class="descname">transaction_id</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.transaction_id" title="Permalink to this definition">¶</a></dt>
@@ -975,6 +995,34 @@ that one gateway fails the next one will be used.</p>
 <dt id="payment_processor.Transaction.check_number">
 <tt class="descname">check_number</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction._send_transaction">
+<tt class="descname">_send_transaction</tt><big>(</big><em>method_name</em><big>)</big><a class="headerlink" href="#payment_processor.Transaction._send_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a transaction method by name.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method_name</em></td>
+<td>string</td>
+<td>Name of transaction method.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Data returned from transaction method.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1359,6 +1407,26 @@ that one gateway fails the next one will be used.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.GatewayCounter">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">GatewayCounter</tt><big>(</big><em>day_amount_limit=None</em>, <em>month_amount_limit=None</em>, <em>day_trans_limit=None</em>, <em>month_trans_limit=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.SQLGatewayCounter">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">SQLGatewayCounter</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="payment_processor.counted_gateway">
+<tt class="descclassname">payment_processor.</tt><tt class="descname">counted_gateway</tt><big>(</big><em>base_gateway</em>, <em>gateway_counter</em><big>)</big><a class="headerlink" href="#payment_processor.counted_gateway" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="payment_processor.connect_database">
+<tt class="descclassname">payment_processor.</tt><tt class="descname">connect_database</tt><big>(</big><em>sql_connection</em><big>)</big><a class="headerlink" href="#payment_processor.connect_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

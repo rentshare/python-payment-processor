@@ -72,3 +72,17 @@
     :special-members:
     :private-members:
 
+.. autoclass:: payment_processor.GatewayCounter
+    :members:
+    :special-members:
+    :private-members:
+
+.. autoclass:: payment_processor.SQLGatewayCounter
+    :members:
+    :special-members:
+    :private-members:
+
+.. autofunction:: payment_processor.counted_gateway
+
+.. autofunction:: payment_processor.connect_database
+

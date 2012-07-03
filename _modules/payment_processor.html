@@ -52,6 +52,14 @@
 <span class="kn">from</span> <span class="nn">payment_processor.gateways.authorize_net</span> <span class="kn">import</span> <span class="n">AuthorizeNetAIM</span>
 <span class="kn">from</span> <span class="nn">payment_processor.gateways.national_processing</span> <span class="kn">import</span> <span class="n">NationalProcessing</span>
 <span class="kn">from</span> <span class="nn">payment_processor.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">payment_processor.counter</span> <span class="kn">import</span> <span class="n">GatewayCounter</span><span class="p">,</span> <span class="n">counted_gateway</span>
+
+<span class="c"># Attempt to import optional sql counter</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">payment_processor.sql_counter</span> <span class="kn">import</span> <span class="n">SQLGatewayCounter</span>
+    <span class="kn">from</span> <span class="nn">payment_processor.database</span> <span class="kn">import</span> <span class="n">connect_database</span>
+<span class="k">except</span> <span class="n">SQLEngineNotAviable</span><span class="p">:</span>
+    <span class="k">pass</span>
 </pre></div>
 
           </div>

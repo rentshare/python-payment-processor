@@ -258,7 +258,6 @@ class AuthorizeNetAIM(BaseGateway):
             else:
                 raise TransactionFailed(response_reason_text)
 
-
     def _charge(self, transaction):
         """Authorize and capture the transaction.
 

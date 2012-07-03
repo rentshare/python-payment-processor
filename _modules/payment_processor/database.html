@@ -68,14 +68,26 @@
 <span class="n">TABLE_NAME</span> <span class="o">=</span> <span class="s">&#39;payment_processor&#39;</span>
 <span class="sd">&quot;&quot;&quot;Name of sql table for counters.&quot;&quot;&quot;</span>
 
+
 <span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
 <span class="sd">&quot;&quot;&quot;SQL database session.&quot;&quot;&quot;</span>
+
 
 <span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
 <span class="sd">&quot;&quot;&quot;Base class for sql tables.&quot;&quot;&quot;</span>
 
+
 <div class="viewcode-block" id="CounterTable"><a class="viewcode-back" href="../../database.html#payment_processor.database.CounterTable">[docs]</a><span class="k">class</span> <span class="nc">CounterTable</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;SQL counter table.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SQL counter table.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    .. csv-table::</span>
+<span class="sd">        :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">        :widths: 7, 7, 40</span>
+
+<span class="sd">        &quot;*provider*&quot;, &quot;string&quot;, &quot;Gateway provider.&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="n">TABLE_NAME</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -91,7 +103,9 @@
     <span class="n">month_trans_count</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Total number of transactions for month.&quot;&quot;&quot;</span>
     <span class="n">day_count_timestamp</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+    <span class="sd">&quot;&quot;&quot;Timestamp of day count YYYYMMDD.&quot;&quot;&quot;</span>
     <span class="n">month_count_timestamp</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+    <span class="sd">&quot;&quot;&quot;Timestamp of month count YYYYMM.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">provider</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="o">=</span> <span class="n">provider</span>
@@ -101,6 +115,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">month_trans_count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">day_count_timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">month_count_timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m&#39;</span><span class="p">)</span>
+
 </div>
 <div class="viewcode-block" id="connect_database"><a class="viewcode-back" href="../../database.html#payment_processor.database.connect_database">[docs]</a><span class="k">def</span> <span class="nf">connect_database</span><span class="p">(</span><span class="n">sql_connection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Connection to sql database. If table doesn&#39;t exists on database it will</span>

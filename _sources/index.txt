@@ -33,6 +33,7 @@ Example authorize and capture transaction.
     transaction.ship_zip_code = '12345'
     transaction.ship_phone = '111-222-3333'
     transaction.ship_email = 'user@domain.com'
+    transaction.custom_field('custom_field', 'custom_value')
 
     # Authorize and capture transaction
     transaction_id = transaction.charge()
@@ -198,4 +199,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

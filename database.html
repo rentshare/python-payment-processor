@@ -97,6 +97,26 @@ for example, any mapped columns or relationships.</p>
 <dt id="payment_processor.database.CounterTable">
 <em class="property">class </em><tt class="descclassname">payment_processor.database.</tt><tt class="descname">CounterTable</tt><big>(</big><em>provider</em><big>)</big><a class="reference internal" href="_modules/payment_processor/database.html#CounterTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.database.CounterTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>SQL counter table.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>provider</em></td>
+<td>string</td>
+<td>Gateway provider.</td>
+</tr>
+</tbody>
+</table>
 <dl class="attribute">
 <dt id="payment_processor.database.CounterTable.id">
 <tt class="descname">id</tt><a class="headerlink" href="#payment_processor.database.CounterTable.id" title="Permalink to this definition">¶</a></dt>
@@ -131,6 +151,18 @@ for example, any mapped columns or relationships.</p>
 <dt id="payment_processor.database.CounterTable.month_trans_count">
 <tt class="descname">month_trans_count</tt><a class="headerlink" href="#payment_processor.database.CounterTable.month_trans_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total number of transactions for month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.day_count_timestamp">
+<tt class="descname">day_count_timestamp</tt><a class="headerlink" href="#payment_processor.database.CounterTable.day_count_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Timestamp of day count YYYYMMDD.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.month_count_timestamp">
+<tt class="descname">month_count_timestamp</tt><a class="headerlink" href="#payment_processor.database.CounterTable.month_count_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Timestamp of month count YYYYMM.</p>
 </dd></dl>
 
 </dd></dl>

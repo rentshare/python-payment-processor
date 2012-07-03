@@ -77,6 +77,9 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Response from gateway.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Add custom fields to params</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="n">transaction</span><span class="o">.</span><span class="n">_custom_fields</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
         <span class="c"># Send request</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
@@ -113,7 +116,6 @@
 
 <span class="sd">        &quot;*args*&quot;, &quot;class&quot;, &quot;Instance of gateways to use.&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">_gateways</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>

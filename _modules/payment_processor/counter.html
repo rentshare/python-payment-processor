@@ -74,7 +74,6 @@
 <span class="sd">        &quot;*month_trans_limit*&quot;, &quot;number&quot;, &quot;Number of transaction that can occur</span>
 <span class="sd">        in one month.&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">day_amount_limit</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;Total amount of money that can be transferred in one day.&quot;&quot;&quot;</span>
     <span class="n">month_amount_limit</span> <span class="o">=</span> <span class="bp">None</span>
@@ -229,6 +228,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_month_amount_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">month_amount_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_day_trans_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">day_trans_change</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_month_trans_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">month_trans_change</span>
+
 </div></div>
 <div class="viewcode-block" id="counted_gateway"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.counted_gateway">[docs]</a><span class="k">def</span> <span class="nf">counted_gateway</span><span class="p">(</span><span class="n">base_gateway</span><span class="p">,</span> <span class="n">gateway_counter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a counted gateway using given gateway and counter.</span>
@@ -246,7 +246,6 @@
 
 <span class="sd">    Counted gateway class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">class</span> <span class="nc">CountedGateway</span><span class="p">(</span><span class="n">gateway_counter</span><span class="p">,</span> <span class="n">base_gateway</span><span class="p">):</span>
         <span class="n">_base_gateway</span> <span class="o">=</span> <span class="n">base_gateway</span>
 

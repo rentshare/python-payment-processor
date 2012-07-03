@@ -85,4 +85,3 @@
 .. autofunction:: payment_processor.counted_gateway
 
 .. autofunction:: payment_processor.connect_database
-

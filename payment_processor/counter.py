@@ -3,10 +3,33 @@ from payment_processor.gateway import BaseGateway
 import datetime
 
 class GatewayCounter:
+    """Gateway transaction counter. Handles day/month transaction count and
+    amount total.
+
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*day_amount_limit*", "number", "Total amount of money that can be
+        transferred in one day."
+        "*month_amount_limit*", "number", "Total amount of money that can be
+        transferred in one month."
+        "*day_trans_limit*", "number", "Number of transaction that can occur
+        in one day."
+        "*month_trans_limit*", "number", "Number of transaction that can occur
+        in one month."
+    """
+
     day_amount_limit = None
+    """Total amount of money that can be transferred in one day."""
     month_amount_limit = None
+    """Total amount of money that can be transferred in one month."""
     day_trans_limit = None
+    """Number of transaction that can occur in one day."""
     month_trans_limit = None
+    """Number of transaction that can occur in one month."""
     _day_amount_count = [0, datetime.date.today().strftime('%Y%m%d')]
     _month_amount_count = [0, datetime.date.today().strftime('%Y%m%d')]
     _day_trans_count = [0, datetime.date.today().strftime('%Y%m')]
@@ -23,6 +46,24 @@ class GatewayCounter:
 
     def _check_counts(self, day_amount_change, month_amount_change,
                    day_trans_change, month_trans_change):
+        """Check counters against limits.  Changes can be positive and
+        negative.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*day_amount_change*", "number", "Change in day amount count."
+            "*month_amount_change*", "number", "Change in month amount count."
+            "*day_trans_change*", "number", "Change in day trans count."
+            "*month_trans_change*", "number", "Change in month trans count."
+
+        Raises:
+
+        :attr:`LimitExceeded` If a limit has been exceeded.
+        """
         counts = self.get_counts()
 
         # Add change to counts
@@ -49,6 +90,7 @@ class GatewayCounter:
             raise LimitExceeded('Gateway month transaction limit reached.')
 
     def _charge(self, transaction):
+        """Override charge method to handle counters."""
         # Check for transaction amount
         if transaction.amount == None:
             raise TypeError('Transaction.amount is required for ' +
@@ -67,6 +109,7 @@ class GatewayCounter:
             raise
 
     def _capture(self, transaction):
+        """Override capture method to handle counters."""
         # Check for transaction amount
         if transaction.amount == None:
             raise TypeError('Transaction.amount is required for ' +
@@ -85,6 +128,14 @@ class GatewayCounter:
             raise
 
     def get_counts(self):
+        """Override this method with a method to get current counts. It must
+        return a tuple containing current counts.
+
+        Returns:
+
+        A tuple containing `day_amount_count`, `month_amount_count`,
+        `day_trans_count`, `month_trans_count`
+        """
         current_date = datetime.date.today()
         day_timestamp = current_date.strftime('%Y%m%d')
         month_timestamp = current_date.strftime('%Y%m')
@@ -104,6 +155,20 @@ class GatewayCounter:
 
     def set_counts(self, day_amount_change, month_amount_change,
                    day_trans_change, month_trans_change):
+        """Override this method with a method to set current counts. Changes
+        can be positive and negative.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*day_amount_change*", "number", "Change in day amount count."
+            "*month_amount_change*", "number", "Change in month amount count."
+            "*day_trans_change*", "number", "Change in day trans count."
+            "*month_trans_change*", "number", "Change in month trans count."
+        """
         current_date = datetime.date.today()
 
         # Increase counts
@@ -112,13 +177,24 @@ class GatewayCounter:
         self._day_trans_count[0] += day_trans_change
         self._month_trans_count[0] += month_trans_change
 
-        print self._day_amount_count
-        print self._month_amount_count
-        print self._day_trans_count
-        print self._month_trans_count
-
 def counted_gateway(base_gateway, gateway_counter):
-    class PatchedGateway(gateway_counter, base_gateway):
+    """Creates a counted gateway using given gateway and counter.
+
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*base_gateway*", "class", "Gateway class."
+        "*gateway_counter*", "class", "Counter class."
+
+    Returns:
+
+    Counted gateway class.
+    """
+
+    class CountedGateway(gateway_counter, base_gateway):
         _base_gateway = base_gateway
 
-    return PatchedGateway
+    return CountedGateway

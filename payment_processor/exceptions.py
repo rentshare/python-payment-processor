@@ -65,6 +65,9 @@ class LimitExceeded(GatewayError):
     """Transaction limit for gateway has been exceeded."""
     pass
 
+class CounterError(GatewayError):
+    """An error occurred when handling counters."""
+
 
 class SQLEngineNotAviable(Exception):
     """Optional SQL engine is not aviable."""

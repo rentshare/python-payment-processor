@@ -13,20 +13,30 @@ except ImportError:
     raise SQLEngineNotAviable('SQLAlchemy not aviable.')
 
 TABLE_NAME = 'payment_processor'
+"""Name of sql table for counters."""
 
 Session = sessionmaker()
+"""SQL database session."""
 
 Base = declarative_base()
+"""Base class for sql tables."""
 
 class CounterTable(Base):
+    """SQL counter table."""
     __tablename__ = TABLE_NAME
 
     id = Column(Integer, primary_key=True)
+    """Column ID (Primary Key)."""
     provider = Column(String)
+    """Gateway provider."""
     day_amount_count = Column(Float)
+    """Total amount count for day."""
     month_amount_count = Column(Float)
+    """Total amount count for month."""
     day_trans_count = Column(Integer)
+    """Total number of transactions for day."""
     month_trans_count = Column(Integer)
+    """Total number of transactions for month."""
     day_count_timestamp = Column(String(8))
     month_count_timestamp = Column(String(6))
 
@@ -40,6 +50,17 @@ class CounterTable(Base):
         self.month_count_timestamp = datetime.date.today().strftime('%Y%m')
 
 def connect_database(sql_connection):
+    """Connection to sql database. If table doesn't exists on database it will
+    be created.
+
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*sql_connection*", "string", "SQL alchemy dialect url."
+    """
     engine = create_engine(sql_connection)
     Session.configure(bind=engine)
 

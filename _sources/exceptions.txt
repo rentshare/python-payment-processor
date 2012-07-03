@@ -3,6 +3,4 @@
 
 .. automodule:: payment_processor.exceptions
     :members:
-    :special-members:
-    :private-members:
 

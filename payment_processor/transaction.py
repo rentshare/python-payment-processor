@@ -122,29 +122,6 @@ class Transaction:
 
         Data returned from transaction method.
         """
-        # If list try each gateway
-        if isinstance(self._gateway, list) == True:
-            last_exception = TypeError('Gateway list is empty.')
-
-            for gateway in self._gateway:
-                try:
-                    # Check limit
-                    if (self.amount > gateway._trans_amount_limit and
-                            gateway._trans_amount_limit != None):
-                        raise LimitExceeded('Transaction limit exceeded.')
-
-                    method = getattr(gateway, method_name)
-                    return method(self)
-
-                except Exception, exception:
-                    if isinstance(exception, GatewayError) == True:
-                        # Gateway error try next gateway
-                        last_exception = exception
-                    else:
-                        raise
-
-            raise last_exception
-
         # Check limit
         if (self.amount > self._gateway._trans_amount_limit and
                 self._gateway._trans_amount_limit != None):
@@ -585,3 +562,53 @@ class Transaction:
                         'transaction.transaction_id.')
 
         return self._send_transaction('_void')
+
+
+class MultiTransaction(Transaction):
+    """Stores transaction information. Subclass of Transaction used to handle
+    multiple gateways
+
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*gateway*", "class", "Gateway instance."
+    """
+
+    def _send_transaction(self, method_name):
+        """Send a transaction method by name.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*method_name*", "string", "Name of transaction method."
+
+        Returns:
+
+        Data returned from transaction method.
+        """
+        last_exception = TypeError('Gateway list is empty.')
+
+        for gateway in self._gateway:
+            try:
+                # Check limit
+                if (self.amount > gateway._trans_amount_limit and
+                        gateway._trans_amount_limit != None):
+                    raise LimitExceeded('Transaction limit exceeded.')
+
+                method = getattr(gateway, method_name)
+                return method(self)
+
+            except Exception, exception:
+                if isinstance(exception, GatewayError) == True:
+                    # Gateway error try next gateway
+                    last_exception = exception
+                else:
+                    raise
+
+        raise last_exception

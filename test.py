@@ -1,16 +1,18 @@
 import payment_processor
 import os
 
+payment_processor.connect_database('sqlite:///._payment_processor.sqlite')
+
 # Get login and trans_key from ~/.authorizeNet
 with open(os.path.expanduser('~/.authorizeNet')) as file:
     login = file.readline().rstrip('\n')
     trans_key = file.readline().rstrip('\n')
 
-AuthorizeNetAIMCounted = payment_processor.patch_gateway(
-        payment_processor.AuthorizeNetAIM, payment_processor.CounterGateway)
+AuthorizeNetAIMCounted = payment_processor.counted_gateway(
+        payment_processor.AuthorizeNetAIM, payment_processor.SQLGatewayCounter)
 
 gateway = AuthorizeNetAIMCounted(login=login, trans_key=trans_key,
-                                 sandbox=True)
+    sandbox=True, day_trans_limit=200, month_trans_limit=1000)
 
 #gateway = payment_processor.AuthorizeNetAIM(
 #        login=login, trans_key=trans_key, sandbox=True)

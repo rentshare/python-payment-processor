@@ -1,5 +1,5 @@
 from payment_processor.exceptions import *
-from payment_processor.transaction import Transaction
+from payment_processor.transaction import Transaction, MultiTransaction
 import requests
 
 class BaseGateway:
@@ -47,6 +47,7 @@ class BaseGateway:
         transaction = Transaction(self)
         return transaction
 
+
 class MultiGateway(BaseGateway):
     """Multi gateway class. Allows multiple gateways to be used, in the event
     that one gateway fails the next one will be used.
@@ -71,6 +72,7 @@ class MultiGateway(BaseGateway):
 
         Returns:
 
-        Instance of :attr:`Transaction` that is connected to the gateways."""
-        transaction = Transaction(self._gateways)
+        Instance of :attr:`Transaction` that is connected to the gateways.
+        """
+        transaction = MultiTransaction(self._gateways)
         return transaction

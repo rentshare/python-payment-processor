@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>payment_processor.counter &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../../index.html" />
+    <link rel="up" title="payment_processor" href="../payment_processor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" accesskey="U">payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for payment_processor.counter</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">payment_processor.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">payment_processor.gateway</span> <span class="kn">import</span> <span class="n">BaseGateway</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<div class="viewcode-block" id="GatewayCounter"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.GatewayCounter">[docs]</a><span class="k">class</span> <span class="nc">GatewayCounter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Gateway transaction counter. Handles day/month transaction count and</span>
+<span class="sd">    amount total.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    .. csv-table::</span>
+<span class="sd">        :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">        :widths: 7, 7, 40</span>
+
+<span class="sd">        &quot;*day_amount_limit*&quot;, &quot;number&quot;, &quot;Total amount of money that can be</span>
+<span class="sd">        transferred in one day.&quot;</span>
+<span class="sd">        &quot;*month_amount_limit*&quot;, &quot;number&quot;, &quot;Total amount of money that can be</span>
+<span class="sd">        transferred in one month.&quot;</span>
+<span class="sd">        &quot;*day_trans_limit*&quot;, &quot;number&quot;, &quot;Number of transaction that can occur</span>
+<span class="sd">        in one day.&quot;</span>
+<span class="sd">        &quot;*month_trans_limit*&quot;, &quot;number&quot;, &quot;Number of transaction that can occur</span>
+<span class="sd">        in one month.&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">day_amount_limit</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Total amount of money that can be transferred in one day.&quot;&quot;&quot;</span>
+    <span class="n">month_amount_limit</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Total amount of money that can be transferred in one month.&quot;&quot;&quot;</span>
+    <span class="n">day_trans_limit</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Number of transaction that can occur in one day.&quot;&quot;&quot;</span>
+    <span class="n">month_trans_limit</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Number of transaction that can occur in one month.&quot;&quot;&quot;</span>
+    <span class="n">_day_amount_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)]</span>
+    <span class="n">_month_amount_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)]</span>
+    <span class="n">_day_trans_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m&#39;</span><span class="p">)]</span>
+    <span class="n">_month_trans_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m&#39;</span><span class="p">)]</span>
+    <span class="n">_base_gateway</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day_amount_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">month_amount_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">day_trans_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">month_trans_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base_gateway</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day_amount_limit</span> <span class="o">=</span> <span class="n">day_amount_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">month_amount_limit</span> <span class="o">=</span> <span class="n">month_amount_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day_trans_limit</span> <span class="o">=</span> <span class="n">day_trans_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">month_trans_limit</span> <span class="o">=</span> <span class="n">month_trans_limit</span>
+
+<div class="viewcode-block" id="GatewayCounter._check_counts"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.GatewayCounter._check_counts">[docs]</a>    <span class="k">def</span> <span class="nf">_check_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day_amount_change</span><span class="p">,</span> <span class="n">month_amount_change</span><span class="p">,</span>
+                   <span class="n">day_trans_change</span><span class="p">,</span> <span class="n">month_trans_change</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check counters against limits.  Changes can be positive and</span>
+<span class="sd">        negative.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*day_amount_change*&quot;, &quot;number&quot;, &quot;Change in day amount count.&quot;</span>
+<span class="sd">            &quot;*month_amount_change*&quot;, &quot;number&quot;, &quot;Change in month amount count.&quot;</span>
+<span class="sd">            &quot;*day_trans_change*&quot;, &quot;number&quot;, &quot;Change in day trans count.&quot;</span>
+<span class="sd">            &quot;*month_trans_change*&quot;, &quot;number&quot;, &quot;Change in month trans count.&quot;</span>
+
+<span class="sd">        Raises:</span>
+
+<span class="sd">        :attr:`LimitExceeded` If a limit has been exceeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+
+        <span class="c"># Add change to counts</span>
+        <span class="n">day_amount_count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">day_amount_change</span>
+        <span class="n">month_amount_count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">month_amount_change</span>
+        <span class="n">day_trans_count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">day_trans_change</span>
+        <span class="n">month_trans_count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">month_trans_change</span>
+
+        <span class="c"># Check counts</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">day_amount_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_amount_limit</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">day_amount_limit</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">LimitExceeded</span><span class="p">(</span><span class="s">&#39;Gateway day amount limit reached.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">month_amount_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">month_amount_limit</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">month_amount_limit</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">LimitExceeded</span><span class="p">(</span><span class="s">&#39;Gateway month amount limit reached.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">day_trans_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_trans_limit</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">day_trans_limit</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">LimitExceeded</span><span class="p">(</span><span class="s">&#39;Gateway day transaction limit reached.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">month_trans_count</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">month_trans_limit</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">month_trans_limit</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">LimitExceeded</span><span class="p">(</span><span class="s">&#39;Gateway month transaction limit reached.&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GatewayCounter._charge"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.GatewayCounter._charge">[docs]</a>    <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Override charge method to handle counters.&quot;&quot;&quot;</span>
+        <span class="c"># Check for transaction amount</span>
+        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Transaction.amount is required for &#39;</span> <span class="o">+</span>
+                            <span class="s">&#39;counter gateways.&#39;</span><span class="p">)</span>
+
+        <span class="c"># Check and increase counts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_counts</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_counts</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_gateway</span><span class="o">.</span><span class="n">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c"># Undo counts then raise exception</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_counts</span><span class="p">(</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">raise</span>
+</div>
+<div class="viewcode-block" id="GatewayCounter._capture"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.GatewayCounter._capture">[docs]</a>    <span class="k">def</span> <span class="nf">_capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Override capture method to handle counters.&quot;&quot;&quot;</span>
+        <span class="c"># Check for transaction amount</span>
+        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Transaction.amount is required for &#39;</span> <span class="o">+</span>
+                            <span class="s">&#39;counter gateways.&#39;</span><span class="p">)</span>
+
+        <span class="c"># Check and increase counts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_counts</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_counts</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_gateway</span><span class="o">.</span><span class="n">_capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c"># Undo counts then raise exception</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_counts</span><span class="p">(</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">raise</span>
+</div>
+<div class="viewcode-block" id="GatewayCounter.get_counts"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.GatewayCounter.get_counts">[docs]</a>    <span class="k">def</span> <span class="nf">get_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Override this method with a method to get current counts. It must</span>
+<span class="sd">        return a tuple containing current counts.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        A tuple containing `day_amount_count`, `month_amount_count`,</span>
+<span class="sd">        `day_trans_count`, `month_trans_count`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">day_timestamp</span> <span class="o">=</span> <span class="n">current_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">month_timestamp</span> <span class="o">=</span> <span class="n">current_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m&#39;</span><span class="p">)</span>
+
+        <span class="c"># If timestamp has changed reset count</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_day_amount_count</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">day_timestamp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_day_amount_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">day_timestamp</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_month_amount_count</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">month_timestamp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_month_amount_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">month_timestamp</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_day_trans_count</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">day_timestamp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_day_trans_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">day_timestamp</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_month_trans_count</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">month_timestamp</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_month_trans_count</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">month_timestamp</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_day_amount_count</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_month_amount_count</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_day_trans_count</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_month_trans_count</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="GatewayCounter.set_counts"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.GatewayCounter.set_counts">[docs]</a>    <span class="k">def</span> <span class="nf">set_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day_amount_change</span><span class="p">,</span> <span class="n">month_amount_change</span><span class="p">,</span>
+                   <span class="n">day_trans_change</span><span class="p">,</span> <span class="n">month_trans_change</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Override this method with a method to set current counts. Changes</span>
+<span class="sd">        can be positive and negative.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*day_amount_change*&quot;, &quot;number&quot;, &quot;Change in day amount count.&quot;</span>
+<span class="sd">            &quot;*month_amount_change*&quot;, &quot;number&quot;, &quot;Change in month amount count.&quot;</span>
+<span class="sd">            &quot;*day_trans_change*&quot;, &quot;number&quot;, &quot;Change in day trans count.&quot;</span>
+<span class="sd">            &quot;*month_trans_change*&quot;, &quot;number&quot;, &quot;Change in month trans count.&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+
+        <span class="c"># Increase counts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_day_amount_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">day_amount_change</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_month_amount_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">month_amount_change</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_day_trans_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">day_trans_change</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_month_trans_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">month_trans_change</span>
+</div></div>
+<div class="viewcode-block" id="counted_gateway"><a class="viewcode-back" href="../../counter.html#payment_processor.counter.counted_gateway">[docs]</a><span class="k">def</span> <span class="nf">counted_gateway</span><span class="p">(</span><span class="n">base_gateway</span><span class="p">,</span> <span class="n">gateway_counter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a counted gateway using given gateway and counter.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    .. csv-table::</span>
+<span class="sd">        :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">        :widths: 7, 7, 40</span>
+
+<span class="sd">        &quot;*base_gateway*&quot;, &quot;class&quot;, &quot;Gateway class.&quot;</span>
+<span class="sd">        &quot;*gateway_counter*&quot;, &quot;class&quot;, &quot;Counter class.&quot;</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    Counted gateway class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">CountedGateway</span><span class="p">(</span><span class="n">gateway_counter</span><span class="p">,</span> <span class="n">base_gateway</span><span class="p">):</span>
+        <span class="n">_base_gateway</span> <span class="o">=</span> <span class="n">base_gateway</span>
+
+    <span class="k">return</span> <span class="n">CountedGateway</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" >payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

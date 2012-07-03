@@ -1,0 +1,175 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>payment_processor.gateway &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../../index.html" />
+    <link rel="up" title="payment_processor" href="../payment_processor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" accesskey="U">payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for payment_processor.gateway</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">payment_processor.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">payment_processor.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span><span class="p">,</span> <span class="n">MultiTransaction</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<div class="viewcode-block" id="BaseGateway"><a class="viewcode-back" href="../../gateway.html#payment_processor.gateway.BaseGateway">[docs]</a><span class="k">class</span> <span class="nc">BaseGateway</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Base gateway class.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trans_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_amount_limit</span> <span class="o">=</span> <span class="n">trans_limit</span>
+
+<div class="viewcode-block" id="BaseGateway._send"><a class="viewcode-back" href="../../gateway.html#payment_processor.gateway.BaseGateway._send">[docs]</a>    <span class="k">def</span> <span class="nf">_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send transaction params with HTTP request to gateway.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+<span class="sd">            &quot;*params*&quot;, &quot;dict&quot;, &quot;Dictonary of HTTP parameters to send.&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Response from gateway.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Send request</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConnectionError</span><span class="p">(</span><span class="s">&#39;Failed to connect to </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">)</span>
+
+        <span class="c"># Check status code</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConnectionError</span><span class="p">((</span><span class="s">&#39;Gateway returned unsuccessful &#39;</span> <span class="o">+</span>
+                <span class="s">&#39;HTTP status code </span><span class="si">%r</span><span class="s">.&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BaseGateway.new_transaction"><a class="viewcode-back" href="../../gateway.html#payment_processor.gateway.BaseGateway.new_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">new_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new transaction.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Instance of :attr:`Transaction` that is connected to this gateway.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">transaction</span>
+
+</div></div>
+<div class="viewcode-block" id="MultiGateway"><a class="viewcode-back" href="../../gateway.html#payment_processor.gateway.MultiGateway">[docs]</a><span class="k">class</span> <span class="nc">MultiGateway</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multi gateway class. Allows multiple gateways to be used, in the event</span>
+<span class="sd">    that one gateway fails the next one will be used.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    .. csv-table::</span>
+<span class="sd">        :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">        :widths: 7, 7, 40</span>
+
+<span class="sd">        &quot;*args*&quot;, &quot;class&quot;, &quot;Instance of gateways to use.&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_gateways</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gateways</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MultiGateway.new_transaction"><a class="viewcode-back" href="../../gateway.html#payment_processor.gateway.MultiGateway.new_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">new_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new transaction.</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Instance of :attr:`Transaction` that is connected to the gateways.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="n">MultiTransaction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gateways</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">transaction</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" >payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

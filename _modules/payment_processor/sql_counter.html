@@ -1,0 +1,185 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>payment_processor.sql_counter &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../../index.html" />
+    <link rel="up" title="payment_processor" href="../payment_processor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" accesskey="U">payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for payment_processor.sql_counter</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">payment_processor.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">payment_processor.counter</span> <span class="kn">import</span> <span class="n">GatewayCounter</span>
+<span class="kn">from</span> <span class="nn">payment_processor.database</span> <span class="kn">import</span> <span class="n">CounterTable</span><span class="p">,</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<div class="viewcode-block" id="SQLGatewayCounter"><a class="viewcode-back" href="../../sql_counter.html#payment_processor.sql_counter.SQLGatewayCounter">[docs]</a><span class="k">class</span> <span class="nc">SQLGatewayCounter</span><span class="p">(</span><span class="n">GatewayCounter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Counter gateway that uses sql to store counters.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">GatewayCounter</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c"># If gateway column doesnt exists create it</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+        <span class="n">gateway_column</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">CounterTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                        <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">gateway_column</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_column</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SQLGatewayCounter._create_column"><a class="viewcode-back" href="../../sql_counter.html#payment_processor.sql_counter.SQLGatewayCounter._create_column">[docs]</a>    <span class="k">def</span> <span class="nf">_create_column</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create required column for gateway counters. This is called if</span>
+<span class="sd">        gateway column doesn&#39;t exists in database.&quot;&quot;&quot;</span>
+        <span class="n">current_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+        <span class="c"># Create authorize net column</span>
+        <span class="n">authorize_net</span> <span class="o">=</span> <span class="n">CounterTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span>
+        <span class="n">authorize_net</span><span class="o">.</span><span class="n">day_amount_count</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">authorize_net</span><span class="o">.</span><span class="n">month_amount_count</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">authorize_net</span><span class="o">.</span><span class="n">day_trans_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">authorize_net</span><span class="o">.</span><span class="n">month_trans_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">authorize_net</span><span class="o">.</span><span class="n">day_count_timestamp</span> <span class="o">=</span> <span class="n">current_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">authorize_net</span><span class="o">.</span><span class="n">month_count_timestamp</span> <span class="o">=</span> <span class="n">current_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m&#39;</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">authorize_net</span><span class="p">)</span>
+
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="SQLGatewayCounter.get_counts"><a class="viewcode-back" href="../../sql_counter.html#payment_processor.sql_counter.SQLGatewayCounter.get_counts">[docs]</a>    <span class="k">def</span> <span class="nf">get_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get counts from sql database.&quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+        <span class="n">current_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">day_timestamp</span> <span class="o">=</span> <span class="n">current_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">month_timestamp</span> <span class="o">=</span> <span class="n">current_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y%m&#39;</span><span class="p">)</span>
+
+        <span class="c"># Get gateway conuter data</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">gateway_data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">CounterTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                            <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">SQLAlchemyError</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CounterError</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+
+        <span class="c"># If timestamp has changed reset count</span>
+        <span class="k">if</span> <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_count_timestamp</span> <span class="o">!=</span> <span class="n">day_timestamp</span><span class="p">:</span>
+            <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_amount_count</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_trans_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_count_timestamp</span> <span class="o">=</span> <span class="n">day_timestamp</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">SQLAlchemyError</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CounterError</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_count_timestamp</span> <span class="o">!=</span> <span class="n">month_timestamp</span><span class="p">:</span>
+            <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_amount_count</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_trans_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_count_timestamp</span> <span class="o">=</span> <span class="n">month_timestamp</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">SQLAlchemyError</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CounterError</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">gateway_data</span><span class="o">.</span><span class="n">day_amount_count</span><span class="p">,</span> <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_amount_count</span><span class="p">,</span>
+                <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_trans_count</span><span class="p">,</span> <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_trans_count</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SQLGatewayCounter.set_counts"><a class="viewcode-back" href="../../sql_counter.html#payment_processor.sql_counter.SQLGatewayCounter.set_counts">[docs]</a>    <span class="k">def</span> <span class="nf">set_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day_amount_change</span><span class="p">,</span> <span class="n">month_amount_change</span><span class="p">,</span>
+                   <span class="n">day_trans_change</span><span class="p">,</span> <span class="n">month_trans_change</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set counts in sql database.&quot;&quot;&quot;</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+        <span class="c"># Get gateway conuter data</span>
+        <span class="n">gateway_data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">CounterTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                        <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="c"># Increase counts</span>
+        <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_amount_count</span> <span class="o">+=</span> <span class="n">day_amount_change</span>
+        <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_amount_count</span> <span class="o">+=</span> <span class="n">month_amount_change</span>
+        <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_trans_count</span> <span class="o">+=</span> <span class="n">day_trans_change</span>
+        <span class="n">gateway_data</span><span class="o">.</span><span class="n">month_trans_count</span> <span class="o">+=</span> <span class="n">month_trans_change</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" >payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

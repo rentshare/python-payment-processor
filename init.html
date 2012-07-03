@@ -1,0 +1,1734 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>python-payment_processor &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="index.html" />
+    <link rel="next" title="python-payment_processor.counter" href="counter.html" />
+    <link rel="prev" title="Getting Started" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="counter.html" title="python-payment_processor.counter"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Getting Started"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="python-payment-processor">
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">python-payment_processor</span></tt><a class="headerlink" href="#python-payment-processor" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="payment_processor.TransactionError">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">TransactionError</tt><a class="headerlink" href="#payment_processor.TransactionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execption is related to a transaction error.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.TransactionDeclined">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">TransactionDeclined</tt><a class="headerlink" href="#payment_processor.TransactionDeclined" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transaction was declined.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.TransactionHeld">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">TransactionHeld</tt><a class="headerlink" href="#payment_processor.TransactionHeld" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transaction was sent successfully but held for review.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidCardNumber">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidCardNumber</tt><a class="headerlink" href="#payment_processor.InvalidCardNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card number is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidCardExpirationDate">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidCardExpirationDate</tt><a class="headerlink" href="#payment_processor.InvalidCardExpirationDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card expiration date is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidCardSecurityCode">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidCardSecurityCode</tt><a class="headerlink" href="#payment_processor.InvalidCardSecurityCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card security code is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InsufficientFunds">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InsufficientFunds</tt><a class="headerlink" href="#payment_processor.InsufficientFunds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card has insufficient funds.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.ExpiredCard">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">ExpiredCard</tt><a class="headerlink" href="#payment_processor.ExpiredCard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card is expired.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.DuplicateTransaction">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">DuplicateTransaction</tt><a class="headerlink" href="#payment_processor.DuplicateTransaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transaction was already processed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidBillingAddress">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidBillingAddress</tt><a class="headerlink" href="#payment_processor.InvalidBillingAddress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card billing address doesn&#8217;t match or is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidBillingZipcode">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidBillingZipcode</tt><a class="headerlink" href="#payment_processor.InvalidBillingZipcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card billing zip code doesn&#8217;t match or is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidRoutingNumber">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidRoutingNumber</tt><a class="headerlink" href="#payment_processor.InvalidRoutingNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check routing number is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.InvalidAccountNumber">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">InvalidAccountNumber</tt><a class="headerlink" href="#payment_processor.InvalidAccountNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check account number is invalid.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.GatewayError">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">GatewayError</tt><a class="headerlink" href="#payment_processor.GatewayError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execption is related to a gateway error.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.TransactionFailed">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">TransactionFailed</tt><a class="headerlink" href="#payment_processor.TransactionFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gateway failed to process transaction.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.ConnectionError">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">ConnectionError</tt><a class="headerlink" href="#payment_processor.ConnectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unable to connect to gateway.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.LimitExceeded">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">LimitExceeded</tt><a class="headerlink" href="#payment_processor.LimitExceeded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transaction limit for gateway has been exceeded.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.MultiGateway">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">MultiGateway</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#payment_processor.MultiGateway" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi gateway class. Allows multiple gateways to be used, in the event
+that one gateway fails the next one will be used.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>args</em></td>
+<td>class</td>
+<td>Instance of gateways to use.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="payment_processor.MultiGateway.new_transaction">
+<tt class="descname">new_transaction</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.MultiGateway.new_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new transaction.</p>
+<p>Returns:</p>
+<p>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt> that is connected to the gateways.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.AuthorizeNetAIM">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">AuthorizeNetAIM</tt><big>(</big><em>login</em>, <em>trans_key</em>, <em>sandbox=False</em>, <em>test_requests=False</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize.Net AIM gateway.</p>
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._get_params">
+<tt class="descname">_get_params</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the HTTP parameters for the gateway using the transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Dictonary of HTTP parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._handle_response">
+<tt class="descname">_handle_response</tt><big>(</big><em>transaction</em>, <em>response</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._handle_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles HTTP response from gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><em>response</em></td>
+<td>string</td>
+<td>HTTP response from gateway.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._charge">
+<tt class="descname">_charge</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize and capture the transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._authorize">
+<tt class="descname">_authorize</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize the transaction. Transaction must be captured to complete.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._capture">
+<tt class="descname">_capture</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture a previously authorized transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._refund">
+<tt class="descname">_refund</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._refund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refund a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._credit">
+<tt class="descname">_credit</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._credit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._void">
+<tt class="descname">_void</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._void" title="Permalink to this definition">¶</a></dt>
+<dd><p>Void a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.NationalProcessing">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">NationalProcessing</tt><big>(</big><em>username</em>, <em>password</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>National Processing gateway.</p>
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._get_params">
+<tt class="descname">_get_params</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the HTTP parameters for the gateway using the transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Dictonary of HTTP parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._handle_response">
+<tt class="descname">_handle_response</tt><big>(</big><em>transaction</em>, <em>response</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._handle_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles HTTP response from gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><em>response</em></td>
+<td>string</td>
+<td>HTTP response from gateway.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._charge">
+<tt class="descname">_charge</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize and capture the transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._authorize">
+<tt class="descname">_authorize</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize the transaction. Transaction must be captured to complete.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._capture">
+<tt class="descname">_capture</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture a previously authorized transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._refund">
+<tt class="descname">_refund</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._refund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refund a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._credit">
+<tt class="descname">_credit</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._credit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._void">
+<tt class="descname">_void</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._void" title="Permalink to this definition">¶</a></dt>
+<dd><p>Void a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.Transaction">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">Transaction</tt><big>(</big><em>gateway</em><big>)</big><a class="headerlink" href="#payment_processor.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores transaction information.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>gateway</em></td>
+<td>class</td>
+<td>Gateway instance.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="payment_processor.Transaction.transaction_id">
+<tt class="descname">transaction_id</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.transaction_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.authorize_code">
+<tt class="descname">authorize_code</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.authorize_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize code.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.amount">
+<tt class="descname">amount</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.amount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount decimal number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.tax">
+<tt class="descname">tax</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.tax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tax amount decimal number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.freight">
+<tt class="descname">freight</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.freight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping amount decimal number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.tax_exempt">
+<tt class="descname">tax_exempt</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.tax_exempt" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">True</span></tt> if transaction is tax exempt <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.order_number">
+<tt class="descname">order_number</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.order_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Order number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.customer_id">
+<tt class="descname">customer_id</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.customer_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Customer ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.description">
+<tt class="descname">description</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Order description.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.customer_ip">
+<tt class="descname">customer_ip</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.customer_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Customer IP address.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.first_name">
+<tt class="descname">first_name</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.first_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing first name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.last_name">
+<tt class="descname">last_name</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.last_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing last name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.company">
+<tt class="descname">company</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.company" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing company name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.address">
+<tt class="descname">address</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing address line one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.address2">
+<tt class="descname">address2</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.address2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing address line two.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.city">
+<tt class="descname">city</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.city" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing city.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.state">
+<tt class="descname">state</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing two letter state abbreviation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.zip_code">
+<tt class="descname">zip_code</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.zip_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing five digit zip code.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.country">
+<tt class="descname">country</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.country" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing country use US for United States.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.phone">
+<tt class="descname">phone</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.phone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing phone number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.fax">
+<tt class="descname">fax</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.fax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing fax number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.email">
+<tt class="descname">email</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Billing email address.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_first_name">
+<tt class="descname">ship_first_name</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_first_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping first name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_last_name">
+<tt class="descname">ship_last_name</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_last_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping last name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_company">
+<tt class="descname">ship_company</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_company" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping company name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_address">
+<tt class="descname">ship_address</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping address line one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_address2">
+<tt class="descname">ship_address2</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_address2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping address line two.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_city">
+<tt class="descname">ship_city</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_city" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping city.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_state">
+<tt class="descname">ship_state</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping two letter state abbreviation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_zip_code">
+<tt class="descname">ship_zip_code</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_zip_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping five digit zip code.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_country">
+<tt class="descname">ship_country</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_country" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping country use US for United States.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_phone">
+<tt class="descname">ship_phone</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_phone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping phone number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_fax">
+<tt class="descname">ship_fax</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_fax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping fax number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.ship_email">
+<tt class="descname">ship_email</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.ship_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shipping email address.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.card_number">
+<tt class="descname">card_number</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.card_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.expiration_month">
+<tt class="descname">expiration_month</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.expiration_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card expiration month number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.expiration_year">
+<tt class="descname">expiration_year</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.expiration_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card expiration year number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.security_code">
+<tt class="descname">security_code</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.security_code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit card CVV security code.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_account_number">
+<tt class="descname">check_account_number</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_account_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check account number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_routing_number">
+<tt class="descname">check_routing_number</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_routing_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check routing number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_account_type">
+<tt class="descname">check_account_type</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_account_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check account type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_holder_type">
+<tt class="descname">check_holder_type</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_holder_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check holder type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_number">
+<tt class="descname">check_number</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction._send_transaction">
+<tt class="descname">_send_transaction</tt><big>(</big><em>method_name</em><big>)</big><a class="headerlink" href="#payment_processor.Transaction._send_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a transaction method by name.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method_name</em></td>
+<td>string</td>
+<td>Name of transaction method.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Data returned from transaction method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.custom_field">
+<tt class="descname">custom_field</tt><big>(</big><em>field</em>, <em>value</em><big>)</big><a class="headerlink" href="#payment_processor.Transaction.custom_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a custom field to HTTP gateway parameters.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>field</em></td>
+<td>string</td>
+<td>Name of field.</td>
+</tr>
+<tr class="row-odd"><td><em>value</em></td>
+<td>string|number</td>
+<td>Value of field.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.charge">
+<tt class="descname">charge</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize and capture the transaction.</p>
+<p>Requires:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">amount</span>
+
+<span class="c"># For credit card</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">card_number</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">expiration_month</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">expiration_year</span>
+
+<span class="c"># For check</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">check_account_number</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">check_routing_number</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">payment_processor</span>
+
+<span class="n">gateway</span> <span class="o">=</span> <span class="n">payment_processor</span><span class="o">.</span><span class="n">AuthorizeNetAIM</span><span class="p">(</span>
+        <span class="n">login</span><span class="o">=</span><span class="s">&#39;LOGIN&#39;</span><span class="p">,</span> <span class="n">trans_key</span><span class="o">=</span><span class="s">&#39;TRANSACTION_KEY&#39;</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize and capture transaction</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">charge</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.authorize">
+<tt class="descname">authorize</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize the transaction. Transaction must be captured to complete.</p>
+<p>Requires:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">amount</span>
+
+<span class="c"># For credit card</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">card_number</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">expiration_month</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">expiration_year</span>
+
+<span class="c"># For check</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">check_account_number</span>
+<span class="n">Transaction</span><span class="o">.</span><span class="n">check_routing_number</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">payment_processor</span>
+
+<span class="n">gateway</span> <span class="o">=</span> <span class="n">payment_processor</span><span class="o">.</span><span class="n">AuthorizeNetAIM</span><span class="p">(</span>
+        <span class="n">login</span><span class="o">=</span><span class="s">&#39;LOGIN&#39;</span><span class="p">,</span> <span class="n">trans_key</span><span class="o">=</span><span class="s">&#39;TRANSACTION_KEY&#39;</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize transaction</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.capture">
+<tt class="descname">capture</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture a previously authorized transaction.</p>
+<p>Requires:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">transaction_id</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">payment_processor</span>
+
+<span class="n">gateway</span> <span class="o">=</span> <span class="n">payment_processor</span><span class="o">.</span><span class="n">AuthorizeNetAIM</span><span class="p">(</span>
+        <span class="n">login</span><span class="o">=</span><span class="s">&#39;LOGIN&#39;</span><span class="p">,</span> <span class="n">trans_key</span><span class="o">=</span><span class="s">&#39;TRANSACTION_KEY&#39;</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize transaction</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+
+<span class="c"># Capture transaction</span>
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction_id</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">capture</span><span class="p">()</span>
+
+
+<span class="c"># Capture can also be called after authorize</span>
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize then capture transaction</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">capture</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.refund">
+<tt class="descname">refund</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.refund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refund a previous transaction.</p>
+<p>Requires:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">transaction_id</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">payment_processor</span>
+
+<span class="n">gateway</span> <span class="o">=</span> <span class="n">payment_processor</span><span class="o">.</span><span class="n">AuthorizeNetAIM</span><span class="p">(</span>
+        <span class="n">login</span><span class="o">=</span><span class="s">&#39;LOGIN&#39;</span><span class="p">,</span> <span class="n">trans_key</span><span class="o">=</span><span class="s">&#39;TRANSACTION_KEY&#39;</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize and capture transaction</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">charge</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+
+<span class="c"># Refund transaction</span>
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction_id</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">refund</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.credit">
+<tt class="descname">credit</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.credit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit a previous transaction.</p>
+<p>Requires:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">transaction_id</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">payment_processor</span>
+
+<span class="n">gateway</span> <span class="o">=</span> <span class="n">payment_processor</span><span class="o">.</span><span class="n">AuthorizeNetAIM</span><span class="p">(</span>
+        <span class="n">login</span><span class="o">=</span><span class="s">&#39;LOGIN&#39;</span><span class="p">,</span> <span class="n">trans_key</span><span class="o">=</span><span class="s">&#39;TRANSACTION_KEY&#39;</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize and capture transaction</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">charge</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+
+<span class="c"># Credit transaction</span>
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction_id</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">credit</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.Transaction.void">
+<tt class="descname">void</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.void" title="Permalink to this definition">¶</a></dt>
+<dd><p>Void a previous transaction.</p>
+<p>Requires:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">transaction_id</span>
+</pre></div>
+</div>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">payment_processor</span>
+
+<span class="n">gateway</span> <span class="o">=</span> <span class="n">payment_processor</span><span class="o">.</span><span class="n">AuthorizeNetAIM</span><span class="p">(</span>
+        <span class="n">login</span><span class="o">=</span><span class="s">&#39;LOGIN&#39;</span><span class="p">,</span> <span class="n">trans_key</span><span class="o">=</span><span class="s">&#39;TRANSACTION_KEY&#39;</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span> <span class="o">=</span> <span class="mi">370000000000002</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">=</span> <span class="mi">2015</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;Order Description&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span> <span class="o">=</span> <span class="s">&#39;65.192.14.10&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mf">20.00</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">order_number</span> <span class="o">=</span> <span class="s">&#39;43DJ-7203-D897-SS97&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span> <span class="o">=</span> <span class="s">&#39;First&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span> <span class="o">=</span> <span class="s">&#39;Last&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span> <span class="o">=</span> <span class="s">&#39;1 Somewhere Ave&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span> <span class="o">=</span> <span class="s">&#39;New York&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span> <span class="o">=</span> <span class="s">&#39;NY&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span> <span class="o">=</span> <span class="s">&#39;46201&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_phone</span> <span class="o">=</span> <span class="s">&#39;111-222-3333&#39;</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">ship_email</span> <span class="o">=</span> <span class="s">&#39;user@domain.com&#39;</span>
+
+<span class="c"># Authorize and capture transaction</span>
+<span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">charge</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&#39;transaction_id:&#39;</span><span class="p">,</span> <span class="n">transaction_id</span>
+
+<span class="c"># Void transaction</span>
+<span class="n">transaction</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction_id</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">void</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.GatewayCounter">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">GatewayCounter</tt><big>(</big><em>day_amount_limit=None</em>, <em>month_amount_limit=None</em>, <em>day_trans_limit=None</em>, <em>month_trans_limit=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gateway transaction counter. Handles day/month transaction count and
+amount total.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_limit</em></td>
+<td>number</td>
+<td>Total amount of money that can be
+transferred in one day.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_limit</em></td>
+<td>number</td>
+<td>Total amount of money that can be
+transferred in one month.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_limit</em></td>
+<td>number</td>
+<td>Number of transaction that can occur
+in one day.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_limit</em></td>
+<td>number</td>
+<td>Number of transaction that can occur
+in one month.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.day_amount_limit">
+<tt class="descname">day_amount_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.day_amount_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount of money that can be transferred in one day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.month_amount_limit">
+<tt class="descname">month_amount_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.month_amount_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount of money that can be transferred in one month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.day_trans_limit">
+<tt class="descname">day_trans_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.day_trans_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of transaction that can occur in one day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.month_trans_limit">
+<tt class="descname">month_trans_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.month_trans_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of transaction that can occur in one month.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter._check_counts">
+<tt class="descname">_check_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter._check_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check counters against limits.  Changes can be positive and
+negative.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_change</em></td>
+<td>number</td>
+<td>Change in day amount count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_change</em></td>
+<td>number</td>
+<td>Change in month amount count.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_change</em></td>
+<td>number</td>
+<td>Change in day trans count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_change</em></td>
+<td>number</td>
+<td>Change in month trans count.</td>
+</tr>
+</tbody>
+</table>
+<p>Raises:</p>
+<p><tt class="xref py py-attr docutils literal"><span class="pre">LimitExceeded</span></tt> If a limit has been exceeded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter._charge">
+<tt class="descname">_charge</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter._charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override charge method to handle counters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter._capture">
+<tt class="descname">_capture</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter._capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override capture method to handle counters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter.get_counts">
+<tt class="descname">get_counts</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter.get_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method with a method to get current counts. It must
+return a tuple containing current counts.</p>
+<p>Returns:</p>
+<p>A tuple containing <cite>day_amount_count</cite>, <cite>month_amount_count</cite>,
+<cite>day_trans_count</cite>, <cite>month_trans_count</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter.set_counts">
+<tt class="descname">set_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter.set_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method with a method to set current counts. Changes
+can be positive and negative.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_change</em></td>
+<td>number</td>
+<td>Change in day amount count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_change</em></td>
+<td>number</td>
+<td>Change in month amount count.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_change</em></td>
+<td>number</td>
+<td>Change in day trans count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_change</em></td>
+<td>number</td>
+<td>Change in month trans count.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.SQLGatewayCounter">
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">SQLGatewayCounter</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counter gateway that uses sql to store counters.</p>
+<dl class="method">
+<dt id="payment_processor.SQLGatewayCounter._create_column">
+<tt class="descname">_create_column</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter._create_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create required column for gateway counters. This is called if
+gateway column doesn&#8217;t exists in database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.SQLGatewayCounter.get_counts">
+<tt class="descname">get_counts</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter.get_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get counts from sql database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.SQLGatewayCounter.set_counts">
+<tt class="descname">set_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter.set_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set counts in sql database.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="payment_processor.counted_gateway">
+<tt class="descclassname">payment_processor.</tt><tt class="descname">counted_gateway</tt><big>(</big><em>base_gateway</em>, <em>gateway_counter</em><big>)</big><a class="headerlink" href="#payment_processor.counted_gateway" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a counted gateway using given gateway and counter.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>base_gateway</em></td>
+<td>class</td>
+<td>Gateway class.</td>
+</tr>
+<tr class="row-odd"><td><em>gateway_counter</em></td>
+<td>class</td>
+<td>Counter class.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Counted gateway class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="payment_processor.connect_database">
+<tt class="descclassname">payment_processor.</tt><tt class="descname">connect_database</tt><big>(</big><em>sql_connection</em><big>)</big><a class="headerlink" href="#payment_processor.connect_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection to sql database. If table doesn&#8217;t exists on database it will
+be created.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>sql_connection</em></td>
+<td>string</td>
+<td>SQL alchemy dialect url.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Getting Started</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="counter.html"
+                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">python-payment_processor.counter</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/init.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="counter.html" title="python-payment_processor.counter"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Getting Started"
+             >previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

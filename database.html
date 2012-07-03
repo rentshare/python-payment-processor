@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>python-payment_processor.database &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="index.html" />
+    <link rel="next" title="python-payment_processor.exceptions" href="exceptions.html" />
+    <link rel="prev" title="python-payment_processor.counter" href="counter.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="exceptions.html" title="python-payment_processor.exceptions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="counter.html" title="python-payment_processor.counter"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-payment_processor.database">
+<span id="python-payment-processor-database"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">python-payment_processor.database</span></tt><a class="headerlink" href="#module-payment_processor.database" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="payment_processor.database.TABLE_NAME">
+<tt class="descclassname">payment_processor.database.</tt><tt class="descname">TABLE_NAME</tt><em class="property"> = 'payment_processor'</em><a class="headerlink" href="#payment_processor.database.TABLE_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of sql table for counters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.Session">
+<tt class="descclassname">payment_processor.database.</tt><tt class="descname">Session</tt><a class="headerlink" href="#payment_processor.database.Session" title="Permalink to this definition">¶</a></dt>
+<dd><p>SQL database session.</p>
+<p>alias of <tt class="xref py py-class docutils literal"><span class="pre">SessionMaker</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.database.Base">
+<em class="property">class </em><tt class="descclassname">payment_processor.database.</tt><tt class="descname">Base</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.database.Base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for sql tables.</p>
+<dl class="method">
+<dt id="payment_processor.database.Base.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.database.Base.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <tt class="docutils literal"><span class="pre">kwargs</span></tt>.</p>
+<p>Only keys that are present as
+attributes of the instance&#8217;s class are allowed. These could be,
+for example, any mapped columns or relationships.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.Base.__weakref__">
+<tt class="descname">__weakref__</tt><a class="headerlink" href="#payment_processor.database.Base.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="payment_processor.database.CounterTable">
+<em class="property">class </em><tt class="descclassname">payment_processor.database.</tt><tt class="descname">CounterTable</tt><big>(</big><em>provider</em><big>)</big><a class="reference internal" href="_modules/payment_processor/database.html#CounterTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.database.CounterTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>SQL counter table.</p>
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.id">
+<tt class="descname">id</tt><a class="headerlink" href="#payment_processor.database.CounterTable.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Column ID (Primary Key).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.provider">
+<tt class="descname">provider</tt><a class="headerlink" href="#payment_processor.database.CounterTable.provider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gateway provider.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.day_amount_count">
+<tt class="descname">day_amount_count</tt><a class="headerlink" href="#payment_processor.database.CounterTable.day_amount_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount count for day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.month_amount_count">
+<tt class="descname">month_amount_count</tt><a class="headerlink" href="#payment_processor.database.CounterTable.month_amount_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount count for month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.day_trans_count">
+<tt class="descname">day_trans_count</tt><a class="headerlink" href="#payment_processor.database.CounterTable.day_trans_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total number of transactions for day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.database.CounterTable.month_trans_count">
+<tt class="descname">month_trans_count</tt><a class="headerlink" href="#payment_processor.database.CounterTable.month_trans_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total number of transactions for month.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="payment_processor.database.connect_database">
+<tt class="descclassname">payment_processor.database.</tt><tt class="descname">connect_database</tt><big>(</big><em>sql_connection</em><big>)</big><a class="reference internal" href="_modules/payment_processor/database.html#connect_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.database.connect_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection to sql database. If table doesn&#8217;t exists on database it will
+be created.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>sql_connection</em></td>
+<td>string</td>
+<td>SQL alchemy dialect url.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="counter.html"
+                        title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">python-payment_processor.counter</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="exceptions.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">python-payment_processor.exceptions</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/database.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="exceptions.html" title="python-payment_processor.exceptions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="counter.html" title="python-payment_processor.counter"
+             >previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

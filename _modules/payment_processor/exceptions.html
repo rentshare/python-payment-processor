@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>payment_processor.exceptions &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../../index.html" />
+    <link rel="up" title="payment_processor" href="../payment_processor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" accesskey="U">payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for payment_processor.exceptions</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="TransactionError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionError">[docs]</a><span class="k">class</span> <span class="nc">TransactionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execption is related to a transaction error.&quot;&quot;&quot;</span>
+</div>
+<div class="viewcode-block" id="TransactionDeclined"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionDeclined">[docs]</a><span class="k">class</span> <span class="nc">TransactionDeclined</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The transaction was declined.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="TransactionHeld"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionHeld">[docs]</a><span class="k">class</span> <span class="nc">TransactionHeld</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transaction was sent successfully but held for review.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidCardNumber"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidCardNumber">[docs]</a><span class="k">class</span> <span class="nc">InvalidCardNumber</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card number is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidCardExpirationDate"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidCardExpirationDate">[docs]</a><span class="k">class</span> <span class="nc">InvalidCardExpirationDate</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card expiration date is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidCardSecurityCode"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidCardSecurityCode">[docs]</a><span class="k">class</span> <span class="nc">InvalidCardSecurityCode</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card security code is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InsufficientFunds"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InsufficientFunds">[docs]</a><span class="k">class</span> <span class="nc">InsufficientFunds</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card has insufficient funds.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="ExpiredCard"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.ExpiredCard">[docs]</a><span class="k">class</span> <span class="nc">ExpiredCard</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card is expired.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="DuplicateTransaction"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.DuplicateTransaction">[docs]</a><span class="k">class</span> <span class="nc">DuplicateTransaction</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The transaction was already processed.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidBillingAddress"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidBillingAddress">[docs]</a><span class="k">class</span> <span class="nc">InvalidBillingAddress</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card billing address doesn&#39;t match or is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidBillingZipcode"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidBillingZipcode">[docs]</a><span class="k">class</span> <span class="nc">InvalidBillingZipcode</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Credit card billing zip code doesn&#39;t match or is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidRoutingNumber"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidRoutingNumber">[docs]</a><span class="k">class</span> <span class="nc">InvalidRoutingNumber</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check routing number is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="InvalidAccountNumber"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidAccountNumber">[docs]</a><span class="k">class</span> <span class="nc">InvalidAccountNumber</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check account number is invalid.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="GatewayError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.GatewayError">[docs]</a><span class="k">class</span> <span class="nc">GatewayError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execption is related to a gateway error.&quot;&quot;&quot;</span>
+</div>
+<div class="viewcode-block" id="TransactionFailed"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionFailed">[docs]</a><span class="k">class</span> <span class="nc">TransactionFailed</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gateway failed to process transaction.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="ConnectionError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.ConnectionError">[docs]</a><span class="k">class</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unable to connect to gateway.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="LimitExceeded"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.LimitExceeded">[docs]</a><span class="k">class</span> <span class="nc">LimitExceeded</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transaction limit for gateway has been exceeded.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="CounterError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.CounterError">[docs]</a><span class="k">class</span> <span class="nc">CounterError</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An error occurred when handling counters.&quot;&quot;&quot;</span>
+
+</div>
+<div class="viewcode-block" id="SQLEngineNotAviable"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.SQLEngineNotAviable">[docs]</a><span class="k">class</span> <span class="nc">SQLEngineNotAviable</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Optional SQL engine is not aviable.&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../payment_processor.html" >payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>python-payment_processor.counter &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="index.html" />
+    <link rel="next" title="python-payment_processor.database" href="database.html" />
+    <link rel="prev" title="python-payment_processor" href="init.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="python-payment_processor.database"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="init.html" title="python-payment_processor"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-payment_processor.counter">
+<span id="python-payment-processor-counter"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">python-payment_processor.counter</span></tt><a class="headerlink" href="#module-payment_processor.counter" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="payment_processor.counter.GatewayCounter">
+<em class="property">class </em><tt class="descclassname">payment_processor.counter.</tt><tt class="descname">GatewayCounter</tt><big>(</big><em>day_amount_limit=None</em>, <em>month_amount_limit=None</em>, <em>day_trans_limit=None</em>, <em>month_trans_limit=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#GatewayCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.GatewayCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gateway transaction counter. Handles day/month transaction count and
+amount total.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_limit</em></td>
+<td>number</td>
+<td>Total amount of money that can be
+transferred in one day.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_limit</em></td>
+<td>number</td>
+<td>Total amount of money that can be
+transferred in one month.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_limit</em></td>
+<td>number</td>
+<td>Number of transaction that can occur
+in one day.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_limit</em></td>
+<td>number</td>
+<td>Number of transaction that can occur
+in one month.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="payment_processor.counter.GatewayCounter.day_amount_limit">
+<tt class="descname">day_amount_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.counter.GatewayCounter.day_amount_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount of money that can be transferred in one day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.counter.GatewayCounter.month_amount_limit">
+<tt class="descname">month_amount_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.counter.GatewayCounter.month_amount_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount of money that can be transferred in one month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.counter.GatewayCounter.day_trans_limit">
+<tt class="descname">day_trans_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.counter.GatewayCounter.day_trans_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of transaction that can occur in one day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.counter.GatewayCounter.month_trans_limit">
+<tt class="descname">month_trans_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.counter.GatewayCounter.month_trans_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of transaction that can occur in one month.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.counter.GatewayCounter._check_counts">
+<tt class="descname">_check_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#GatewayCounter._check_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.GatewayCounter._check_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check counters against limits.  Changes can be positive and
+negative.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_change</em></td>
+<td>number</td>
+<td>Change in day amount count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_change</em></td>
+<td>number</td>
+<td>Change in month amount count.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_change</em></td>
+<td>number</td>
+<td>Change in day trans count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_change</em></td>
+<td>number</td>
+<td>Change in month trans count.</td>
+</tr>
+</tbody>
+</table>
+<p>Raises:</p>
+<p><tt class="xref py py-attr docutils literal"><span class="pre">LimitExceeded</span></tt> If a limit has been exceeded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.counter.GatewayCounter._charge">
+<tt class="descname">_charge</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#GatewayCounter._charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.GatewayCounter._charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override charge method to handle counters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.counter.GatewayCounter._capture">
+<tt class="descname">_capture</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#GatewayCounter._capture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.GatewayCounter._capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override capture method to handle counters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.counter.GatewayCounter.get_counts">
+<tt class="descname">get_counts</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#GatewayCounter.get_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.GatewayCounter.get_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method with a method to get current counts. It must
+return a tuple containing current counts.</p>
+<p>Returns:</p>
+<p>A tuple containing <cite>day_amount_count</cite>, <cite>month_amount_count</cite>,
+<cite>day_trans_count</cite>, <cite>month_trans_count</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.counter.GatewayCounter.set_counts">
+<tt class="descname">set_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#GatewayCounter.set_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.GatewayCounter.set_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method with a method to set current counts. Changes
+can be positive and negative.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_change</em></td>
+<td>number</td>
+<td>Change in day amount count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_change</em></td>
+<td>number</td>
+<td>Change in month amount count.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_change</em></td>
+<td>number</td>
+<td>Change in day trans count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_change</em></td>
+<td>number</td>
+<td>Change in month trans count.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="payment_processor.counter.counted_gateway">
+<tt class="descclassname">payment_processor.counter.</tt><tt class="descname">counted_gateway</tt><big>(</big><em>base_gateway</em>, <em>gateway_counter</em><big>)</big><a class="reference internal" href="_modules/payment_processor/counter.html#counted_gateway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.counter.counted_gateway" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a counted gateway using given gateway and counter.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>base_gateway</em></td>
+<td>class</td>
+<td>Gateway class.</td>
+</tr>
+<tr class="row-odd"><td><em>gateway_counter</em></td>
+<td>class</td>
+<td>Counter class.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Counted gateway class.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="init.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">python-payment_processor</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="database.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">python-payment_processor.database</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/counter.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="database.html" title="python-payment_processor.database"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="init.html" title="python-payment_processor"
+             >previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -566,7 +566,7 @@ class Transaction:
 
 class MultiTransaction(Transaction):
     """Stores transaction information. Subclass of Transaction used to handle
-    multiple gateways
+    multiple gateways.
 
     Arguments:
 
@@ -578,7 +578,8 @@ class MultiTransaction(Transaction):
     """
 
     def _send_transaction(self, method_name):
-        """Send a transaction method by name.
+        """Send a transaction method by name. If a gateway fails the next
+        aviable gateway will be tried.
 
         Arguments:
 

@@ -1411,22 +1411,255 @@ that one gateway fails the next one will be used.</p>
 <dl class="class">
 <dt id="payment_processor.GatewayCounter">
 <em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">GatewayCounter</tt><big>(</big><em>day_amount_limit=None</em>, <em>month_amount_limit=None</em>, <em>day_trans_limit=None</em>, <em>month_trans_limit=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gateway transaction counter. Handles day/month transaction count and
+amount total.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_limit</em></td>
+<td>number</td>
+<td>Total amount of money that can be
+transferred in one day.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_limit</em></td>
+<td>number</td>
+<td>Total amount of money that can be
+transferred in one month.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_limit</em></td>
+<td>number</td>
+<td>Number of transaction that can occur
+in one day.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_limit</em></td>
+<td>number</td>
+<td>Number of transaction that can occur
+in one month.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.day_amount_limit">
+<tt class="descname">day_amount_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.day_amount_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount of money that can be transferred in one day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.month_amount_limit">
+<tt class="descname">month_amount_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.month_amount_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total amount of money that can be transferred in one month.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.day_trans_limit">
+<tt class="descname">day_trans_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.day_trans_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of transaction that can occur in one day.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.GatewayCounter.month_trans_limit">
+<tt class="descname">month_trans_limit</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.GatewayCounter.month_trans_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of transaction that can occur in one month.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter._check_counts">
+<tt class="descname">_check_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter._check_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check counters against limits.  Changes can be positive and
+negative.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_change</em></td>
+<td>number</td>
+<td>Change in day amount count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_change</em></td>
+<td>number</td>
+<td>Change in month amount count.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_change</em></td>
+<td>number</td>
+<td>Change in day trans count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_change</em></td>
+<td>number</td>
+<td>Change in month trans count.</td>
+</tr>
+</tbody>
+</table>
+<p>Raises:</p>
+<p><tt class="xref py py-attr docutils literal"><span class="pre">LimitExceeded</span></tt> If a limit has been exceeded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter._charge">
+<tt class="descname">_charge</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter._charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override charge method to handle counters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter._capture">
+<tt class="descname">_capture</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter._capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override capture method to handle counters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter.get_counts">
+<tt class="descname">get_counts</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter.get_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method with a method to get current counts. It must
+return a tuple containing current counts.</p>
+<p>Returns:</p>
+<p>A tuple containing <cite>day_amount_count</cite>, <cite>month_amount_count</cite>,
+<cite>day_trans_count</cite>, <cite>month_trans_count</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.GatewayCounter.set_counts">
+<tt class="descname">set_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="headerlink" href="#payment_processor.GatewayCounter.set_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this method with a method to set current counts. Changes
+can be positive and negative.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>day_amount_change</em></td>
+<td>number</td>
+<td>Change in day amount count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_amount_change</em></td>
+<td>number</td>
+<td>Change in month amount count.</td>
+</tr>
+<tr class="row-even"><td><em>day_trans_change</em></td>
+<td>number</td>
+<td>Change in day trans count.</td>
+</tr>
+<tr class="row-odd"><td><em>month_trans_change</em></td>
+<td>number</td>
+<td>Change in month trans count.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="payment_processor.SQLGatewayCounter">
 <em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">SQLGatewayCounter</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Counter gateway that uses sql to store counters.</p>
+<dl class="method">
+<dt id="payment_processor.SQLGatewayCounter._create_column">
+<tt class="descname">_create_column</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter._create_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create required column for gateway counters. This is called if
+gateway column doesn&#8217;t exists in database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.SQLGatewayCounter.get_counts">
+<tt class="descname">get_counts</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter.get_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get counts from sql database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.SQLGatewayCounter.set_counts">
+<tt class="descname">set_counts</tt><big>(</big><em>day_amount_change</em>, <em>month_amount_change</em>, <em>day_trans_change</em>, <em>month_trans_change</em><big>)</big><a class="headerlink" href="#payment_processor.SQLGatewayCounter.set_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set counts in sql database.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="function">
 <dt id="payment_processor.counted_gateway">
 <tt class="descclassname">payment_processor.</tt><tt class="descname">counted_gateway</tt><big>(</big><em>base_gateway</em>, <em>gateway_counter</em><big>)</big><a class="headerlink" href="#payment_processor.counted_gateway" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates a counted gateway using given gateway and counter.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>base_gateway</em></td>
+<td>class</td>
+<td>Gateway class.</td>
+</tr>
+<tr class="row-odd"><td><em>gateway_counter</em></td>
+<td>class</td>
+<td>Counter class.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Counted gateway class.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="payment_processor.connect_database">
 <tt class="descclassname">payment_processor.</tt><tt class="descname">connect_database</tt><big>(</big><em>sql_connection</em><big>)</big><a class="headerlink" href="#payment_processor.connect_database" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Connection to sql database. If table doesn&#8217;t exists on database it will
+be created.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>sql_connection</em></td>
+<td>string</td>
+<td>SQL alchemy dialect url.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 

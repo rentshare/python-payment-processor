@@ -1,5 +1,5 @@
-:mod:`python-payment_processor`
-===============================
+:mod:`payment_processor`
+========================
 
 .. autoclass:: payment_processor.TransactionError
     :members:

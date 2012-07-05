@@ -1,5 +1,5 @@
-:mod:`python-payment_processor.counter`
-=======================================
+:mod:`payment_processor.counter`
+================================
 
 .. automodule:: payment_processor.counter
     :members:

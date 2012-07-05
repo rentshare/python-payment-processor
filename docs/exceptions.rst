@@ -1,5 +1,5 @@
-:mod:`python-payment_processor.exceptions`
-==========================================
+:mod:`payment_processor.exceptions`
+===================================
 
 .. automodule:: payment_processor.exceptions
     :members:

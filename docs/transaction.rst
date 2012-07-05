@@ -1,5 +1,5 @@
-:mod:`python-payment_processor.transaction`
-===========================================
+:mod:`payment_processor.transaction`
+====================================
 
 .. automodule:: payment_processor.transaction
     :members:

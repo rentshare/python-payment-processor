@@ -3,8 +3,24 @@ import os
 
 payment_processor.connect_database('sqlite:///._payment_processor.sqlite')
 
-# Get login and trans_key from ~/.authorizeNet
-with open(os.path.expanduser('~/.authorizeNet')) as file:
+
+# Get login and trans_key from file
+with open(os.path.expanduser('~/.passwords/zipmark')) as file:
+    app_id = file.readline().rstrip('\n')
+    app_secret = file.readline().rstrip('\n')
+
+gateway = payment_processor.Zipmark(app_id, app_secret, True)
+
+transaction = gateway.new_transaction()
+transaction.customer_id = 'abc123'
+transaction.email = 'test183@example.com'
+transaction.amount = 50.00
+
+# Example zipmark credit
+transaction = transaction.credit()
+
+# Get login and trans_key from file
+with open(os.path.expanduser('~/.passwords/authorizeNet')) as file:
     login = file.readline().rstrip('\n')
     trans_key = file.readline().rstrip('\n')
 

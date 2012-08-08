@@ -1,5 +1,6 @@
 from payment_processor.exceptions import *
 from payment_processor.gateway import BaseGateway
+import requests
 
 class AuthorizeNetAIM(BaseGateway):
     """Authorize.Net AIM gateway."""
@@ -17,7 +18,7 @@ class AuthorizeNetAIM(BaseGateway):
         self._delim_char = '|'
 
         # Set url
-        if sandbox == True:
+        if sandbox:
             self._url = 'https://test.authorize.net/gateway/transact.dll'
         else:
             self._url = 'https://secure.authorize.net/gateway/transact.dll'
@@ -64,14 +65,23 @@ class AuthorizeNetAIM(BaseGateway):
         params['x_amount'] = transaction.amount
 
         if transaction.check_account_number != None:
+            if transaction.check_account_type == transaction.PERSONAL_CHECKING:
+                params['x_echeck_type'] = 'CHECKING'
+            if transaction.check_account_type == transaction.BUSINESS_CHECKING:
+                params['x_echeck_type'] = 'BUSINESSCHECKING'
+            if transaction.check_account_type == transaction.PERSONAL_SAVINGS:
+                params['x_echeck_type'] = 'SAVINGS'
+            if transaction.check_account_type == transaction.BUSINESS_SAVINGS:
+                params['x_echeck_type'] = 'SAVINGS'
+
             # Echeck Specific
             params['x_method'] = 'ECHECK'
             params['x_bank_aba_code'] = transaction.check_routing_number
             params['x_bank_acct_num'] = transaction.check_account_number
-            params['x_bank_name'] = None # TODO
-            params['x_bank_acct_name'] = None # TODO
-            params['x_echeck_type'] = None # TODO
+            params['x_bank_name'] = transaction.check_bank_name
+            params['x_bank_acct_name'] = transaction.check_account_name
             params['x_bank_check_number'] = transaction.check_number
+            params['x_echeck_type'] = transaction.check_transaction_type
 
         else:
             # Credit Card Specific
@@ -123,6 +133,28 @@ class AuthorizeNetAIM(BaseGateway):
                 del params[key]
 
         return params
+
+    def _send_request(self, transaction, params):
+        """Send request to gateway.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+            "*params*", "dict", "Dictonary of HTTP parameters to send."
+
+        Returns:
+
+        Response object.
+        """
+        # Add custom fields to params
+        params = dict(params.items() + transaction._custom_fields.items())
+
+        return requests.get(self._url, params=params)
 
     def _handle_response(self, transaction, response):
         """Handles HTTP response from gateway.

@@ -2,6 +2,7 @@ from payment_processor.exceptions import *
 from payment_processor.gateway import MultiGateway
 from payment_processor.gateways.authorize_net import AuthorizeNetAIM
 from payment_processor.gateways.national_processing import NationalProcessing
+from payment_processor.gateways.zipmark import Zipmark
 from payment_processor.transaction import Transaction
 from payment_processor.counter import GatewayCounter, counted_gateway
 

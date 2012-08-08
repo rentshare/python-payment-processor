@@ -12,6 +12,16 @@ class Transaction:
 
         "*gateway*", "class", "Gateway instance."
     """
+    PERSONAL_CHECKING = 'personal_checking'
+    BUSINESS_CHECKING = 'business_checking'
+    PERSONAL_SAVINGS = 'personal_savings'
+    BUSINESS_SAVINGS = 'business_savings'
+
+    PPD = 'PPD'
+    WEB = 'WEB'
+    TEL = 'TEL'
+    CCD = 'CCD'
+
     _gateway = None
     _custom_fields = {}
 
@@ -36,6 +46,8 @@ class Transaction:
     customer_ip = None
     """Customer IP address."""
 
+    customer_id = None
+    """Customer ID."""
     first_name = None
     """Billing first name."""
     last_name = None
@@ -101,10 +113,14 @@ class Transaction:
     """Check routing number."""
     check_account_type = None
     """Check account type."""
-    check_holder_type = None
-    """Check holder type."""
+    check_bank_name = None
+    """Check bank account name."""
+    check_account_name = None
+    """Check account customers name."""
     check_number = None
     """Check number."""
+    check_transaction_type = None
+    """Check transaction type."""
 
     def __init__(self, gateway):
         self._gateway = gateway
@@ -443,7 +459,7 @@ class Transaction:
             transaction.refund()
         """
         # Check for missing variables
-        if transaction.transaction_id == None:
+        if self.transaction_id == None:
             raise TypeError('Missing required field ' +
                         'transaction.transaction_id.')
 
@@ -451,10 +467,6 @@ class Transaction:
 
     def credit(self):
         """Credit a previous transaction.
-
-        Requires::
-
-            Transaction.transaction_id
 
         Returns:
 
@@ -500,11 +512,6 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.credit()
         """
-        # Check for missing variables
-        if transaction.transaction_id == None:
-            raise TypeError('Missing required field ' +
-                        'transaction.transaction_id.')
-
         return self._send_transaction('_credit')
 
     def void(self):
@@ -559,7 +566,7 @@ class Transaction:
             transaction.void()
         """
         # Check for missing variables
-        if transaction.transaction_id == None:
+        if self.transaction_id == None:
             raise TypeError('Missing required field ' +
                         'transaction.transaction_id.')
 

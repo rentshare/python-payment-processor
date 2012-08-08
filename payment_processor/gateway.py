@@ -22,23 +22,26 @@ class BaseGateway:
             "*params*", "dict", "Dictonary of HTTP parameters to send."
 
         Returns:
-            Response from gateway.
-        """
-        # Add custom fields to params
-        params = dict(params.items() + transaction._custom_fields.items())
 
+        Response from gateway.
+        """
         # Send request
         try:
-            response = requests.get(self._url, params=params)
+            response = self._send_request(transaction, params)
         except requests.exceptions.ConnectionError:
             raise ConnectionError('Failed to connect to %r.' % self._url)
 
         # Check status code
-        if response.status_code != requests.codes.ok:
+        if response.status_code < 200 or response.status_code > 202:
             raise ConnectionError(('Gateway returned unsuccessful ' +
                 'HTTP status code %r.') % (response.status_code))
 
         return self._handle_response(transaction, response.text)
+
+    def _send_request(self):
+        """Override with method to send request to gateway. Must return
+        response object."""
+        raise TypeError('Send request method not implemented for gatewy.')
 
     def new_transaction(self):
         """Create a new transaction.

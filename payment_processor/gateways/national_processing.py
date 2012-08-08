@@ -1,6 +1,7 @@
 from payment_processor.exceptions import *
 from payment_processor.gateway import BaseGateway
 import urlparse
+import requests
 
 class NationalProcessing(BaseGateway):
     """National Processing gateway."""
@@ -11,8 +12,8 @@ class NationalProcessing(BaseGateway):
 
         self._username = username
         self._password = password
-        self._url = ('https://secure.nationalprocessinggateway.com/' +
-                     'api/transact.php')
+        self._url = 'https://secure.nationalprocessinggateway.com/' + \
+                     'api/transact.php'
 
     def _get_params(self, transaction):
         """Get the HTTP parameters for the gateway using the transaction.
@@ -41,13 +42,25 @@ class NationalProcessing(BaseGateway):
         params['sec_code'] = 'WEB'
 
         if transaction.check_account_number != None:
+            if transaction.check_account_type == transaction.PERSONAL_CHECKING:
+                params['account_holder_type'] = 'personal'
+                params['account_type'] = 'checking'
+            if transaction.check_account_type == transaction.BUSINESS_CHECKING:
+                params['account_holder_type'] = 'business'
+                params['account_type'] = 'checking'
+            if transaction.check_account_type == transaction.PERSONAL_SAVINGS:
+                params['account_holder_type'] = 'personal'
+                params['account_type'] = 'savings'
+            if transaction.check_account_type == transaction.BUSINESS_SAVINGS:
+                params['account_holder_type'] = 'business'
+                params['account_type'] = 'savings'
+
             # Echeck Specific
-            params['x_method'] = 'ECHECK'
+            params['payment'] = 'check'
             params['checkaba'] = transaction.check_routing_number
             params['checkaccount'] = transaction.check_account_number
-            params['checkname'] = None # TODO
-            params['account_holder_type'] = None # TODO
-            params['account_type'] = None # TODO
+            params['checkname'] = transaction.check_account_name
+            params['sec_code'] = transaction.check_transaction_type
 
         else:
             # Credit Card Specific
@@ -95,6 +108,28 @@ class NationalProcessing(BaseGateway):
         params['shipping_email'] = transaction.email
 
         return params
+
+    def _send_request(self, transaction, params):
+        """Send request to gateway.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+            "*params*", "dict", "Dictonary of HTTP parameters to send."
+
+        Returns:
+
+        Response object.
+        """
+        # Add custom fields to params
+        params = dict(params.items() + transaction._custom_fields.items())
+
+        return requests.get(self._url, params=params)
 
     def _handle_response(self, transaction, response):
         """Handles HTTP response from gateway.

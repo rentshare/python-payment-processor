@@ -102,6 +102,21 @@ class Zipmark(BaseGateway):
         return response['links'][0]['href']
 
     def _credit(self, transaction):
+        """Credit a previous transaction.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+
+        Returns:
+
+        Transaction link.
+        """
         # Get params
         params = self._get_params(transaction)
         params = {'disbursement': params}

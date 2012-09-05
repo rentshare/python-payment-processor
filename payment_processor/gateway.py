@@ -1,6 +1,7 @@
 from payment_processor.exceptions import *
-from payment_processor.transaction import Transaction, MultiTransaction
+from payment_processor.transaction import Transaction
 import requests
+import logging
 
 class BaseGateway:
     """Base gateway class."""
@@ -43,6 +44,29 @@ class BaseGateway:
         response object."""
         raise TypeError('Send request method not implemented for gatewy.')
 
+    def _send_transaction(self, transaction, method_name):
+        """Send a transaction method by name.
+
+        Arguments
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*method_name*", "string", "Name of transaction method."
+
+        Returns:
+
+        Data returned from transaction method.
+        """
+        # Check limit
+        if (transaction.amount > self._trans_amount_limit and
+                self._trans_amount_limit != None):
+            raise LimitExceeded('Transaction limit exceeded.')
+
+        method = getattr(self, method_name)
+        return method(transaction)
+
     def new_transaction(self):
         """Create a new transaction.
 
@@ -72,12 +96,48 @@ class MultiGateway(BaseGateway):
         for arg in args:
             self._gateways.append(arg)
 
-    def new_transaction(self):
-        """Create a new transaction.
+    def _send_transaction(self, transaction, method_name):
+        """Send a transaction method by name. If a gateway fails the next
+        aviable gateway will be tried.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*method_name*", "string", "Name of transaction method."
 
         Returns:
 
-        Instance of :attr:`Transaction` that is connected to the gateways.
+        Data returned from transaction method.
         """
-        transaction = MultiTransaction(self._gateways)
-        return transaction
+        last_exception = None
+
+        for gateway in self._gateways:
+            # If an error occurred on previous gateway log error
+            if last_exception != None:
+                logging.warning('Recvied gateway error trying next ' +
+                    'gateway. Exception: %r', last_exception)
+
+            try:
+                # Check limit
+                if (transaction.amount > gateway._trans_amount_limit and
+                        gateway._trans_amount_limit != None):
+                    raise LimitExceeded('Transaction limit exceeded.')
+
+                method = getattr(gateway, method_name)
+                return method(transaction)
+
+            except Exception, exception:
+                if isinstance(exception, GatewayError) == True:
+                    # Gateway error try next gateway
+                    last_exception = exception
+                else:
+                    raise
+
+        # All gateways failed raise last exception
+        if last_exception != None:
+            raise last_exception
+        else:
+            raise TypeError('Gateway list is empty.')

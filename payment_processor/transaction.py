@@ -125,29 +125,6 @@ class Transaction:
     def __init__(self, gateway):
         self._gateway = gateway
 
-    def _send_transaction(self, method_name):
-        """Send a transaction method by name.
-
-        Arguments:
-
-        .. csv-table::
-            :header: "argument", "type", "value"
-            :widths: 7, 7, 40
-
-            "*method_name*", "string", "Name of transaction method."
-
-        Returns:
-
-        Data returned from transaction method.
-        """
-        # Check limit
-        if (self.amount > self._gateway._trans_amount_limit and
-                self._gateway._trans_amount_limit != None):
-            raise LimitExceeded('Transaction limit exceeded.')
-
-        method = getattr(self._gateway, method_name)
-        return method(self)
-
     def custom_field(self, field, value):
         """Add a custom field to HTTP gateway parameters.
 
@@ -238,7 +215,7 @@ class Transaction:
         else:
             raise TypeError('Missing required field transaction.card_number.')
 
-        return self._send_transaction('_charge')
+        return self._gateway._send_transaction(self, '_charge')
 
     def authorize(self):
         """Authorize the transaction. Transaction must be captured to complete.
@@ -316,7 +293,7 @@ class Transaction:
         else:
             raise TypeError('Missing required field transaction.card_number.')
 
-        return self._send_transaction('_authorize')
+        return self._gateway._send_transaction(self, '_authorize')
 
     def capture(self):
         """Capture a previously authorized transaction.
@@ -405,7 +382,7 @@ class Transaction:
             raise TypeError('Missing required field ' +
                         'transaction.transaction_id.')
 
-        return self._send_transaction('_capture')
+        return self._gateway._send_transaction(self, '_capture')
 
     def refund(self):
         """Refund a previous transaction.
@@ -463,7 +440,7 @@ class Transaction:
             raise TypeError('Missing required field ' +
                         'transaction.transaction_id.')
 
-        return self._send_transaction('_refund')
+        return self._gateway._send_transaction(self, '_refund')
 
     def credit(self):
         """Credit a previous transaction.
@@ -512,7 +489,7 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.credit()
         """
-        return self._send_transaction('_credit')
+        return self._gateway._send_transaction(self, '_credit')
 
     def void(self):
         """Void a previous transaction.
@@ -570,65 +547,4 @@ class Transaction:
             raise TypeError('Missing required field ' +
                         'transaction.transaction_id.')
 
-        return self._send_transaction('_void')
-
-
-class MultiTransaction(Transaction):
-    """Stores transaction information. Subclass of Transaction used to handle
-    multiple gateways.
-
-    Arguments:
-
-    .. csv-table::
-        :header: "argument", "type", "value"
-        :widths: 7, 7, 40
-
-        "*gateway*", "class", "Gateway instance."
-    """
-
-    def _send_transaction(self, method_name):
-        """Send a transaction method by name. If a gateway fails the next
-        aviable gateway will be tried.
-
-        Arguments:
-
-        .. csv-table::
-            :header: "argument", "type", "value"
-            :widths: 7, 7, 40
-
-            "*method_name*", "string", "Name of transaction method."
-
-        Returns:
-
-        Data returned from transaction method.
-        """
-        last_exception = None
-
-        for gateway in self._gateway:
-            # If an error occurred on previous gateway log error
-            if last_exception != None:
-                logging.warning('Recvied gateway error trying next ' +
-                    'gateway. Exception: %r', last_exception)
-
-            try:
-                # Check limit
-                if (self.amount > gateway._trans_amount_limit and
-                        gateway._trans_amount_limit != None):
-                    raise LimitExceeded('Transaction limit exceeded.')
-
-                method = getattr(gateway, method_name)
-                return method(self)
-
-            except Exception, exception:
-                if isinstance(exception, GatewayError) == True:
-                    # Gateway error try next gateway
-                    last_exception = exception
-                else:
-                    raise
-
-        # All gateways failed raise last exception
-        if last_exception != None:
-            raise last_exception
-        else:
-            raise TypeError('Gateway list is empty.')
-
+        return self._gateway._send_transaction(self, '_void')

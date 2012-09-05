@@ -5,6 +5,6 @@ setup(name='payment_processor',
       description='A simple payment gateway api',
       author='Rentshare Inc',
       url='http://github.com/rentshare/python-payment',
-      packages=['payment_processor'],
+      packages=['payment_processor','payment_processor.gateways'],
       install_requires=['requests'],
      )

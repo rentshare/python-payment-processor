@@ -44,6 +44,49 @@ class BaseGateway:
         response object."""
         raise TypeError('Send request method not implemented for gatewy.')
 
+    def _payment_method_validator( self, transaction):
+        # Check for missing variables
+        if transaction.amount == None:
+            raise TypeError('Missing required field transaction.amount.')
+
+        if transaction.card_number != None:
+            if transaction.expiration_month == None:
+                raise TypeError('Missing required field ' +
+                        'transaction.expiration_month.')
+
+            if transaction.expiration_year == None:
+                raise TypeError('Missing required field ' +
+                        'transaction.expiration_year.')
+
+        elif transaction.check_account_number != None:
+            if transaction.check_routing_number == None:
+                raise TypeError('Missing required field ' +
+                        'transaction.check_routing_number.')
+
+        else:
+            raise TypeError('Missing required field transaction.card_number.')
+
+    def _transaction_id_validator(self, transaction):
+        # Check for missing variables
+        if transaction.transaction_id == None:
+            raise TypeError('Missing required field ' +
+                        'transaction.transaction_id.')
+
+    def _charge_validator(self, transaction):
+        self._payment_method_validator( transaction )
+
+    def _authorize_validator(self, transaction):
+        self._payment_method_validator( transaction )
+
+    def _capture_validator(self, transaction):
+        self._transaction_id_validator( transaction )
+
+    def _refund_validator(self, transaction):
+        self._transaction_id_validator( transaction )
+
+    def _void_validator(self, transaction):
+        self._transaction_id_validator( transaction )
+
     def _send_transaction(self, transaction, method_name):
         """Send a transaction method by name.
 
@@ -59,6 +102,10 @@ class BaseGateway:
 
         Data returned from transaction method.
         """
+        # Check transaction for valid variables
+        if hasattr( self, method_name + '_validator' ):
+            getattr( self, method_name + '_validator' )( transaction )
+
         # Check limit
         if (transaction.amount > self._trans_amount_limit and
                 self._trans_amount_limit != None):

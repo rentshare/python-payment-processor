@@ -194,27 +194,6 @@ class Transaction:
             transaction_id = transaction.charge()
             print 'transaction_id:', transaction_id
         """
-        # Check for missing variables
-        if self.amount == None:
-            raise TypeError('Missing required field transaction.amount.')
-
-        if self.card_number != None:
-            if self.expiration_month == None:
-                raise TypeError('Missing required field ' +
-                        'transaction.expiration_month.')
-
-            if self.expiration_year == None:
-                raise TypeError('Missing required field ' +
-                        'transaction.expiration_year.')
-
-        elif self.check_account_number != None:
-            if self.check_routing_number == None:
-                raise TypeError('Missing required field ' +
-                        'transaction.check_routing_number.')
-
-        else:
-            raise TypeError('Missing required field transaction.card_number.')
-
         return self._gateway._send_transaction(self, '_charge')
 
     def authorize(self):
@@ -272,26 +251,6 @@ class Transaction:
             transaction_id = transaction.authorize()
             print 'transaction_id:', transaction_id
         """
-        # Check for missing variables
-        if self.amount == None:
-            raise TypeError('Missing required field transaction.amount.')
-
-        if self.card_number != None:
-            if self.expiration_month == None:
-                raise TypeError('Missing required field ' +
-                        'transaction.expiration_month.')
-
-            if self.expiration_year == None:
-                raise TypeError('Missing required field ' +
-                        'transaction.expiration_year.')
-
-        elif self.check_account_number != None:
-            if self.check_routing_number == None:
-                raise TypeError('Missing required field ' +
-                        'transaction.check_routing_number.')
-
-        else:
-            raise TypeError('Missing required field transaction.card_number.')
 
         return self._gateway._send_transaction(self, '_authorize')
 
@@ -377,11 +336,6 @@ class Transaction:
             transaction_id = transaction.capture()
             print 'transaction_id:', transaction_id
         """
-        # Check for missing variables
-        if self.transaction_id == None:
-            raise TypeError('Missing required field ' +
-                        'transaction.transaction_id.')
-
         return self._gateway._send_transaction(self, '_capture')
 
     def refund(self):
@@ -435,11 +389,6 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.refund()
         """
-        # Check for missing variables
-        if self.transaction_id == None:
-            raise TypeError('Missing required field ' +
-                        'transaction.transaction_id.')
-
         return self._gateway._send_transaction(self, '_refund')
 
     def credit(self):
@@ -542,9 +491,4 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.void()
         """
-        # Check for missing variables
-        if self.transaction_id == None:
-            raise TypeError('Missing required field ' +
-                        'transaction.transaction_id.')
-
         return self._gateway._send_transaction(self, '_void')

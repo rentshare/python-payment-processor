@@ -39,7 +39,7 @@ class CounterTable(Base):
 
     id = Column(Integer, primary_key=True)
     """Column ID (Primary Key)."""
-    provider = Column(String)
+    provider = Column(String(64))
     """Gateway provider."""
     day_amount_count = Column(Float)
     """Total amount count for day."""

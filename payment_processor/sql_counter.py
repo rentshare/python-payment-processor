@@ -13,7 +13,7 @@ class SQLGatewayCounter(GatewayCounter):
         # If gateway column doesnt exists create it
         session = Session()
         gateway_column = session.query(CounterTable).filter(
-                        CounterTable.provider == self._provider).first()
+                        CounterTable.provider == self.provider).first()
         if gateway_column == None:
             self._create_column()
 
@@ -24,7 +24,7 @@ class SQLGatewayCounter(GatewayCounter):
         session = Session()
 
         # Create authorize net column
-        authorize_net = CounterTable(self._provider)
+        authorize_net = CounterTable(self.provider)
         authorize_net.day_amount_count = 0.0
         authorize_net.month_amount_count = 0.0
         authorize_net.day_trans_count = 0
@@ -45,7 +45,7 @@ class SQLGatewayCounter(GatewayCounter):
         # Get gateway conuter data
         try:
             gateway_data = session.query(CounterTable).filter(
-                            CounterTable.provider == self._provider).first()
+                            CounterTable.provider == self.provider).first()
         except SQLAlchemyError, exception:
             raise CounterError(exception)
 
@@ -78,7 +78,7 @@ class SQLGatewayCounter(GatewayCounter):
 
         # Get gateway conuter data
         gateway_data = session.query(CounterTable).filter(
-                        CounterTable.provider == self._provider).first()
+                        CounterTable.provider == self.provider).first()
 
         # Increase counts
         gateway_data.day_amount_count += day_amount_change

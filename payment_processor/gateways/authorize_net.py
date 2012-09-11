@@ -5,7 +5,7 @@ import requests
 class AuthorizeNetAIM(BaseGateway):
     """Authorize.Net AIM gateway."""
 
-    _provider = 'authorize_net'
+    provider = 'authorize_net'
 
     def __init__(self, login, trans_key, sandbox=False, test_requests=False,
                  *args, **kwargs):

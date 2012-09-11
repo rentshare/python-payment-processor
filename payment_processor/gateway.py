@@ -137,11 +137,11 @@ class MultiGateway(BaseGateway):
 
         "*args*", "class", "Instance of gateways to use."
     """
-    _gateways = []
+    gateways = []
 
     def __init__(self, *args):
         for arg in args:
-            self._gateways.append(arg)
+            self.gateways.append(arg)
 
     def _send_transaction(self, transaction, method_name):
         """Send a transaction method by name. If a gateway fails the next
@@ -161,7 +161,7 @@ class MultiGateway(BaseGateway):
         """
         last_exception = None
 
-        for gateway in self._gateways:
+        for gateway in self.gateways:
             # If an error occurred on previous gateway log error
             if last_exception != None:
                 logging.warning('Recvied gateway error trying next ' +

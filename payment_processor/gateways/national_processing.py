@@ -5,7 +5,7 @@ import requests
 
 class NationalProcessing(BaseGateway):
     """National Processing gateway."""
-    _provider = 'national_processing'
+    provider = 'national_processing'
 
     def __init__(self, username, password):
         BaseGateway.__init__(self)

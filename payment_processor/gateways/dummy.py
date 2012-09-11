@@ -5,7 +5,7 @@ import requests
 class Dummy(BaseGateway):
     provider = 'dummy'
 
-	def _authorize( self, transaction ):
-		pass
-	def _charge( self, transaction ):
-		pass
+    def _authorize( self, transaction ):
+        pass
+    def _charge( self, transaction ):
+        pass

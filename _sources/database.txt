@@ -1,5 +1,5 @@
-:mod:`python-payment_processor.database`
-========================================
+:mod:`payment_processor.database`
+=================================
 
 .. automodule:: payment_processor.database
     :members:

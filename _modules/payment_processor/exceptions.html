@@ -56,51 +56,39 @@
 </div>
 <div class="viewcode-block" id="TransactionDeclined"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionDeclined">[docs]</a><span class="k">class</span> <span class="nc">TransactionDeclined</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The transaction was declined.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="TransactionHeld"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionHeld">[docs]</a><span class="k">class</span> <span class="nc">TransactionHeld</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Transaction was sent successfully but held for review.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidCardNumber"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidCardNumber">[docs]</a><span class="k">class</span> <span class="nc">InvalidCardNumber</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card number is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidCardExpirationDate"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidCardExpirationDate">[docs]</a><span class="k">class</span> <span class="nc">InvalidCardExpirationDate</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card expiration date is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidCardSecurityCode"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidCardSecurityCode">[docs]</a><span class="k">class</span> <span class="nc">InvalidCardSecurityCode</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card security code is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InsufficientFunds"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InsufficientFunds">[docs]</a><span class="k">class</span> <span class="nc">InsufficientFunds</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card has insufficient funds.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="ExpiredCard"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.ExpiredCard">[docs]</a><span class="k">class</span> <span class="nc">ExpiredCard</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card is expired.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="DuplicateTransaction"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.DuplicateTransaction">[docs]</a><span class="k">class</span> <span class="nc">DuplicateTransaction</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The transaction was already processed.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidBillingAddress"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidBillingAddress">[docs]</a><span class="k">class</span> <span class="nc">InvalidBillingAddress</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card billing address doesn&#39;t match or is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidBillingZipcode"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidBillingZipcode">[docs]</a><span class="k">class</span> <span class="nc">InvalidBillingZipcode</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Credit card billing zip code doesn&#39;t match or is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidRoutingNumber"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidRoutingNumber">[docs]</a><span class="k">class</span> <span class="nc">InvalidRoutingNumber</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check routing number is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="InvalidAccountNumber"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.InvalidAccountNumber">[docs]</a><span class="k">class</span> <span class="nc">InvalidAccountNumber</span><span class="p">(</span><span class="n">TransactionError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check account number is invalid.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 
 </div>
 <div class="viewcode-block" id="GatewayError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.GatewayError">[docs]</a><span class="k">class</span> <span class="nc">GatewayError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -108,23 +96,19 @@
 </div>
 <div class="viewcode-block" id="TransactionFailed"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.TransactionFailed">[docs]</a><span class="k">class</span> <span class="nc">TransactionFailed</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gateway failed to process transaction.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="ConnectionError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.ConnectionError">[docs]</a><span class="k">class</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Unable to connect to gateway.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="LimitExceeded"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.LimitExceeded">[docs]</a><span class="k">class</span> <span class="nc">LimitExceeded</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Transaction limit for gateway has been exceeded.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </div>
 <div class="viewcode-block" id="CounterError"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.CounterError">[docs]</a><span class="k">class</span> <span class="nc">CounterError</span><span class="p">(</span><span class="n">GatewayError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An error occurred when handling counters.&quot;&quot;&quot;</span>
 
 </div>
 <div class="viewcode-block" id="SQLEngineNotAviable"><a class="viewcode-back" href="../../exceptions.html#payment_processor.exceptions.SQLEngineNotAviable">[docs]</a><span class="k">class</span> <span class="nc">SQLEngineNotAviable</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Optional SQL engine is not aviable.&quot;&quot;&quot;</span>
-    <span class="k">pass</span></div>
+    <span class="sd">&quot;&quot;&quot;Optional SQL engine is not aviable.&quot;&quot;&quot;</span></div>
 </pre></div>
 
           </div>

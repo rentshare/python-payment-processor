@@ -65,7 +65,17 @@
 
 <span class="sd">        &quot;*gateway*&quot;, &quot;class&quot;, &quot;Gateway instance.&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_gateway</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">PERSONAL_CHECKING</span> <span class="o">=</span> <span class="s">&#39;personal_checking&#39;</span>
+    <span class="n">BUSINESS_CHECKING</span> <span class="o">=</span> <span class="s">&#39;business_checking&#39;</span>
+    <span class="n">PERSONAL_SAVINGS</span> <span class="o">=</span> <span class="s">&#39;personal_savings&#39;</span>
+    <span class="n">BUSINESS_SAVINGS</span> <span class="o">=</span> <span class="s">&#39;business_savings&#39;</span>
+
+    <span class="n">PPD</span> <span class="o">=</span> <span class="s">&#39;PPD&#39;</span>
+    <span class="n">WEB</span> <span class="o">=</span> <span class="s">&#39;WEB&#39;</span>
+    <span class="n">TEL</span> <span class="o">=</span> <span class="s">&#39;TEL&#39;</span>
+    <span class="n">CCD</span> <span class="o">=</span> <span class="s">&#39;CCD&#39;</span>
+
+    <span class="n">gateway</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_custom_fields</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">transaction_id</span> <span class="o">=</span> <span class="bp">None</span>
@@ -89,6 +99,8 @@
     <span class="n">customer_ip</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;Customer IP address.&quot;&quot;&quot;</span>
 
+    <span class="n">customer_id</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Customer ID.&quot;&quot;&quot;</span>
     <span class="n">first_name</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;Billing first name.&quot;&quot;&quot;</span>
     <span class="n">last_name</span> <span class="o">=</span> <span class="bp">None</span>
@@ -154,37 +166,18 @@
     <span class="sd">&quot;&quot;&quot;Check routing number.&quot;&quot;&quot;</span>
     <span class="n">check_account_type</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;Check account type.&quot;&quot;&quot;</span>
-    <span class="n">check_holder_type</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="sd">&quot;&quot;&quot;Check holder type.&quot;&quot;&quot;</span>
+    <span class="n">check_bank_name</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Check bank account name.&quot;&quot;&quot;</span>
+    <span class="n">check_account_name</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Check account customers name.&quot;&quot;&quot;</span>
     <span class="n">check_number</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;Check number.&quot;&quot;&quot;</span>
+    <span class="n">check_transaction_type</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;Check transaction type.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gateway</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gateway</span> <span class="o">=</span> <span class="n">gateway</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span> <span class="o">=</span> <span class="n">gateway</span>
 
-<div class="viewcode-block" id="Transaction._send_transaction"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction._send_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Send a transaction method by name.</span>
-
-<span class="sd">        Arguments:</span>
-
-<span class="sd">        .. csv-table::</span>
-<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
-<span class="sd">            :widths: 7, 7, 40</span>
-
-<span class="sd">            &quot;*method_name*&quot;, &quot;string&quot;, &quot;Name of transaction method.&quot;</span>
-
-<span class="sd">        Returns:</span>
-
-<span class="sd">        Data returned from transaction method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check limit</span>
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gateway</span><span class="o">.</span><span class="n">_trans_amount_limit</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_gateway</span><span class="o">.</span><span class="n">_trans_amount_limit</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">LimitExceeded</span><span class="p">(</span><span class="s">&#39;Transaction limit exceeded.&#39;</span><span class="p">)</span>
-
-        <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gateway</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</div>
 <div class="viewcode-block" id="Transaction.custom_field"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction.custom_field">[docs]</a>    <span class="k">def</span> <span class="nf">custom_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a custom field to HTTP gateway parameters.</span>
 
@@ -254,28 +247,7 @@
 <span class="sd">            transaction_id = transaction.charge()</span>
 <span class="sd">            print &#39;transaction_id:&#39;, transaction_id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check for missing variables</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field transaction.amount.&#39;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">card_number</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.expiration_month.&#39;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.expiration_year.&#39;</span><span class="p">)</span>
-
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_account_number</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_routing_number</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.check_routing_number.&#39;</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field transaction.card_number.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="s">&#39;_charge&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_charge&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.authorize"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction.authorize">[docs]</a>    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Authorize the transaction. Transaction must be captured to complete.</span>
@@ -332,28 +304,7 @@
 <span class="sd">            transaction_id = transaction.authorize()</span>
 <span class="sd">            print &#39;transaction_id:&#39;, transaction_id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check for missing variables</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field transaction.amount.&#39;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">card_number</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.expiration_month.&#39;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.expiration_year.&#39;</span><span class="p">)</span>
-
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_account_number</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_routing_number</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.check_routing_number.&#39;</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field transaction.card_number.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="s">&#39;_authorize&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_authorize&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.capture"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction.capture">[docs]</a>    <span class="k">def</span> <span class="nf">capture</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Capture a previously authorized transaction.</span>
@@ -437,12 +388,7 @@
 <span class="sd">            transaction_id = transaction.capture()</span>
 <span class="sd">            print &#39;transaction_id:&#39;, transaction_id</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check for missing variables</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.transaction_id.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="s">&#39;_capture&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_capture&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.refund"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction.refund">[docs]</a>    <span class="k">def</span> <span class="nf">refund</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Refund a previous transaction.</span>
@@ -495,19 +441,10 @@
 <span class="sd">            transaction.transaction_id = transaction_id</span>
 <span class="sd">            transaction.refund()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check for missing variables</span>
-        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.transaction_id.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="s">&#39;_refund&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_refund&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.credit"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction.credit">[docs]</a>    <span class="k">def</span> <span class="nf">credit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Credit a previous transaction.</span>
-
-<span class="sd">        Requires::</span>
-
-<span class="sd">            Transaction.transaction_id</span>
 
 <span class="sd">        Returns:</span>
 
@@ -553,12 +490,7 @@
 <span class="sd">            transaction.transaction_id = transaction_id</span>
 <span class="sd">            transaction.credit()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check for missing variables</span>
-        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.transaction_id.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="s">&#39;_credit&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_credit&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.void"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.Transaction.void">[docs]</a>    <span class="k">def</span> <span class="nf">void</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Void a previous transaction.</span>
@@ -611,73 +543,8 @@
 <span class="sd">            transaction.transaction_id = transaction_id</span>
 <span class="sd">            transaction.void()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check for missing variables</span>
-        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Missing required field &#39;</span> <span class="o">+</span>
-                        <span class="s">&#39;transaction.transaction_id.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="s">&#39;_void&#39;</span><span class="p">)</span>
-
-</div></div>
-<div class="viewcode-block" id="MultiTransaction"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.MultiTransaction">[docs]</a><span class="k">class</span> <span class="nc">MultiTransaction</span><span class="p">(</span><span class="n">Transaction</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stores transaction information. Subclass of Transaction used to handle</span>
-<span class="sd">    multiple gateways.</span>
-
-<span class="sd">    Arguments:</span>
-
-<span class="sd">    .. csv-table::</span>
-<span class="sd">        :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
-<span class="sd">        :widths: 7, 7, 40</span>
-
-<span class="sd">        &quot;*gateway*&quot;, &quot;class&quot;, &quot;Gateway instance.&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="MultiTransaction._send_transaction"><a class="viewcode-back" href="../../transaction.html#payment_processor.transaction.MultiTransaction._send_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Send a transaction method by name. If a gateway fails the next</span>
-<span class="sd">        aviable gateway will be tried.</span>
-
-<span class="sd">        Arguments:</span>
-
-<span class="sd">        .. csv-table::</span>
-<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
-<span class="sd">            :widths: 7, 7, 40</span>
-
-<span class="sd">            &quot;*method_name*&quot;, &quot;string&quot;, &quot;Name of transaction method.&quot;</span>
-
-<span class="sd">        Returns:</span>
-
-<span class="sd">        Data returned from transaction method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">last_exception</span> <span class="o">=</span> <span class="bp">None</span>
-
-        <span class="k">for</span> <span class="n">gateway</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gateway</span><span class="p">:</span>
-            <span class="c"># If an error occurred on previous gateway log error</span>
-            <span class="k">if</span> <span class="n">last_exception</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Recvied gateway error trying next &#39;</span> <span class="o">+</span>
-                    <span class="s">&#39;gateway. Exception: </span><span class="si">%r</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">last_exception</span><span class="p">)</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c"># Check limit</span>
-                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">&gt;</span> <span class="n">gateway</span><span class="o">.</span><span class="n">_trans_amount_limit</span> <span class="ow">and</span>
-                        <span class="n">gateway</span><span class="o">.</span><span class="n">_trans_amount_limit</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">LimitExceeded</span><span class="p">(</span><span class="s">&#39;Transaction limit exceeded.&#39;</span><span class="p">)</span>
-
-                <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">gateway</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="n">GatewayError</span><span class="p">)</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
-                    <span class="c"># Gateway error try next gateway</span>
-                    <span class="n">last_exception</span> <span class="o">=</span> <span class="n">exception</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span>
-
-        <span class="c"># All gateways failed raise last exception</span>
-        <span class="k">if</span> <span class="n">last_exception</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">last_exception</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Gateway list is empty.&#39;</span><span class="p">)</span>
-</pre></div></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gateway</span><span class="o">.</span><span class="n">_send_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_void&#39;</span><span class="p">)</span></div></div>
+</pre></div>
 
           </div>
         </div>

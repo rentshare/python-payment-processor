@@ -1,5 +1,5 @@
-:mod:`python-payment_processor.gateway`
-=======================================
+:mod:`payment_processor.gateway`
+================================
 
 .. automodule:: payment_processor.gateway
     :members:

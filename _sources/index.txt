@@ -192,6 +192,9 @@ Modules
    gateway
    sql_counter
    transaction
+   authorize_net
+   national_processing
+   dummy
 
 Indices and tables
 ==================

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>python-payment_processor &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    <title>payment_processor &mdash; python-payment_processor 0.1.0 beta documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,7 +27,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="index.html" />
-    <link rel="next" title="python-payment_processor.counter" href="counter.html" />
+    <link rel="next" title="payment_processor.counter" href="counter.html" />
     <link rel="prev" title="Getting Started" href="index.html" /> 
   </head>
   <body>
@@ -41,7 +41,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="counter.html" title="python-payment_processor.counter"
+          <a href="counter.html" title="payment_processor.counter"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Getting Started"
@@ -55,8 +55,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="python-payment-processor">
-<h1><tt class="xref py py-mod docutils literal"><span class="pre">python-payment_processor</span></tt><a class="headerlink" href="#python-payment-processor" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="payment-processor">
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">payment_processor</span></tt><a class="headerlink" href="#payment-processor" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="payment_processor.TransactionError">
 <em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">TransactionError</tt><a class="headerlink" href="#payment_processor.TransactionError" title="Permalink to this definition">¶</a></dt>
@@ -185,11 +185,32 @@ that one gateway fails the next one will be used.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="payment_processor.MultiGateway.new_transaction">
-<tt class="descname">new_transaction</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.MultiGateway.new_transaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new transaction.</p>
+<dt id="payment_processor.MultiGateway._send_transaction">
+<tt class="descname">_send_transaction</tt><big>(</big><em>transaction</em>, <em>method_name</em><big>)</big><a class="headerlink" href="#payment_processor.MultiGateway._send_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a transaction method by name. If a gateway fails the next
+aviable gateway will be tried.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method_name</em></td>
+<td>string</td>
+<td>Name of transaction method.</td>
+</tr>
+</tbody>
+</table>
 <p>Returns:</p>
-<p>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt> that is connected to the gateways.</p>
+<p>Data returned from transaction method.</p>
 </dd></dl>
 
 </dd></dl>
@@ -198,6 +219,34 @@ that one gateway fails the next one will be used.</p>
 <dt id="payment_processor.AuthorizeNetAIM">
 <em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">AuthorizeNetAIM</tt><big>(</big><em>login</em>, <em>trans_key</em>, <em>sandbox=False</em>, <em>test_requests=False</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize.Net AIM gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>login</em></td>
+<td>string</td>
+<td>Login.</td>
+</tr>
+<tr class="row-odd"><td><em>trans_key</em></td>
+<td>string</td>
+<td>Transaction key.</td>
+</tr>
+<tr class="row-even"><td><em>sandbox</em></td>
+<td>boolean</td>
+<td>Optional sandbox mode. Default is <cite>False</cite>.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="payment_processor.AuthorizeNetAIM._get_params">
 <tt class="descname">_get_params</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._get_params" title="Permalink to this definition">¶</a></dt>
@@ -228,6 +277,42 @@ that one gateway fails the next one will be used.</p>
 </table>
 <p>Returns:</p>
 <p>Dictonary of HTTP parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.AuthorizeNetAIM._send_request">
+<tt class="descname">_send_request</tt><big>(</big><em>transaction</em>, <em>params</em><big>)</big><a class="headerlink" href="#payment_processor.AuthorizeNetAIM._send_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send request to gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><em>params</em></td>
+<td>dict</td>
+<td>Dictonary of HTTP parameters to send.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Response object.</p>
 </dd></dl>
 
 <dl class="method">
@@ -462,8 +547,32 @@ that one gateway fails the next one will be used.</p>
 
 <dl class="class">
 <dt id="payment_processor.NationalProcessing">
-<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">NationalProcessing</tt><big>(</big><em>username</em>, <em>password</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">payment_processor.</tt><tt class="descname">NationalProcessing</tt><big>(</big><em>username</em>, <em>password</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing" title="Permalink to this definition">¶</a></dt>
 <dd><p>National Processing gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>username</em></td>
+<td>string</td>
+<td>Username.</td>
+</tr>
+<tr class="row-odd"><td><em>password</em></td>
+<td>string</td>
+<td>Password.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="payment_processor.NationalProcessing._get_params">
 <tt class="descname">_get_params</tt><big>(</big><em>transaction</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._get_params" title="Permalink to this definition">¶</a></dt>
@@ -494,6 +603,42 @@ that one gateway fails the next one will be used.</p>
 </table>
 <p>Returns:</p>
 <p>Dictonary of HTTP parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.NationalProcessing._send_request">
+<tt class="descname">_send_request</tt><big>(</big><em>transaction</em>, <em>params</em><big>)</big><a class="headerlink" href="#payment_processor.NationalProcessing._send_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send request to gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><em>params</em></td>
+<td>dict</td>
+<td>Dictonary of HTTP parameters to send.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Response object.</p>
 </dd></dl>
 
 <dl class="method">
@@ -793,12 +938,6 @@ that one gateway fails the next one will be used.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="payment_processor.Transaction.customer_id">
-<tt class="descname">customer_id</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.customer_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Customer ID.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="payment_processor.Transaction.description">
 <tt class="descname">description</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Order description.</p>
@@ -808,6 +947,12 @@ that one gateway fails the next one will be used.</p>
 <dt id="payment_processor.Transaction.customer_ip">
 <tt class="descname">customer_ip</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.customer_ip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Customer IP address.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.customer_id">
+<tt class="descname">customer_id</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.customer_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Customer ID.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -997,9 +1142,15 @@ that one gateway fails the next one will be used.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="payment_processor.Transaction.check_holder_type">
-<tt class="descname">check_holder_type</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_holder_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check holder type.</p>
+<dt id="payment_processor.Transaction.check_bank_name">
+<tt class="descname">check_bank_name</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_bank_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check bank account name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_account_name">
+<tt class="descname">check_account_name</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_account_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check account customers name.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1008,32 +1159,10 @@ that one gateway fails the next one will be used.</p>
 <dd><p>Check number.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="payment_processor.Transaction._send_transaction">
-<tt class="descname">_send_transaction</tt><big>(</big><em>method_name</em><big>)</big><a class="headerlink" href="#payment_processor.Transaction._send_transaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Send a transaction method by name.</p>
-<p>Arguments:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="13%" />
-<col width="13%" />
-<col width="74%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">argument</th>
-<th class="head">type</th>
-<th class="head">value</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><em>method_name</em></td>
-<td>string</td>
-<td>Name of transaction method.</td>
-</tr>
-</tbody>
-</table>
-<p>Returns:</p>
-<p>Data returned from transaction method.</p>
+<dl class="attribute">
+<dt id="payment_processor.Transaction.check_transaction_type">
+<tt class="descname">check_transaction_type</tt><em class="property"> = None</em><a class="headerlink" href="#payment_processor.Transaction.check_transaction_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check transaction type.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1317,10 +1446,6 @@ that one gateway fails the next one will be used.</p>
 <dt id="payment_processor.Transaction.credit">
 <tt class="descname">credit</tt><big>(</big><big>)</big><a class="headerlink" href="#payment_processor.Transaction.credit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Credit a previous transaction.</p>
-<p>Requires:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Transaction</span><span class="o">.</span><span class="n">transaction_id</span>
-</pre></div>
-</div>
 <p>Returns:</p>
 <p>Transaction ID.</p>
 <p>Usage:</p>
@@ -1685,7 +1810,7 @@ be created.</p>
                         title="previous chapter">Getting Started</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="counter.html"
-                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">python-payment_processor.counter</span></tt></a></p>
+                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">payment_processor.counter</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/init.txt"
@@ -1718,7 +1843,7 @@ be created.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="counter.html" title="python-payment_processor.counter"
+          <a href="counter.html" title="payment_processor.counter"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Getting Started"

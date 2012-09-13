@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>payment_processor.gateways.national_processing &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="index.html" />
+    <link rel="next" title="payment_processor.gateways.dummy" href="dummy.html" />
+    <link rel="prev" title="payment_processor.gateways.authorize_net" href="authorize_net.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dummy.html" title="payment_processor.gateways.dummy"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="authorize_net.html" title="payment_processor.gateways.authorize_net"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-payment_processor.gateways.national_processing">
+<span id="payment-processor-gateways-national-processing"></span><h1><a class="reference internal" href="#module-payment_processor.gateways.national_processing" title="payment_processor.gateways.national_processing"><tt class="xref py py-mod docutils literal"><span class="pre">payment_processor.gateways.national_processing</span></tt></a><a class="headerlink" href="#module-payment_processor.gateways.national_processing" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing">
+<em class="property">class </em><tt class="descclassname">payment_processor.gateways.national_processing.</tt><tt class="descname">NationalProcessing</tt><big>(</big><em>username</em>, <em>password</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>National Processing gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>username</em></td>
+<td>string</td>
+<td>Username.</td>
+</tr>
+<tr class="row-odd"><td><em>password</em></td>
+<td>string</td>
+<td>Password.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._get_params">
+<tt class="descname">_get_params</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the HTTP parameters for the gateway using the transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Dictonary of HTTP parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._send_request">
+<tt class="descname">_send_request</tt><big>(</big><em>transaction</em>, <em>params</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._send_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._send_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send request to gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><em>params</em></td>
+<td>dict</td>
+<td>Dictonary of HTTP parameters to send.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Response object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._handle_response">
+<tt class="descname">_handle_response</tt><big>(</big><em>transaction</em>, <em>response</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._handle_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._handle_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles HTTP response from gateway.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><em>response</em></td>
+<td>string</td>
+<td>HTTP response from gateway.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._charge">
+<tt class="descname">_charge</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize and capture the transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._authorize">
+<tt class="descname">_authorize</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._authorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize the transaction. Transaction must be captured to complete.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._capture">
+<tt class="descname">_capture</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._capture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._capture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture a previously authorized transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._refund">
+<tt class="descname">_refund</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._refund"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._refund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refund a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._credit">
+<tt class="descname">_credit</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._credit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._credit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Credit a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="payment_processor.gateways.national_processing.NationalProcessing._void">
+<tt class="descname">_void</tt><big>(</big><em>transaction</em><big>)</big><a class="reference internal" href="_modules/payment_processor/gateways/national_processing.html#NationalProcessing._void"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#payment_processor.gateways.national_processing.NationalProcessing._void" title="Permalink to this definition">¶</a></dt>
+<dd><p>Void a previous transaction.</p>
+<p>Arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">argument</th>
+<th class="head">type</th>
+<th class="head">value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>transaction</em></td>
+<td>class</td>
+<td><dl class="first last docutils">
+<dt>Instance of <tt class="xref py py-attr docutils literal"><span class="pre">Transaction</span></tt></dt>
+<dd>containing required transaction info.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>Transaction ID.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="authorize_net.html"
+                        title="previous chapter"><tt class="docutils literal docutils literal"><span class="pre">payment_processor.gateways.authorize_net</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dummy.html"
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">payment_processor.gateways.dummy</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/national_processing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dummy.html" title="payment_processor.gateways.dummy"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="authorize_net.html" title="payment_processor.gateways.authorize_net"
+             >previous</a> |</li>
+        <li><a href="index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

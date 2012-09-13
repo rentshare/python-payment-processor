@@ -92,7 +92,7 @@
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Column ID (Primary Key).&quot;&quot;&quot;</span>
-    <span class="n">provider</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">provider</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">))</span>
     <span class="sd">&quot;&quot;&quot;Gateway provider.&quot;&quot;&quot;</span>
     <span class="n">day_amount_count</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Total amount count for day.&quot;&quot;&quot;</span>

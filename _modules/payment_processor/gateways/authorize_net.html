@@ -1,0 +1,526 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>payment_processor.gateways.authorize_net &mdash; python-payment_processor 0.1.0 beta documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0 beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="python-payment_processor 0.1.0 beta documentation" href="../../../index.html" />
+    <link rel="up" title="payment_processor" href="../../payment_processor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../payment_processor.html" accesskey="U">payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for payment_processor.gateways.authorize_net</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">payment_processor.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">payment_processor.gateway</span> <span class="kn">import</span> <span class="n">BaseGateway</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<div class="viewcode-block" id="AuthorizeNetAIM"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM">[docs]</a><span class="k">class</span> <span class="nc">AuthorizeNetAIM</span><span class="p">(</span><span class="n">BaseGateway</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Authorize.Net AIM gateway.</span>
+
+<span class="sd">    Arguments:</span>
+
+<span class="sd">    .. csv-table::</span>
+<span class="sd">        :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">        :widths: 7, 7, 40</span>
+
+<span class="sd">        &quot;*login*&quot;, &quot;string&quot;, &quot;Login.&quot;</span>
+<span class="sd">        &quot;*trans_key*&quot;, &quot;string&quot;, &quot;Transaction key.&quot;</span>
+<span class="sd">        &quot;*sandbox*&quot;, &quot;boolean&quot;, &quot;Optional sandbox mode. Default is `False`.&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">provider</span> <span class="o">=</span> <span class="s">&#39;authorize_net&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">trans_key</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">test_requests</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">BaseGateway</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_login</span> <span class="o">=</span> <span class="n">login</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_key</span> <span class="o">=</span> <span class="n">trans_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox</span> <span class="o">=</span> <span class="n">sandbox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_requests</span> <span class="o">=</span> <span class="n">test_requests</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delim_char</span> <span class="o">=</span> <span class="s">&#39;|&#39;</span>
+
+        <span class="c"># Set url</span>
+        <span class="k">if</span> <span class="n">sandbox</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="s">&#39;https://test.authorize.net/gateway/transact.dll&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="s">&#39;https://secure.authorize.net/gateway/transact.dll&#39;</span>
+
+<div class="viewcode-block" id="AuthorizeNetAIM._get_params"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._get_params">[docs]</a>    <span class="k">def</span> <span class="nf">_get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the HTTP parameters for the gateway using the transaction.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Dictonary of HTTP parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c"># Global</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;3.1&#39;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_delim_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TRUE&#39;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_delim_char&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delim_char</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_encap_char&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_relay_response&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;FALSE&#39;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_duplicate_window&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;120&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_requests</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_test_request&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TRUE&#39;</span>
+
+        <span class="c"># Instance Specific</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_login&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_login</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_tran_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans_key</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_test_request&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;FALSE&#39;</span>
+
+        <span class="c"># Order Information</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_trans_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_invoice_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># Transaction Specific</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_amount&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">amount</span>
+
+        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_number</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_type</span> <span class="o">==</span> <span class="n">transaction</span><span class="o">.</span><span class="n">PERSONAL_CHECKING</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_echeck_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;CHECKING&#39;</span>
+            <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_type</span> <span class="o">==</span> <span class="n">transaction</span><span class="o">.</span><span class="n">BUSINESS_CHECKING</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_echeck_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;BUSINESSCHECKING&#39;</span>
+            <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_type</span> <span class="o">==</span> <span class="n">transaction</span><span class="o">.</span><span class="n">PERSONAL_SAVINGS</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_echeck_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;SAVINGS&#39;</span>
+            <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_type</span> <span class="o">==</span> <span class="n">transaction</span><span class="o">.</span><span class="n">BUSINESS_SAVINGS</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_echeck_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;SAVINGS&#39;</span>
+
+            <span class="c"># Echeck Specific</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;ECHECK&#39;</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_bank_aba_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_routing_number</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_bank_acct_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_number</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_bank_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_bank_name</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_bank_acct_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_account_name</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_bank_check_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_number</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_echeck_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">check_transaction_type</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Credit Card Specific</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;CC&#39;</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_card_num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">card_number</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_card_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">security_code</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span> <span class="o">!=</span> <span class="bp">None</span> <span class="ow">and</span>
+                    <span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="n">expiration_date</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">expiration_month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">expiration_date</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">expiration_year</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_exp_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expiration_date</span>
+
+        <span class="c"># Customer Information</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_first_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">first_name</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_last_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">last_name</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_company&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">company</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">address</span>
+        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">address2</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_address&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span> <span class="n">transaction</span><span class="o">.</span><span class="n">address2</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">city</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">state</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_zip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">zip_code</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">country</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_phone&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">phone</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_fax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">fax</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_email&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">email</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_cust_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">customer_id</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_customer_ip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">customer_ip</span>
+
+        <span class="c"># Shipping Information</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_first_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_first_name</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_last_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_last_name</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_company&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_company</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_address</span>
+        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_address2</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_address&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s">&#39;, &#39;</span> <span class="o">+</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_address2</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_city</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_state</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_zip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_zip_code</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_ship_to_country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">ship_country</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_tax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">tax</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_freight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">freight</span>
+        <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">tax_exempt</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_tax_exempt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;TRUE&#39;</span>
+
+        <span class="c"># Remove empty params</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">params</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._send_request"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._send_request">[docs]</a>    <span class="k">def</span> <span class="nf">_send_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send request to gateway.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+<span class="sd">            &quot;*params*&quot;, &quot;dict&quot;, &quot;Dictonary of HTTP parameters to send.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Response object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Add custom fields to params</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="n">transaction</span><span class="o">.</span><span class="n">_custom_fields</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._handle_response"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._handle_response">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handles HTTP response from gateway.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+<span class="sd">            &quot;*response*&quot;, &quot;string&quot;, &quot;HTTP response from gateway.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Response</span>
+        <span class="c">#  0 - Response Code:</span>
+        <span class="c">#      1 = Approved, 2 = Declined, 3 = Error, 4 = Held for Review</span>
+        <span class="c">#  1 - Response Subcode</span>
+        <span class="c">#  2 - Response Reason Code</span>
+        <span class="c">#  3 - Response Reason Text</span>
+        <span class="c">#  4 - Authorization Code</span>
+        <span class="c">#  5 - AVS Response</span>
+        <span class="c">#  6 - Transaction ID</span>
+        <span class="c">#  7 - Invoice Number</span>
+        <span class="c">#  8 - Description</span>
+        <span class="c">#  9 - Amount</span>
+        <span class="c"># 10 - Method</span>
+        <span class="c"># 11 - Transaction Type</span>
+        <span class="c"># 12 - Customer ID</span>
+        <span class="c"># 13 - First Name</span>
+        <span class="c"># 14 - Last Name</span>
+        <span class="c"># 15 - Company</span>
+        <span class="c"># 16 - Address</span>
+        <span class="c"># 17 - City</span>
+        <span class="c"># 18 - Sate</span>
+        <span class="c"># 19 - Zip</span>
+        <span class="c"># 20 - Country</span>
+        <span class="c"># 21 - Phone</span>
+        <span class="c"># 22 - Fax</span>
+        <span class="c"># 23 - Email</span>
+        <span class="c"># 24 - Ship First Name</span>
+        <span class="c"># 25 - Ship Last Name</span>
+        <span class="c"># 26 - Ship Company</span>
+        <span class="c"># 27 - Ship Address</span>
+        <span class="c"># 28 - Ship City</span>
+        <span class="c"># 29 - Ship State</span>
+        <span class="c"># 30 - Ship Zip</span>
+        <span class="c"># 31 - Ship Country</span>
+        <span class="c"># 32 - Tax</span>
+        <span class="c"># 33 - Duty</span>
+        <span class="c"># 34 - Freight</span>
+        <span class="c"># 35 - Tax Exempt</span>
+        <span class="c"># 36 - Purchase Order Number</span>
+        <span class="c"># 37 - MD5 Hash</span>
+        <span class="c"># 38 - CCV Response</span>
+        <span class="c"># 39 - CAVV Response</span>
+        <span class="c"># 40 - Account Number</span>
+        <span class="c"># 41 - Card Type</span>
+        <span class="c"># 42 - Split Tender ID</span>
+        <span class="c"># 43 - Requested Amount</span>
+        <span class="c"># 44 - Balance on Card</span>
+        <span class="n">response_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_delim_char</span><span class="p">)</span>
+
+        <span class="c"># Check that response data is valid</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response_data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TransactionFailed</span><span class="p">(</span><span class="s">&#39;Invalid gateway response.&#39;</span><span class="p">)</span>
+
+        <span class="c"># Get transaction id and set transaction id in transaction class</span>
+        <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction_id</span>
+
+        <span class="c"># Get response code</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">response_code</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="c"># Get response reason code</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response_reason_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response_data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">response_reason_code</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># Get response reason text</span>
+        <span class="n">response_reason_text</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="c"># Get avs response</span>
+        <span class="n">avs_response</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+        <span class="c"># Check response code</span>
+        <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">transaction_id</span>
+
+        <span class="k">elif</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TransactionHeld</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Parse response reason code</span>
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">315</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">InvalidCardNumber</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">202</span><span class="p">,</span> <span class="mi">316</span><span class="p">,</span> <span class="mi">317</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">InvalidCardExpirationDate</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">65</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">InvalidCardSecurityCode</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">9</span><span class="p">,):</span>
+                <span class="k">raise</span> <span class="n">InvalidRoutingNumber</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">10</span><span class="p">,):</span>
+                <span class="k">raise</span> <span class="n">InvalidAccountNumber</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">290</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">avs_response</span> <span class="o">==</span> <span class="s">&#39;A&#39;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InvalidBillingZipcode</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">InvalidBillingAddress</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">251</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TransactionFailed</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_reason_code</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">222</span><span class="p">,</span> <span class="mi">318</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">DuplicateTransaction</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response_code</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TransactionDeclined</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TransactionFailed</span><span class="p">(</span><span class="n">response_reason_text</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._charge"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._charge">[docs]</a>    <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Authorize and capture the transaction.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Get params</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;AUTH_CAPTURE&#39;</span>
+
+        <span class="c"># Send params</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._authorize"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._authorize">[docs]</a>    <span class="k">def</span> <span class="nf">_authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Authorize the transaction. Transaction must be captured to complete.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Get params</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;AUTH_ONLY&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._capture"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._capture">[docs]</a>    <span class="k">def</span> <span class="nf">_capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Capture a previously authorized transaction.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Get params</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;PRIOR_AUTH_CAPTURE&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._refund"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._refund">[docs]</a>    <span class="k">def</span> <span class="nf">_refund</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Refund a previous transaction.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credit</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._credit"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._credit">[docs]</a>    <span class="k">def</span> <span class="nf">_credit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Credit a previous transaction.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;CREDIT&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AuthorizeNetAIM._void"><a class="viewcode-back" href="../../../authorize_net.html#payment_processor.gateways.authorize_net.AuthorizeNetAIM._void">[docs]</a>    <span class="k">def</span> <span class="nf">_void</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Void a previous transaction.</span>
+
+<span class="sd">        Arguments:</span>
+
+<span class="sd">        .. csv-table::</span>
+<span class="sd">            :header: &quot;argument&quot;, &quot;type&quot;, &quot;value&quot;</span>
+<span class="sd">            :widths: 7, 7, 40</span>
+
+<span class="sd">            &quot;*transaction*&quot;, &quot;class&quot;, &quot;Instance of :attr:`Transaction`</span>
+<span class="sd">                containing required transaction info.&quot;</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        Transaction ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Get params</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;x_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;VOID&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">python-payment_processor 0.1.0 beta documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../payment_processor.html" >payment_processor</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, RentShare Inc.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

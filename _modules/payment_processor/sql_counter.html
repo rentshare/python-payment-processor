@@ -66,7 +66,7 @@
         <span class="c"># If gateway column doesnt exists create it</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
         <span class="n">gateway_column</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">CounterTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                        <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+                        <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">gateway_column</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_create_column</span><span class="p">()</span>
 
@@ -77,7 +77,7 @@
         <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
 
         <span class="c"># Create authorize net column</span>
-        <span class="n">authorize_net</span> <span class="o">=</span> <span class="n">CounterTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span>
+        <span class="n">authorize_net</span> <span class="o">=</span> <span class="n">CounterTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">)</span>
         <span class="n">authorize_net</span><span class="o">.</span><span class="n">day_amount_count</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">authorize_net</span><span class="o">.</span><span class="n">month_amount_count</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">authorize_net</span><span class="o">.</span><span class="n">day_trans_count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -98,7 +98,7 @@
         <span class="c"># Get gateway conuter data</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">gateway_data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">CounterTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                            <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+                            <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">SQLAlchemyError</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CounterError</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
 
@@ -131,7 +131,7 @@
 
         <span class="c"># Get gateway conuter data</span>
         <span class="n">gateway_data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">CounterTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                        <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+                        <span class="n">CounterTable</span><span class="o">.</span><span class="n">provider</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
         <span class="c"># Increase counts</span>
         <span class="n">gateway_data</span><span class="o">.</span><span class="n">day_amount_count</span> <span class="o">+=</span> <span class="n">day_amount_change</span>

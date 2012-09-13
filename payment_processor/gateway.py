@@ -44,7 +44,7 @@ class BaseGateway:
         response object."""
         raise TypeError('Send request method not implemented for gatewy.')
 
-    def _payment_method_validator( self, transaction):
+    def _payment_method_validator(self, transaction):
         # Check for missing variables
         if transaction.amount == None:
             raise TypeError('Missing required field transaction.amount.')
@@ -73,19 +73,19 @@ class BaseGateway:
                         'transaction.transaction_id.')
 
     def _charge_validator(self, transaction):
-        self._payment_method_validator( transaction )
+        self._payment_method_validator(transaction)
 
     def _authorize_validator(self, transaction):
-        self._payment_method_validator( transaction )
+        self._payment_method_validator(transaction)
 
     def _capture_validator(self, transaction):
-        self._transaction_id_validator( transaction )
+        self._transaction_id_validator(transaction)
 
     def _refund_validator(self, transaction):
-        self._transaction_id_validator( transaction )
+        self._transaction_id_validator(transaction)
 
     def _void_validator(self, transaction):
-        self._transaction_id_validator( transaction )
+        self._transaction_id_validator(transaction)
 
     def _send_transaction(self, transaction, method_name):
         """Send a transaction method by name.
@@ -103,8 +103,8 @@ class BaseGateway:
         Data returned from transaction method.
         """
         # Check transaction for valid variables
-        if hasattr( self, method_name + '_validator' ):
-            getattr( self, method_name + '_validator' )( transaction )
+        if hasattr(self, method_name + '_validator'):
+            getattr(self, method_name + '_validator')(transaction)
 
         # Check limit
         if (transaction.amount > self._trans_amount_limit and

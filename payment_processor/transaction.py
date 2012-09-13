@@ -251,7 +251,6 @@ class Transaction:
             transaction_id = transaction.authorize()
             print 'transaction_id:', transaction_id
         """
-
         return self.gateway._send_transaction(self, '_authorize')
 
     def capture(self):

@@ -7,8 +7,8 @@ class NationalProcessing(BaseGateway):
     """National Processing gateway."""
     provider = 'national_processing'
 
-    def __init__(self, username, password):
-        BaseGateway.__init__(self)
+    def __init__(self, username, password, *args, **kwargs):
+        BaseGateway.__init__(self, *args, **kwargs)
 
         self._username = username
         self._password = password

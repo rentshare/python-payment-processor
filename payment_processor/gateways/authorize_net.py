@@ -1,6 +1,7 @@
 from payment_processor.exceptions import *
 from payment_processor.gateway import BaseGateway
 import requests
+import xml.dom.minidom
 
 class AuthorizeNetAIM(BaseGateway):
     """Authorize.Net AIM gateway."""
@@ -153,7 +154,7 @@ class AuthorizeNetAIM(BaseGateway):
         """
         # Add custom fields to params
         params = dict(params.items() + transaction._custom_fields.items())
-
+        print params
         return requests.get(self._url, params=params)
 
     def _handle_response(self, transaction, response):
@@ -415,5 +416,193 @@ class AuthorizeNetAIM(BaseGateway):
         # Get params
         params = self._get_params(transaction)
         params['x_type'] = 'VOID'
+
+        return self._send(transaction, params)
+
+class AuthorizeNetReporting(BaseGateway):
+    """Authorize.Net AIM gateway."""
+
+    _provider = 'authorize_net'
+
+    def __init__(self, login, trans_key, sandbox=False, test_requests=False,
+                 *args, **kwargs):
+        BaseGateway.__init__(self, *args, **kwargs)
+
+        self._login = login
+        self._trans_key = trans_key
+        self._sandbox = sandbox
+        self._test_requests = test_requests
+
+        # Set url
+        if sandbox:
+            self._url = 'https://apitest.authorize.net/xml/v1/request.api'
+        else:
+            self._url = 'https://api.authorize.net/xml/v1/request.api'
+
+    def _get_params(self, transaction):
+        """Get the HTTP parameters for the gateway using the transaction.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+
+        Returns:
+
+        Dictonary of HTTP parameters.
+        """
+        params = {}
+
+        # Instance Specific
+        params['login'] = self._login
+        params['trans_key'] = self._trans_key
+
+        # Order Information
+        params['trans_id'] = transaction.transaction_id
+
+        return params
+
+    def _send_request(self, transaction, params, method=None):
+        """Send request to gateway.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+            "*params*", "dict", "Dictonary of HTTP parameters to send."
+
+        Returns:
+
+        Response object.
+        """
+        headers = {'content-type': 'text/xml'}
+
+        request = """<?xml version="1.0" encoding="utf-8"?>
+        <getTransactionDetailsRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+            <merchantAuthentication>
+                <name>{login}</name>
+                <transactionKey>{trans_key}</transactionKey>
+            </merchantAuthentication>
+            <transId>{trans_id}</transId>
+        </getTransactionDetailsRequest>""".format( **params )
+
+
+        return requests.post(self._url, data=request, headers=headers)
+
+    def _handle_response(self, transaction, response, method=None):
+        """Handles HTTP response from gateway.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+            "*response*", "string", "HTTP response from gateway."
+
+        Returns:
+
+        Transaction ID.
+        """
+
+        response = response.encode("UTF-8")
+
+        try:
+            dom = xml.dom.minidom.parseString( response )
+        except xml.parsers.expat.ExpatError:
+            # Response not valid xml
+            raise TransactionFailed('Invalid gateway response.')
+
+        print dom.toprettyxml()
+
+        try:
+            messages_elem = dom.firstChild.getElementsByTagName('messages')[0]
+
+            result_code = messages_elem.getElementsByTagName('resultCode')[0].firstChild.nodeValue
+            message_elem = messages_elem.getElementsByTagName('message')[0]
+            message_code = message_elem.getElementsByTagName('code')[0].firstChild.nodeValue
+            message_text = message_elem.getElementsByTagName('text')[0].firstChild.nodeValue
+
+            if result_code == 'Error':
+                raise TransactionFailed( '{0}: {1}'.format( message_code, message_text ) )
+
+            elif result_code == 'Ok':
+                if dom.firstChild.tagName == 'getTransactionDetailsResponse':
+                    transaction_elem = dom.firstChild.getElementsByTagName('transaction')[0]
+
+                    # Set transaction details
+                    transaction.status         = transaction_elem.getElementsByTagName('transactionStatus')[0].firstChild.nodeValue
+                    transaction.transaction_id = transaction_elem.getElementsByTagName('transId')[0].firstChild.nodeValue
+                    transaction.amount         = transaction_elem.getElementsByTagName('authAmount')[0].firstChild.nodeValue
+
+                    # Set billing details
+                    bill_to_elem = transaction_elem.getElementsByTagName('billTo')[0]
+                    transaction.first_name = bill_to_elem.getElementsByTagName('firstName')[0].firstChild.nodeValue
+                    transaction.last_name  = bill_to_elem.getElementsByTagName('lastName')[0].firstChild.nodeValue
+                    transaction.address    = bill_to_elem.getElementsByTagName('address')[0].firstChild.nodeValue
+                    transaction.city       = bill_to_elem.getElementsByTagName('city')[0].firstChild.nodeValue
+                    transaction.state      = bill_to_elem.getElementsByTagName('state')[0].firstChild.nodeValue
+                    transaction.zip_code   = bill_to_elem.getElementsByTagName('zip')[0].firstChild.nodeValue
+
+                    # Set shipping details
+                    ship_to_elem = transaction_elem.getElementsByTagName('shipTo')[0]
+                    transaction.ship_first_name = ship_to_elem.getElementsByTagName('firstName')[0].firstChild.nodeValue
+                    transaction.ship_last_name  = ship_to_elem.getElementsByTagName('lastName')[0].firstChild.nodeValue
+                    transaction.ship_address    = ship_to_elem.getElementsByTagName('address')[0].firstChild.nodeValue
+                    transaction.ship_city       = ship_to_elem.getElementsByTagName('city')[0].firstChild.nodeValue
+                    transaction.ship_state      = ship_to_elem.getElementsByTagName('state')[0].firstChild.nodeValue
+                    transaction.ship_zip_code   = ship_to_elem.getElementsByTagName('zip')[0].firstChild.nodeValue
+
+                    # Set payment method details
+                    payment_elem = transaction_elem.getElementsByTagName('payment')[0]
+
+                    if len(transaction_elem.getElementsByTagName('creditCard')):
+                        credit_card_elem             = transaction_elem.getElementsByTagName('creditCard')[0]
+                        transaction.card_number      = credit_card_elem.getElementsByTagName('cardNumber')[0].firstChild.nodeValue
+                        transaction.expiration_month = credit_card_elem.getElementsByTagName('expirationDate')[0].firstChild.nodeValue[:2]
+                        transaction.expiration_year  = credit_card_elem.getElementsByTagName('expirationDate')[0].firstChild.nodeValue[2:]
+                        transaction.card_type        = credit_card_elem.getElementsByTagName('cardType')[0].firstChild.nodeValue
+
+                    elif len(transaction_elem.getElementsByTagName('bankAccount')):
+                        bank_account_elem = transaction_elem.getElementsByTagName('bankAccount')[0]
+                        transaction.check_account_number   = credit_card_elem.getElementsByTagName('accountNumber')[0].firstChild.nodeValue
+                        transaction.check_routing_number   = credit_card_elem.getElementsByTagName('routingNumber')[0].firstChild.nodeValue[:2]
+                        transaction.check_account_name     = credit_card_elem.getElementsByTagName('nameOnAccount')[0].firstChild.nodeValue[2:]
+                        transaction.check_transaction_type = credit_card_elem.getElementsByTagName('echeckType')[0].firstChild.nodeValue[2:]
+            else:
+                raise TransactionFailed( 'Result code \'{0}\' unkown'.format( result_code ) )
+
+        except IndexError, AttributeError:
+            # Dom traversal failure
+            raise TransactionFailed( 'API response format is unknown: {0}'.format(response) )
+
+    def _load_details(self, transaction):
+        """Void a previous transaction.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+
+        Returns:
+
+        Transaction ID.
+        """
+        # Get params
+        params = self._get_params(transaction)
 
         return self._send(transaction, params)

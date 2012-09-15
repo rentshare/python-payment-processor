@@ -1,6 +1,7 @@
 from payment_processor.exceptions import *
 from payment_processor.gateway import MultiGateway
 from payment_processor.gateways.authorize_net import AuthorizeNetAIM
+from payment_processor.gateways.authorize_net import AuthorizeNetReporting
 from payment_processor.gateways.national_processing import NationalProcessing
 from payment_processor.gateways.dummy import Dummy
 from payment_processor.transaction import Transaction

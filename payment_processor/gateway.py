@@ -9,7 +9,7 @@ class BaseGateway:
     def __init__(self, trans_limit=None):
         self._trans_amount_limit = trans_limit
 
-    def _send(self, transaction, params):
+    def _send(self, transaction, params, **kwargs):
         """Send transaction params with HTTP request to gateway.
 
         Arguments:
@@ -28,7 +28,7 @@ class BaseGateway:
         """
         # Send request
         try:
-            response = self._send_request(transaction, params)
+            response = self._send_request(transaction, params, **kwargs)
         except requests.exceptions.ConnectionError:
             raise ConnectionError('Failed to connect to %r.' % self._url)
 
@@ -37,7 +37,7 @@ class BaseGateway:
             raise ConnectionError(('Gateway returned unsuccessful ' +
                 'HTTP status code %r.') % (response.status_code))
 
-        return self._handle_response(transaction, response.text)
+        return self._handle_response(transaction, response.text, **kwargs)
 
     def _send_request(self):
         """Override with method to send request to gateway. Must return

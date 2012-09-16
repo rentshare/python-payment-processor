@@ -154,7 +154,7 @@ class AuthorizeNetAIM(BaseGateway):
         """
         # Add custom fields to params
         params = dict(params.items() + transaction._custom_fields.items())
-        print params
+
         return requests.get(self._url, params=params)
 
     def _handle_response(self, transaction, response):

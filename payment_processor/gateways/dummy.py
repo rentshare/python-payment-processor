@@ -7,3 +7,5 @@ class Dummy(BaseGateway):
 		pass
 	def _charge( self, transaction ):
 		pass
+	def _credit( self, transaction ):
+		pass

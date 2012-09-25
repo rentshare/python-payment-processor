@@ -22,7 +22,7 @@ class Transaction:
     TEL = 'TEL'
     CCD = 'CCD'
 
-    _gateway = None
+    gateway = None
     _custom_fields = {}
 
     transaction_id = None
@@ -123,7 +123,7 @@ class Transaction:
     """Check transaction type."""
 
     def __init__(self, gateway):
-        self._gateway = gateway
+        self.gateway = gateway
 
     def custom_field(self, field, value):
         """Add a custom field to HTTP gateway parameters.
@@ -194,7 +194,7 @@ class Transaction:
             transaction_id = transaction.charge()
             print 'transaction_id:', transaction_id
         """
-        return self._gateway._send_transaction(self, '_charge')
+        return self.gateway._send_transaction(self, '_charge')
 
     def authorize(self):
         """Authorize the transaction. Transaction must be captured to complete.
@@ -251,8 +251,7 @@ class Transaction:
             transaction_id = transaction.authorize()
             print 'transaction_id:', transaction_id
         """
-
-        return self._gateway._send_transaction(self, '_authorize')
+        return self.gateway._send_transaction(self, '_authorize')
 
     def capture(self):
         """Capture a previously authorized transaction.
@@ -336,7 +335,7 @@ class Transaction:
             transaction_id = transaction.capture()
             print 'transaction_id:', transaction_id
         """
-        return self._gateway._send_transaction(self, '_capture')
+        return self.gateway._send_transaction(self, '_capture')
 
     def refund(self):
         """Refund a previous transaction.
@@ -389,7 +388,7 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.refund()
         """
-        return self._gateway._send_transaction(self, '_refund')
+        return self.gateway._send_transaction(self, '_refund')
 
     def credit(self):
         """Credit a previous transaction.
@@ -438,7 +437,7 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.credit()
         """
-        return self._gateway._send_transaction(self, '_credit')
+        return self.gateway._send_transaction(self, '_credit')
 
     def void(self):
         """Void a previous transaction.
@@ -491,4 +490,4 @@ class Transaction:
             transaction.transaction_id = transaction_id
             transaction.void()
         """
-        return self._gateway._send_transaction(self, '_void')
+        return self.gateway._send_transaction(self, '_void')

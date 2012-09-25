@@ -3,9 +3,19 @@ from payment_processor.gateway import BaseGateway
 import requests
 
 class AuthorizeNetAIM(BaseGateway):
-    """Authorize.Net AIM gateway."""
+    """Authorize.Net AIM gateway.
 
-    _provider = 'authorize_net'
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*login*", "string", "Login."
+        "*trans_key*", "string", "Transaction key."
+        "*sandbox*", "boolean", "Optional sandbox mode. Default is `False`."
+    """
+    provider = 'authorize_net'
 
     def __init__(self, login, trans_key, sandbox=False, test_requests=False,
                  *args, **kwargs):

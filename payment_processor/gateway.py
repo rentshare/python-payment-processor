@@ -44,7 +44,7 @@ class BaseGateway:
         response object."""
         raise TypeError('Send request method not implemented for gatewy.')
 
-    def _payment_method_validator( self, transaction):
+    def _payment_method_validator(self, transaction):
         # Check for missing variables
         if transaction.amount == None:
             raise TypeError('Missing required field transaction.amount.')
@@ -73,19 +73,19 @@ class BaseGateway:
                         'transaction.transaction_id.')
 
     def _charge_validator(self, transaction):
-        self._payment_method_validator( transaction )
+        self._payment_method_validator(transaction)
 
     def _authorize_validator(self, transaction):
-        self._payment_method_validator( transaction )
+        self._payment_method_validator(transaction)
 
     def _capture_validator(self, transaction):
-        self._transaction_id_validator( transaction )
+        self._transaction_id_validator(transaction)
 
     def _refund_validator(self, transaction):
-        self._transaction_id_validator( transaction )
+        self._transaction_id_validator(transaction)
 
     def _void_validator(self, transaction):
-        self._transaction_id_validator( transaction )
+        self._transaction_id_validator(transaction)
 
     def _send_transaction(self, transaction, method_name):
         """Send a transaction method by name.
@@ -103,8 +103,8 @@ class BaseGateway:
         Data returned from transaction method.
         """
         # Check transaction for valid variables
-        if hasattr( self, method_name + '_validator' ):
-            getattr( self, method_name + '_validator' )( transaction )
+        if hasattr(self, method_name + '_validator'):
+            getattr(self, method_name + '_validator')(transaction)
 
         # Check limit
         if (transaction.amount > self._trans_amount_limit and
@@ -137,11 +137,11 @@ class MultiGateway(BaseGateway):
 
         "*args*", "class", "Instance of gateways to use."
     """
-    _gateways = []
+    gateways = []
 
     def __init__(self, *args):
         for arg in args:
-            self._gateways.append(arg)
+            self.gateways.append(arg)
 
     def _send_transaction(self, transaction, method_name):
         """Send a transaction method by name. If a gateway fails the next
@@ -161,7 +161,7 @@ class MultiGateway(BaseGateway):
         """
         last_exception = None
 
-        for gateway in self._gateways:
+        for gateway in self.gateways:
             # If an error occurred on previous gateway log error
             if last_exception != None:
                 logging.warning('Recvied gateway error trying next ' +

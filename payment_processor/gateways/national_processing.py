@@ -4,11 +4,21 @@ import urlparse
 import requests
 
 class NationalProcessing(BaseGateway):
-    """National Processing gateway."""
-    _provider = 'national_processing'
+    """National Processing gateway.
 
-    def __init__(self, username, password):
-        BaseGateway.__init__(self)
+    Arguments:
+
+    .. csv-table::
+        :header: "argument", "type", "value"
+        :widths: 7, 7, 40
+
+        "*username*", "string", "Username."
+        "*password*", "string", "Password."
+    """
+    provider = 'national_processing'
+
+    def __init__(self, username, password, *args, **kwargs):
+        BaseGateway.__init__(self, *args, **kwargs)
 
         self._username = username
         self._password = password

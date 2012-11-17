@@ -64,7 +64,6 @@ class NationalProcessing(BaseGateway):
             if transaction.check_account_type == transaction.BUSINESS_SAVINGS:
                 params['account_holder_type'] = 'business'
                 params['account_type'] = 'savings'
-
             # Echeck Specific
             params['payment'] = 'check'
             params['checkaba'] = transaction.check_routing_number
@@ -213,7 +212,7 @@ class NationalProcessing(BaseGateway):
             if response_code in (225,):
                 raise InvalidCardSecurityCode(response_text)
 
-            if response_text.startswith('Invalid ABA number'):
+            if response_text.startswith('Invalid ABA number') or response_text.startswith('ABA number must be 9 digits'):
                 raise InvalidRoutingNumber(response_text)
 
             if response_code in (0,):
@@ -367,3 +366,19 @@ class NationalProcessing(BaseGateway):
         params['type'] = 'void'
 
         return self._send(transaction, params)
+
+    def _valid_check_routing_number( self, transaction, routing_number_length=9 ):
+        '''Validates the routing number's check digit'''
+        if len( transaction.check_routing_number ) > routing_number_length:
+            return False
+        routing_number = str( transaction.check_routing_number ).rjust( routing_number_length, '0' )
+        sum_digit = 0
+
+        for i in range( routing_number_length - 1 ):
+            n = int( routing_number[i:i+1] )
+            sum_digit += n * (3,7,1)[i % 3]
+
+        if sum_digit % 10 > 0:
+            return 10 - ( sum_digit % 10 ) == int( routing_number[-1] )
+        else:
+            return not int( routing_number[-1] )

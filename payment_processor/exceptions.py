@@ -7,6 +7,9 @@ class TransactionDeclined(TransactionError):
 class TransactionHeld(TransactionError):
     """Transaction was sent successfully but held for review."""
 
+class InvalidCardInformation(TransactionError):
+    """Credit card information is invalid."""
+
 class InvalidCardNumber(TransactionError):
     """Credit card number is invalid."""
 

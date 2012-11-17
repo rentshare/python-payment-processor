@@ -258,6 +258,9 @@ class AuthorizeNetAIM(BaseGateway):
         # Get avs response
         avs_response = response_data[5]
 
+        # Get avs response
+        cc_response = response_data[38]
+
         # Check response code
         if response_code == 1:
             return transaction_id
@@ -267,13 +270,16 @@ class AuthorizeNetAIM(BaseGateway):
 
         else:
             # Parse response reason code
+            if response_reason_code in (45, 65):
+                raise InvalidCardInformation(response_reason_text)
+
             if response_reason_code in (6, 37, 200, 315):
                 raise InvalidCardNumber(response_reason_text)
 
             if response_reason_code in (7, 8, 202, 316, 317):
                 raise InvalidCardExpirationDate(response_reason_text)
 
-            if response_reason_code in (44, 45, 65):
+            if response_reason_code in (44, 65, 78):
                 raise InvalidCardSecurityCode(response_reason_text)
 
             if response_reason_code in (9,):
@@ -288,7 +294,7 @@ class AuthorizeNetAIM(BaseGateway):
                 else:
                     raise InvalidBillingAddress(response_reason_text)
 
-            if response_reason_code in (2, 3, 4, 41, 250, 251):
+            if response_reason_code in (4, 41, 250, 251):
                 raise TransactionFailed(response_reason_text)
 
             if response_reason_code in (11, 222, 318):

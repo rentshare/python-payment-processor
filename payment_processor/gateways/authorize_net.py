@@ -68,8 +68,8 @@ class AuthorizeNetAIM(BaseGateway):
 
         # Order Information
         params['x_trans_id'] = transaction.transaction_id
-        params['x_invoice_num'] = None
-        params['x_description'] = None
+        params['x_invoice_num'] = transaction.order_number
+        params['x_description'] = transaction.description
 
         # Transaction Specific
         params['x_amount'] = transaction.amount

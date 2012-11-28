@@ -49,27 +49,29 @@ class NationalProcessing(BaseGateway):
 
         # Transaction Specific
         params['amount'] = transaction.amount
-        params['sec_code'] = 'WEB'
 
         if transaction.check_account_number != None:
             if transaction.check_account_type == transaction.PERSONAL_CHECKING:
                 params['account_holder_type'] = 'personal'
                 params['account_type'] = 'checking'
-            if transaction.check_account_type == transaction.BUSINESS_CHECKING:
+            elif transaction.check_account_type == transaction.BUSINESS_CHECKING:
                 params['account_holder_type'] = 'business'
                 params['account_type'] = 'checking'
-            if transaction.check_account_type == transaction.PERSONAL_SAVINGS:
+            elif transaction.check_account_type == transaction.PERSONAL_SAVINGS:
                 params['account_holder_type'] = 'personal'
                 params['account_type'] = 'savings'
-            if transaction.check_account_type == transaction.BUSINESS_SAVINGS:
+            elif transaction.check_account_type == transaction.BUSINESS_SAVINGS:
                 params['account_holder_type'] = 'business'
                 params['account_type'] = 'savings'
+            else:
+                params['account_type'] = transaction.check_account_type
+
             # Echeck Specific
             params['payment'] = 'check'
             params['checkaba'] = transaction.check_routing_number
             params['checkaccount'] = transaction.check_account_number
             params['checkname'] = transaction.check_account_name
-            params['sec_code'] = transaction.check_transaction_type
+            params['sec_code'] = transaction.check_transaction_type or 'WEB'
 
         else:
             # Credit Card Specific

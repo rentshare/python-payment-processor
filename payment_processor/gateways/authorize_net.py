@@ -142,6 +142,8 @@ class AuthorizeNetAIM(BaseGateway):
             if params[key] == None:
                 del params[key]
 
+        params.update(transaction._custom_fields)
+
         return params
 
     def _send_request(self, transaction, params):

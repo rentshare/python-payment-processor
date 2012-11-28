@@ -116,6 +116,8 @@ class NationalProcessing(BaseGateway):
         params['shipping_country'] = transaction.ship_country
         params['shipping_email'] = transaction.email
 
+        params.update(transaction._custom_fields)
+
         return params
 
     def _send_request(self, transaction, params):
@@ -214,6 +216,10 @@ class NationalProcessing(BaseGateway):
 
             if response_text.startswith('Invalid ABA number') or response_text.startswith('ABA number must be 9 digits'):
                 raise InvalidRoutingNumber(response_text)
+
+            if response_text.startswith('DECLINED DECLINE CHECK   DAY LOC'):
+                #DECLINED DECLINE CHECK   DAY LOC $5000
+                raise LimitExceeded(response_text)
 
             if response_code in (0,):
                 raise InvalidAccountNumber(response_text)

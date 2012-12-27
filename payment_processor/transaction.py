@@ -497,8 +497,8 @@ class Transaction:
         """
         return self._gateway._send_transaction(self, '_void')
 
-    def load_details(self):
-        """Get the details of a previous transaction.
+    def status(self):
+        """Get the status of a previous transaction.
 
         Returns:
 
@@ -542,6 +542,6 @@ class Transaction:
             # Status transaction
             transaction = gateway.new_transaction()
             transaction.transaction_id = transaction_id
-            transaction.details()
+            transaction.status()
         """
-        return self._gateway._send_transaction(self, '_load_details')
+        return self._gateway._send_transaction(self, '_status')

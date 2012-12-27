@@ -109,7 +109,7 @@ class NationalProcessing(BaseGateway):
 
         return params
 
-    def _send_request(self, transaction, params):
+    def _send_request(self, transaction, data):
         """Send request to gateway.
 
         Arguments:
@@ -120,16 +120,16 @@ class NationalProcessing(BaseGateway):
 
             "*transaction*", "class", "Instance of :attr:`Transaction`
                 containing required transaction info."
-            "*params*", "dict", "Dictonary of HTTP parameters to send."
+            "*data*", "dict", "Dictonary of HTTP parameters to send."
 
         Returns:
 
         Response object.
         """
         # Add custom fields to params
-        params = dict(params.items() + transaction._custom_fields.items())
+        data = dict(data.items() + transaction._custom_fields.items())
 
-        return requests.get(self._url, params=params)
+        return requests.get(self._url, params=data)
 
     def _handle_response(self, transaction, response):
         """Handles HTTP response from gateway.

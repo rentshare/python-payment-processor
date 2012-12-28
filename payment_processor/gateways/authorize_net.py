@@ -1,4 +1,5 @@
 from payment_processor.exceptions import *
+from payment_processor.constants import *
 from payment_processor.gateway import BaseGateway
 import requests
 import xml.dom.minidom
@@ -260,8 +261,6 @@ class AuthorizeNetAIM(BaseGateway):
             # Response not valid xml
             raise TransactionFailed('Invalid gateway response.')
 
-        print dom.toprettyxml()
-
         try:
             messages_elem = dom.firstChild.getElementsByTagName('messages')[0]
             result_code = messages_elem.getElementsByTagName(
@@ -275,21 +274,67 @@ class AuthorizeNetAIM(BaseGateway):
             if result_code == 'Ok':
                 pass
             elif result_code == 'Error':
-                raise TransactionFailed('%s: %s' % (
-                    message_code, message_text))
+                if message_code == 'E00040':
+                    raise TransactionNotFound('%s: %s' % (
+                        message_code, message_text))
+                else:
+                    raise GatewayError('%s: %s' % (
+                        message_code, message_text))
             else:
-                raise TransactionFailed('Result code %r unkown.' % result_code)
+                raise ConnectionError('Result code %r unkown.' % result_code)
 
             if dom.firstChild.tagName != 'getTransactionDetailsResponse':
-                raise TransactionFailed(
+                raise ConnectionError(
                     'API response format is unknown: %r' % response)
 
             transaction_elem = dom.firstChild.getElementsByTagName(
                 'transaction')[0]
 
             # Set transaction details
-            transaction.status = transaction_elem.getElementsByTagName(
+            status = transaction_elem.getElementsByTagName(
                 'transactionStatus')[0].firstChild.nodeValue
+
+            if status == 'authorizedPendingCapture':
+                transaction.status = PENDING
+            elif status == 'underReview':
+                transaction.status = PENDING
+            elif status == 'FDSPendingReview':
+                transaction.status = PENDING
+            elif status == 'FDSAuthorizedPendingReview':
+                transaction.status = PENDING
+
+            elif status == 'capturedPendingSettlement':
+                transaction.status = PENDING_SETTLEMENT
+            elif status == 'refundPendingSettlement':
+                transaction.status = PENDING_SETTLEMENT
+
+            elif status == 'refundSettledSuccessfully':
+                transaction.status = COMPLETE
+            elif status == 'settledSuccessfully':
+                transaction.status = COMPLETE
+
+            elif status == 'voided':
+                transaction.status = CANCELED
+            elif status == 'returnedItem':
+                transaction.status = CANCELED
+
+            elif status == 'declined':
+                transaction.status = FAILED
+            elif status == 'expired':
+                transaction.status = FAILED
+            elif status == 'failedReview':
+                transaction.status = FAILED
+            elif status == 'communicationError':
+                transaction.status = FAILED
+
+            elif status == 'generalError':
+                transaction.status = ERROR
+            elif status == 'settlementError':
+                transaction.status = ERROR
+
+            else:
+                transaction.status = ERROR
+
             transaction.transaction_id = \
                 transaction_elem.getElementsByTagName(
                     'transId')[0].firstChild.nodeValue
@@ -312,21 +357,23 @@ class AuthorizeNetAIM(BaseGateway):
             transaction.zip_code = bill_to_elem.getElementsByTagName(
                 'zip')[0].firstChild.nodeValue
 
-            # Set shipping details
-            ship_to_elem = transaction_elem.getElementsByTagName(
-                'shipTo')[0]
-            transaction.ship_first_name = ship_to_elem.getElementsByTagName(
-                'firstName')[0].firstChild.nodeValue
-            transaction.ship_last_name = ship_to_elem.getElementsByTagName(
-                'lastName')[0].firstChild.nodeValue
-            transaction.ship_address = ship_to_elem.getElementsByTagName(
-                'address')[0].firstChild.nodeValue
-            transaction.ship_city = ship_to_elem.getElementsByTagName(
-                'city')[0].firstChild.nodeValue
-            transaction.ship_state = ship_to_elem.getElementsByTagName(
-                'state')[0].firstChild.nodeValue
-            transaction.ship_zip_code = ship_to_elem.getElementsByTagName(
-                'zip')[0].firstChild.nodeValue
+            if len(transaction_elem.getElementsByTagName('shipTo')):
+                # Set shipping details
+                ship_to_elem = transaction_elem.getElementsByTagName(
+                    'shipTo')[0]
+                transaction.ship_first_name = \
+                    ship_to_elem.getElementsByTagName(
+                        'firstName')[0].firstChild.nodeValue
+                transaction.ship_last_name = ship_to_elem.getElementsByTagName(
+                    'lastName')[0].firstChild.nodeValue
+                transaction.ship_address = ship_to_elem.getElementsByTagName(
+                    'address')[0].firstChild.nodeValue
+                transaction.ship_city = ship_to_elem.getElementsByTagName(
+                    'city')[0].firstChild.nodeValue
+                transaction.ship_state = ship_to_elem.getElementsByTagName(
+                    'state')[0].firstChild.nodeValue
+                transaction.ship_zip_code = ship_to_elem.getElementsByTagName(
+                    'zip')[0].firstChild.nodeValue
 
             # Set payment method details
             payment_elem = transaction_elem.getElementsByTagName('payment')[0]
@@ -364,7 +411,7 @@ class AuthorizeNetAIM(BaseGateway):
 
         except IndexError, AttributeError:
             # Dom traversal failure
-            raise TransactionFailed(
+            raise ConnectionError(
                 'API response format is unknown: %r' % response)
 
         return transaction.transaction_id

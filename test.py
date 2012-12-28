@@ -1,8 +1,50 @@
 import payment_processor
 import os
 
-payment_processor.connect_database('sqlite:///._payment_processor.sqlite')
+# Get login and trans_key from file
+with open(os.path.expanduser('~/.passwords/authorizeNet')) as file:
+    login = file.readline().rstrip('\n')
+    trans_key = file.readline().rstrip('\n')
 
+gateway = payment_processor.AuthorizeNetAIM(
+        login=login, trans_key=trans_key, sandbox=True)
+
+transaction = gateway.new_transaction()
+transaction.card_number = 370000000000002
+transaction.expiration_month = 1
+transaction.expiration_year = 2015
+transaction.first_name = 'First'
+transaction.last_name = 'Last'
+transaction.address = '1 Somewhere Ave'
+transaction.city = 'New York'
+transaction.state = 'NY'
+transaction.zip_code = '46201'
+transaction.customer_id = 1
+transaction.description = 'Order Description'
+transaction.customer_ip = '65.192.14.10'
+transaction.amount = 20.00
+transaction.order_number = '43DJ-7203-D897-SS97'
+transaction.ship_first_name = 'First'
+transaction.ship_last_name = 'Last'
+transaction.ship_address = '1 Somewhere Ave'
+transaction.ship_city = 'New York'
+transaction.ship_state = 'NY'
+transaction.ship_zip_code = '46201'
+transaction.ship_phone = '111-222-3333'
+transaction.ship_email = 'user@domain.com'
+
+# Authorize and capture transaction
+#transaction_id = transaction.charge()
+#print 'transaction_id:', transaction_id
+
+# Status transaction
+transaction = gateway.new_transaction()
+transaction.transaction_id = '2181630452'
+transaction.status()
+
+exit(0)
+
+payment_processor.connect_database('sqlite:///._payment_processor.sqlite')
 
 # Get login and trans_key from file
 with open(os.path.expanduser('~/.passwords/zipmark')) as file:

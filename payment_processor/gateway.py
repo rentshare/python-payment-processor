@@ -9,8 +9,8 @@ class BaseGateway:
     def __init__(self, trans_limit=None):
         self._trans_amount_limit = trans_limit
 
-    def _send(self, transaction, params):
-        """Send transaction params with HTTP request to gateway.
+    def _send(self, transaction, data, **kwargs):
+        """Send transaction data with HTTP request to gateway.
 
         Arguments:
 
@@ -20,7 +20,7 @@ class BaseGateway:
 
             "*transaction*", "class", "Instance of :attr:`Transaction`
                 containing required transaction info."
-            "*params*", "dict", "Dictonary of HTTP parameters to send."
+            "*data*", "dict", "Dictonary of HTTP parameters to send."
 
         Returns:
 
@@ -28,7 +28,7 @@ class BaseGateway:
         """
         # Send request
         try:
-            response = self._send_request(transaction, params)
+            response = self._send_request(transaction, data, **kwargs)
         except requests.exceptions.ConnectionError:
             raise ConnectionError('Failed to connect to %r.' % self._url)
 
@@ -37,7 +37,7 @@ class BaseGateway:
             raise ConnectionError(('Gateway returned unsuccessful ' +
                 'HTTP status code %r.') % (response.status_code))
 
-        return self._handle_response(transaction, response.text)
+        return self._handle_response(transaction, response.text, **kwargs)
 
     def _send_request(self):
         """Override with method to send request to gateway. Must return
@@ -62,9 +62,25 @@ class BaseGateway:
             if transaction.check_routing_number == None:
                 raise TypeError('Missing required field ' +
                         'transaction.check_routing_number.')
+            if not self._valid_routing_number_checkdigit(transaction.check_routing_number):
+                raise ValueError('Invalid routing number.')
 
         else:
             raise TypeError('Missing required field transaction.card_number.')
+
+    def _valid_routing_number_checkdigit(self, routing_number, routing_number_length=9):
+        """Tests the routing number's check digit"""
+        routing_number = str( routing_number ).rjust( routing_number_length, '0' )
+        sum_digit = 0
+
+        for i in range( routing_number_length - 1 ):
+            n = int( routing_number[i:i+1] )
+            sum_digit += n * (3,7,1)[i % 3]
+
+        if sum_digit % 10 > 0:
+            return 10 - ( sum_digit % 10 ) == int( routing_number[-1] )
+        else:
+            return not int( routing_number[-1] )
 
     def _transaction_id_validator(self, transaction):
         # Check for missing variables
@@ -85,6 +101,9 @@ class BaseGateway:
         self._transaction_id_validator(transaction)
 
     def _void_validator(self, transaction):
+        self._transaction_id_validator(transaction)
+
+    def _status_validator(self, transaction):
         self._transaction_id_validator(transaction)
 
     def _send_transaction(self, transaction, method_name):

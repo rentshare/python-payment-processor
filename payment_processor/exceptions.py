@@ -47,6 +47,9 @@ class GatewayError(Exception):
 class TransactionFailed(GatewayError):
     """Gateway failed to process transaction."""
 
+class TransactionNotFound(GatewayError):
+    """Transaction not found."""
+
 class ConnectionError(GatewayError):
     """Unable to connect to gateway."""
 

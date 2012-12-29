@@ -47,6 +47,8 @@ class Transaction:
     """Order description."""
     customer_ip = None
     """Customer IP address."""
+    created_date = None
+    """Transaction creation date."""
 
     customer_id = None
     """Customer ID."""

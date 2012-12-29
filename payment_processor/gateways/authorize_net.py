@@ -3,6 +3,7 @@ from payment_processor.constants import *
 from payment_processor.gateway import BaseGateway
 import requests
 import xml.dom.minidom
+import datetime
 
 class AuthorizeNetAIM(BaseGateway):
     """Authorize.Net AIM gateway.
@@ -299,11 +300,11 @@ class AuthorizeNetAIM(BaseGateway):
                 raise ConnectionError(
                     'API response format is unknown: %r' % response)
 
-            transaction_elem = dom.firstChild.getElementsByTagName(
+            trans_elem = dom.firstChild.getElementsByTagName(
                 'transaction')[0]
 
             # Set transaction details
-            status = transaction_elem.getElementsByTagName(
+            status = trans_elem.getElementsByTagName(
                 'transactionStatus')[0].firstChild.nodeValue
 
             if status == 'authorizedPendingCapture':
@@ -347,78 +348,79 @@ class AuthorizeNetAIM(BaseGateway):
             else:
                 transaction.status = ERROR
 
-            transaction.transaction_id = \
-                transaction_elem.getElementsByTagName(
-                    'transId')[0].firstChild.nodeValue
-            transaction.amount = transaction_elem.getElementsByTagName(
+            transaction.transaction_id = trans_elem.getElementsByTagName(
+                'transId')[0].firstChild.nodeValue + 'test'
+            transaction.amount = trans_elem.getElementsByTagName(
                 'authAmount')[0].firstChild.nodeValue
 
+            submit_time = trans_elem.getElementsByTagName(
+                'submitTimeLocal')[0].firstChild.nodeValue
+            submit_time = submit_time[:submit_time.rfind('.')]
+            transaction.created_date = datetime.datetime.strptime(submit_time,
+                '%Y-%m-%dT%H:%M:%S')
+
             # Set billing details
-            bill_to_elem = transaction_elem.getElementsByTagName(
+            bill_elem = trans_elem.getElementsByTagName(
                 'billTo')[0]
-            transaction.first_name = bill_to_elem.getElementsByTagName(
+            transaction.first_name = bill_elem.getElementsByTagName(
                 'firstName')[0].firstChild.nodeValue
-            transaction.last_name = bill_to_elem.getElementsByTagName(
+            transaction.last_name = bill_elem.getElementsByTagName(
                 'lastName')[0].firstChild.nodeValue
-            transaction.address = bill_to_elem.getElementsByTagName(
+            transaction.address = bill_elem.getElementsByTagName(
                 'address')[0].firstChild.nodeValue
-            transaction.city = bill_to_elem.getElementsByTagName(
+            transaction.city = bill_elem.getElementsByTagName(
                 'city')[0].firstChild.nodeValue
-            transaction.state = bill_to_elem.getElementsByTagName(
+            transaction.state = bill_elem.getElementsByTagName(
                 'state')[0].firstChild.nodeValue
-            transaction.zip_code = bill_to_elem.getElementsByTagName(
+            transaction.zip_code = bill_elem.getElementsByTagName(
                 'zip')[0].firstChild.nodeValue
 
-            if len(transaction_elem.getElementsByTagName('shipTo')):
+            if len(trans_elem.getElementsByTagName('shipTo')):
                 # Set shipping details
-                ship_to_elem = transaction_elem.getElementsByTagName(
+                ship_elem = trans_elem.getElementsByTagName(
                     'shipTo')[0]
-                transaction.ship_first_name = \
-                    ship_to_elem.getElementsByTagName(
-                        'firstName')[0].firstChild.nodeValue
-                transaction.ship_last_name = ship_to_elem.getElementsByTagName(
+                transaction.ship_first_name = ship_elem.getElementsByTagName(
+                    'firstName')[0].firstChild.nodeValue
+                transaction.ship_last_name = ship_elem.getElementsByTagName(
                     'lastName')[0].firstChild.nodeValue
-                transaction.ship_address = ship_to_elem.getElementsByTagName(
+                transaction.ship_address = ship_elem.getElementsByTagName(
                     'address')[0].firstChild.nodeValue
-                transaction.ship_city = ship_to_elem.getElementsByTagName(
+                transaction.ship_city = ship_elem.getElementsByTagName(
                     'city')[0].firstChild.nodeValue
-                transaction.ship_state = ship_to_elem.getElementsByTagName(
+                transaction.ship_state = ship_elem.getElementsByTagName(
                     'state')[0].firstChild.nodeValue
-                transaction.ship_zip_code = ship_to_elem.getElementsByTagName(
+                transaction.ship_zip_code = ship_elem.getElementsByTagName(
                     'zip')[0].firstChild.nodeValue
 
             # Set payment method details
-            payment_elem = transaction_elem.getElementsByTagName('payment')[0]
+            payment_elem = trans_elem.getElementsByTagName('payment')[0]
 
-            if len(transaction_elem.getElementsByTagName('creditCard')):
-                credit_card_elem = transaction_elem.getElementsByTagName(
+            if len(trans_elem.getElementsByTagName('creditCard')):
+                card_elem = trans_elem.getElementsByTagName(
                     'creditCard')[0]
-                transaction.card_number = \
-                    credit_card_elem.getElementsByTagName(
-                        'cardNumber')[0].firstChild.nodeValue
-                transaction.expiration_month = \
-                    credit_card_elem.getElementsByTagName(
-                        'expirationDate')[0].firstChild.nodeValue[:2]
-                transaction.expiration_year = \
-                    credit_card_elem.getElementsByTagName(
-                        'expirationDate')[0].firstChild.nodeValue[2:]
-                transaction.card_type = credit_card_elem.getElementsByTagName(
+                transaction.card_number = card_elem.getElementsByTagName(
+                    'cardNumber')[0].firstChild.nodeValue
+                transaction.expiration_month = card_elem.getElementsByTagName(
+                    'expirationDate')[0].firstChild.nodeValue[:2]
+                transaction.expiration_year = card_elem.getElementsByTagName(
+                    'expirationDate')[0].firstChild.nodeValue[2:]
+                transaction.card_type = card_elem.getElementsByTagName(
                     'cardType')[0].firstChild.nodeValue
 
-            elif len(transaction_elem.getElementsByTagName('bankAccount')):
-                bank_account_elem = transaction_elem.getElementsByTagName(
+            elif len(trans_elem.getElementsByTagName('bankAccount')):
+                bank_account_elem = trans_elem.getElementsByTagName(
                     'bankAccount')[0]
                 transaction.check_account_number = \
-                    credit_card_elem.getElementsByTagName(
+                    card_elem.getElementsByTagName(
                         'accountNumber')[0].firstChild.nodeValue
                 transaction.check_routing_number = \
-                    credit_card_elem.getElementsByTagName(
+                    card_elem.getElementsByTagName(
                         'routingNumber')[0].firstChild.nodeValue[:2]
                 transaction.check_account_name = \
-                    credit_card_elem.getElementsByTagName(
+                    card_elem.getElementsByTagName(
                         'nameOnAccount')[0].firstChild.nodeValue[2:]
                 transaction.check_transaction_type = \
-                    credit_card_elem.getElementsByTagName(
+                    card_elem.getElementsByTagName(
                         'echeckType')[0].firstChild.nodeValue[2:]
 
         except IndexError, AttributeError:

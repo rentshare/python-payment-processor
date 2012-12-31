@@ -1,6 +1,9 @@
 from payment_processor.exceptions import *
+from payment_processor.constants import *
 from payment_processor.gateway import BaseGateway
 import requests
+import xml.dom.minidom
+import datetime
 
 class AuthorizeNetAIM(BaseGateway):
     """Authorize.Net AIM gateway.
@@ -30,8 +33,11 @@ class AuthorizeNetAIM(BaseGateway):
         # Set url
         if sandbox:
             self._url = 'https://test.authorize.net/gateway/transact.dll'
+            self._report_url = 'https://apitest.authorize.net/' + \
+                'xml/v1/request.api'
         else:
             self._url = 'https://secure.authorize.net/gateway/transact.dll'
+            self._report_url = 'https://api.authorize.net/xml/v1/request.api'
 
     def _get_params(self, transaction):
         """Get the HTTP parameters for the gateway using the transaction.
@@ -146,7 +152,44 @@ class AuthorizeNetAIM(BaseGateway):
 
         return params
 
-    def _send_request(self, transaction, params):
+    def _get_report_data(self, transaction):
+        """Get the HTTP parameters for the gateway using the transaction.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+
+        Returns:
+
+        Dictonary of HTTP parameters.
+        """
+        params = {}
+
+        # Instance Specific
+        params['login'] = self._login
+        params['trans_key'] = self._trans_key
+
+        # Order Information
+        params['trans_id'] = transaction.transaction_id
+
+        data = ('<?xml version="1.0" encoding="utf-8"?>\n' + \
+            '<getTransactionDetailsRequest ' + \
+            'xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">\n' + \
+            '    <merchantAuthentication>\n' + \
+            '        <name>{login}</name>\n' + \
+            '        <transactionKey>{trans_key}</transactionKey>\n' + \
+            '    </merchantAuthentication>\n' + \
+            '    <transId>{trans_id}</transId>\n' + \
+            '</getTransactionDetailsRequest>').format(**params)
+
+        return data
+
+    def _send_request(self, transaction, data, type='delim'):
         """Send request to gateway.
 
         Arguments:
@@ -157,19 +200,238 @@ class AuthorizeNetAIM(BaseGateway):
 
             "*transaction*", "class", "Instance of :attr:`Transaction`
                 containing required transaction info."
-            "*params*", "dict", "Dictonary of HTTP parameters to send."
+            "*data*", "dict", "Dictonary of HTTP parameters to send or
+            string containing XML data."
+            "*type*", "string", "Request type."
 
         Returns:
 
         Response object.
         """
-        # Add custom fields to params
-        params = dict(params.items() + transaction._custom_fields.items())
+        if type == 'delim':
+            # Add custom fields to params
+            data = dict(data.items() + transaction._custom_fields.items())
 
-        return requests.get(self._url, params=params)
+            return requests.get(self._url, params=data)
 
-    def _handle_response(self, transaction, response):
+        elif type == 'xml':
+            headers = {'content-type': 'text/xml'}
+
+            return requests.post(self._report_url, headers=headers, data=data)
+
+        else:
+            raise TypeError('Invalid response type %r.' % type)
+
+    def _handle_response(self, transaction, response, type='delim'):
         """Handles HTTP response from gateway.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+            "*response*", "string", "HTTP response from gateway."
+            "*type*", "string", "Request type."
+
+        Returns:
+
+        Transaction ID.
+        """
+        if type == 'delim':
+            self._handle_delim_response(transaction, response)
+
+        elif type == 'xml':
+            self._handle_xml_response(transaction, response)
+
+        else:
+            raise TypeError('Invalid response type %r.' % type)
+
+    def _handle_xml_response(self, transaction, response):
+        """Handles XML response from gateway.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+            "*response*", "string", "HTTP response from gateway."
+
+        Returns:
+
+        Transaction ID.
+        """
+        response = response.encode('utf-8')
+
+        try:
+            dom = xml.dom.minidom.parseString(response)
+        except xml.parsers.expat.ExpatError:
+            # Response not valid xml
+            raise TransactionFailed('Invalid gateway response.')
+
+        try:
+            messages_elem = dom.firstChild.getElementsByTagName('messages')[0]
+            result_code = messages_elem.getElementsByTagName(
+                'resultCode')[0].firstChild.nodeValue
+            message_elem = messages_elem.getElementsByTagName('message')[0]
+            message_code = message_elem.getElementsByTagName(
+                'code')[0].firstChild.nodeValue
+            message_text = message_elem.getElementsByTagName(
+                'text')[0].firstChild.nodeValue
+
+            if result_code == 'Ok':
+                pass
+            elif result_code == 'Error':
+                if message_code == 'E00040':
+                    raise TransactionNotFound('%s: %s' % (
+                        message_code, message_text))
+                else:
+                    raise GatewayError('%s: %s' % (
+                        message_code, message_text))
+            else:
+                raise ConnectionError('Result code %r unkown.' % result_code)
+
+            if dom.firstChild.tagName != 'getTransactionDetailsResponse':
+                raise ConnectionError(
+                    'API response format is unknown: %r' % response)
+
+            trans_elem = dom.firstChild.getElementsByTagName(
+                'transaction')[0]
+
+            # Set transaction details
+            status = trans_elem.getElementsByTagName(
+                'transactionStatus')[0].firstChild.nodeValue
+
+            if status == 'authorizedPendingCapture':
+                transaction.status = PENDING
+            elif status == 'underReview':
+                transaction.status = PENDING
+            elif status == 'FDSPendingReview':
+                transaction.status = PENDING
+            elif status == 'FDSAuthorizedPendingReview':
+                transaction.status = PENDING
+
+            elif status == 'capturedPendingSettlement':
+                transaction.status = PENDING_SETTLEMENT
+            elif status == 'refundPendingSettlement':
+                transaction.status = PENDING_SETTLEMENT
+
+            elif status == 'refundSettledSuccessfully':
+                transaction.status = COMPLETE
+            elif status == 'settledSuccessfully':
+                transaction.status = COMPLETE
+
+            elif status == 'voided':
+                transaction.status = CANCELED
+            elif status == 'returnedItem':
+                transaction.status = CANCELED
+
+            elif status == 'declined':
+                transaction.status = FAILED
+            elif status == 'expired':
+                transaction.status = FAILED
+            elif status == 'failedReview':
+                transaction.status = FAILED
+            elif status == 'communicationError':
+                transaction.status = FAILED
+
+            elif status == 'generalError':
+                transaction.status = ERROR
+            elif status == 'settlementError':
+                transaction.status = ERROR
+
+            else:
+                transaction.status = ERROR
+
+            transaction.transaction_id = trans_elem.getElementsByTagName(
+                'transId')[0].firstChild.nodeValue + 'test'
+            transaction.amount = trans_elem.getElementsByTagName(
+                'authAmount')[0].firstChild.nodeValue
+
+            submit_time = trans_elem.getElementsByTagName(
+                'submitTimeLocal')[0].firstChild.nodeValue
+            submit_time = submit_time[:submit_time.rfind('.')]
+            transaction.created_date = datetime.datetime.strptime(submit_time,
+                '%Y-%m-%dT%H:%M:%S')
+
+            # Set billing details
+            bill_elem = trans_elem.getElementsByTagName(
+                'billTo')[0]
+            transaction.first_name = bill_elem.getElementsByTagName(
+                'firstName')[0].firstChild.nodeValue
+            transaction.last_name = bill_elem.getElementsByTagName(
+                'lastName')[0].firstChild.nodeValue
+            transaction.address = bill_elem.getElementsByTagName(
+                'address')[0].firstChild.nodeValue
+            transaction.city = bill_elem.getElementsByTagName(
+                'city')[0].firstChild.nodeValue
+            transaction.state = bill_elem.getElementsByTagName(
+                'state')[0].firstChild.nodeValue
+            transaction.zip_code = bill_elem.getElementsByTagName(
+                'zip')[0].firstChild.nodeValue
+
+            if len(trans_elem.getElementsByTagName('shipTo')):
+                # Set shipping details
+                ship_elem = trans_elem.getElementsByTagName(
+                    'shipTo')[0]
+                transaction.ship_first_name = ship_elem.getElementsByTagName(
+                    'firstName')[0].firstChild.nodeValue
+                transaction.ship_last_name = ship_elem.getElementsByTagName(
+                    'lastName')[0].firstChild.nodeValue
+                transaction.ship_address = ship_elem.getElementsByTagName(
+                    'address')[0].firstChild.nodeValue
+                transaction.ship_city = ship_elem.getElementsByTagName(
+                    'city')[0].firstChild.nodeValue
+                transaction.ship_state = ship_elem.getElementsByTagName(
+                    'state')[0].firstChild.nodeValue
+                transaction.ship_zip_code = ship_elem.getElementsByTagName(
+                    'zip')[0].firstChild.nodeValue
+
+            # Set payment method details
+            payment_elem = trans_elem.getElementsByTagName('payment')[0]
+
+            if len(trans_elem.getElementsByTagName('creditCard')):
+                card_elem = trans_elem.getElementsByTagName(
+                    'creditCard')[0]
+                transaction.card_number = card_elem.getElementsByTagName(
+                    'cardNumber')[0].firstChild.nodeValue
+                transaction.expiration_month = card_elem.getElementsByTagName(
+                    'expirationDate')[0].firstChild.nodeValue[:2]
+                transaction.expiration_year = card_elem.getElementsByTagName(
+                    'expirationDate')[0].firstChild.nodeValue[2:]
+                transaction.card_type = card_elem.getElementsByTagName(
+                    'cardType')[0].firstChild.nodeValue
+
+            elif len(trans_elem.getElementsByTagName('bankAccount')):
+                bank_account_elem = trans_elem.getElementsByTagName(
+                    'bankAccount')[0]
+                transaction.check_account_number = \
+                    card_elem.getElementsByTagName(
+                        'accountNumber')[0].firstChild.nodeValue
+                transaction.check_routing_number = \
+                    card_elem.getElementsByTagName(
+                        'routingNumber')[0].firstChild.nodeValue[:2]
+                transaction.check_account_name = \
+                    card_elem.getElementsByTagName(
+                        'nameOnAccount')[0].firstChild.nodeValue[2:]
+                transaction.check_transaction_type = \
+                    card_elem.getElementsByTagName(
+                        'echeckType')[0].firstChild.nodeValue[2:]
+
+        except IndexError, AttributeError:
+            # Dom traversal failure
+            raise ConnectionError(
+                'API response format is unknown: %r' % response)
+
+        return transaction.transaction_id
+
+    def _handle_delim_response(self, transaction, response):
+        """Handles delimited response from gateway.
 
         Arguments:
 
@@ -435,3 +697,24 @@ class AuthorizeNetAIM(BaseGateway):
         params['x_type'] = 'VOID'
 
         return self._send(transaction, params)
+
+    def _status(self, transaction):
+        """Get status of a previous transaction.
+
+        Arguments:
+
+        .. csv-table::
+            :header: "argument", "type", "value"
+            :widths: 7, 7, 40
+
+            "*transaction*", "class", "Instance of :attr:`Transaction`
+                containing required transaction info."
+
+        Returns:
+
+        Transaction ID.
+        """
+        # Get data
+        data = self._get_report_data(transaction)
+
+        return self._send(transaction, data, type='xml')

@@ -25,6 +25,8 @@ class Transaction:
     gateway = None
     _custom_fields = None
 
+    status = None
+    """Status of the transaction"""
     transaction_id = None
     """Transaction ID."""
     authorize_code = None
@@ -45,6 +47,8 @@ class Transaction:
     """Order description."""
     customer_ip = None
     """Customer IP address."""
+    created_date = None
+    """Transaction creation date."""
 
     customer_id = None
     """Customer ID."""
@@ -106,6 +110,8 @@ class Transaction:
     """Credit card expiration year number."""
     security_code = None
     """Credit card CVV security code."""
+    card_type = None
+    """Credit card type."""
 
     check_account_number = None
     """Check account number."""
@@ -492,3 +498,52 @@ class Transaction:
             transaction.void()
         """
         return self.gateway._send_transaction(self, '_void')
+
+    def status(self):
+        """Get the status of a previous transaction.
+
+        Returns:
+
+        Transaction ID.
+
+        Usage::
+
+            import payment_processor
+
+            gateway = payment_processor.AuthorizeNetAIM(
+                    login='LOGIN', trans_key='TRANSACTION_KEY', sandbox=True)
+
+            transaction = gateway.new_transaction()
+            transaction.card_number = 370000000000002
+            transaction.expiration_month = 1
+            transaction.expiration_year = 2015
+            transaction.first_name = 'First'
+            transaction.last_name = 'Last'
+            transaction.address = '1 Somewhere Ave'
+            transaction.city = 'New York'
+            transaction.state = 'NY'
+            transaction.zip_code = '46201'
+            transaction.customer_id = 1
+            transaction.description = 'Order Description'
+            transaction.customer_ip = '65.192.14.10'
+            transaction.amount = 20.00
+            transaction.order_number = '43DJ-7203-D897-SS97'
+            transaction.ship_first_name = 'First'
+            transaction.ship_last_name = 'Last'
+            transaction.ship_address = '1 Somewhere Ave'
+            transaction.ship_city = 'New York'
+            transaction.ship_state = 'NY'
+            transaction.ship_zip_code = '46201'
+            transaction.ship_phone = '111-222-3333'
+            transaction.ship_email = 'user@domain.com'
+
+            # Authorize and capture transaction
+            transaction_id = transaction.charge()
+            print 'transaction_id:', transaction_id
+
+            # Status transaction
+            transaction = gateway.new_transaction()
+            transaction.transaction_id = transaction_id
+            transaction.status()
+        """
+        return self.gateway._send_transaction(self, '_status')

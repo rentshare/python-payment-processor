@@ -1,0 +1,6 @@
+PENDING = 'pending'
+PENDING_SETTLEMENT = 'pending_settlement'
+FAILED = 'failed'
+CANCELED = 'canceled'
+COMPLETE = 'complete'
+ERROR = 'error'

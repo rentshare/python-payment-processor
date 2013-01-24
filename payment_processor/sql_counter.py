@@ -68,6 +68,8 @@ class SQLGatewayCounter(GatewayCounter):
             except SQLAlchemyError, exception:
                 raise CounterError(exception)
 
+        session.close()
+
         return (gateway_data.day_amount_count, gateway_data.month_amount_count,
                 gateway_data.day_trans_count, gateway_data.month_trans_count)
 
@@ -86,3 +88,4 @@ class SQLGatewayCounter(GatewayCounter):
         gateway_data.day_trans_count += day_trans_change
         gateway_data.month_trans_count += month_trans_change
         session.commit()
+        session.close()

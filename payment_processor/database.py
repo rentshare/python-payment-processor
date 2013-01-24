@@ -76,7 +76,7 @@ def connect_database(sql_connection):
 
         "*sql_connection*", "string", "SQL alchemy dialect url."
     """
-    engine = create_engine(sql_connection)
+    engine = create_engine(sql_connection, pool_size=40, pool_recycle=3600)
     Session.configure(bind=engine)
 
     # If table doesnt exists create it

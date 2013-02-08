@@ -68,10 +68,12 @@ class SQLGatewayCounter(GatewayCounter):
             except SQLAlchemyError, exception:
                 raise CounterError(exception)
 
+        counts = (gateway_data.day_amount_count, gateway_data.month_amount_count,
+                gateway_data.day_trans_count, gateway_data.month_trans_count)
+
         session.close()
 
-        return (gateway_data.day_amount_count, gateway_data.month_amount_count,
-                gateway_data.day_trans_count, gateway_data.month_trans_count)
+        return counts
 
     def set_counts(self, day_amount_change, month_amount_change,
                    day_trans_change, month_trans_change):

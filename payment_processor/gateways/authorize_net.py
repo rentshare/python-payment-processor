@@ -241,10 +241,10 @@ class AuthorizeNetAIM(BaseGateway):
         Transaction ID.
         """
         if type == 'delim':
-            self._handle_delim_response(transaction, response)
+            return self._handle_delim_response(transaction, response)
 
         elif type == 'xml':
-            self._handle_xml_response(transaction, response)
+            return self._handle_xml_response(transaction, response)
 
         else:
             raise TypeError('Invalid response type %r.' % type)

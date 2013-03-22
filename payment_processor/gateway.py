@@ -3,7 +3,7 @@ from payment_processor.transaction import Transaction
 import requests
 import logging
 
-class BaseGateway:
+class BaseGateway( object ):
     """Base gateway class."""
 
     def __init__(self, trans_limit=None):

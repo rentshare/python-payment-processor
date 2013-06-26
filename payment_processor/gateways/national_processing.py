@@ -374,19 +374,3 @@ class NationalProcessing(BaseGateway):
         params['type'] = 'void'
 
         return self._send(transaction, params)
-
-    def _valid_check_routing_number( self, transaction, routing_number_length=9 ):
-        '''Validates the routing number's check digit'''
-        if len( transaction.check_routing_number ) > routing_number_length:
-            return False
-        routing_number = str( transaction.check_routing_number ).rjust( routing_number_length, '0' )
-        sum_digit = 0
-
-        for i in range( routing_number_length - 1 ):
-            n = int( routing_number[i:i+1] )
-            sum_digit += n * (3,7,1)[i % 3]
-
-        if sum_digit % 10 > 0:
-            return 10 - ( sum_digit % 10 ) == int( routing_number[-1] )
-        else:
-            return not int( routing_number[-1] )

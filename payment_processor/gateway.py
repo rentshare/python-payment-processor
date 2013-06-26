@@ -63,7 +63,7 @@ class BaseGateway( object ):
                 raise TypeError('Missing required field ' +
                         'transaction.check_routing_number.')
             if not self._valid_routing_number_checkdigit(transaction.check_routing_number):
-                raise ValueError('Invalid routing number.')
+                raise InvalidRoutingNumber('Invalid routing number.')
 
         else:
             raise TypeError('Missing required field transaction.card_number.')

@@ -156,11 +156,12 @@ class MultiGateway(BaseGateway):
 
         "*args*", "class", "Instance of gateways to use."
     """
-    gateways = []
+    gateways = None
+    _gateway_failure_handlers = None
 
-    def __init__(self, *args):
-        for arg in args:
-            self.gateways.append(arg)
+    def __init__(self, *gateways):
+        self.gateways = gateways
+        self._gateway_failure_handlers = []
 
     def _send_transaction(self, transaction, method_name):
         """Send a transaction method by name. If a gateway fails the next
@@ -187,23 +188,25 @@ class MultiGateway(BaseGateway):
                     'gateway. Exception: %r', last_exception)
 
             try:
-                # Check limit
-                if (transaction.amount > gateway._trans_amount_limit and
-                        gateway._trans_amount_limit != None):
-                    raise LimitExceeded('Transaction limit exceeded.')
+                response = gateway._send_transaction( transaction, method_name )
+                # The transaction was successful with this gateway so lets
+                # change the transaction's gateway to be the one that processed
+                # it successfully
+                transaction.gateway = gateway
+                return response
+            except GatewayError, exception:
+                # Gateway error try next gateway
+                last_exception = exception
 
-                method = getattr(gateway, method_name)
-                return method(transaction)
-
-            except Exception, exception:
-                if isinstance(exception, GatewayError) == True:
-                    # Gateway error try next gateway
-                    last_exception = exception
-                else:
-                    raise
+                for handler in self._gateway_failure_handlers:
+                    handler( exception, gateway, transaction, method_name )
 
         # All gateways failed raise last exception
         if last_exception != None:
             raise last_exception
         else:
             raise TypeError('Gateway list is empty.')
+
+    def on_gateway_failure( self, handler ):
+        self._gateway_failure_handlers.append( handler )
+        return handler

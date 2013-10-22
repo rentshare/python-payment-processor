@@ -564,6 +564,10 @@ class AuthorizeNetAIM(BaseGateway):
             if response_reason_code in (11, 222, 318):
                 raise DuplicateTransaction(response_reason_text)
 
+            if response_reason_code in \
+              ( [13, 14, 15, 16] + range(19,26+1) + range(29,36+1) + [38, 40, 43, 46, 48] ):
+                raise TransactionFailed(response_reason_text)
+
             if response_code == 2:
                 raise TransactionDeclined(response_reason_text)
 

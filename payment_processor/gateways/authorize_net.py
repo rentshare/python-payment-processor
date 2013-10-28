@@ -558,9 +558,6 @@ class AuthorizeNetAIM(BaseGateway):
                 else:
                     raise InvalidBillingAddress(response_reason_text)
 
-            if response_reason_code in (4, 41, 250, 251):
-                raise TransactionFailed(response_reason_text)
-
             if response_reason_code in (11, 222, 318):
                 raise DuplicateTransaction(response_reason_text)
 
@@ -568,7 +565,8 @@ class AuthorizeNetAIM(BaseGateway):
               ( [13, 14, 15, 16] + range(19,26+1) + range(29,36+1) + [38, 40, 43, 46, 48] ):
                 raise TransactionFailed(response_reason_text)
 
-            if response_code == 2:
+            if response_code in ( [2, 3, 4, 41, 44, 45, 65, 141, 145, 165] \
+              + range(200, 224+1) + [ 250, 251 ] ):
                 raise TransactionDeclined(response_reason_text)
 
             else:

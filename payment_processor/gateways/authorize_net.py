@@ -525,6 +525,13 @@ class AuthorizeNetAIM(BaseGateway):
         # Get avs response
         cc_response = response_data[38]
 
+        transaction.response_data = dict(
+            description=response_reason_text,
+            avs_reponse=avs_response,
+            response_code=response_code,
+            reason_code=response_reason_code
+        )
+
         # Check response code
         if response_code == 1:
             return transaction_id
@@ -553,7 +560,7 @@ class AuthorizeNetAIM(BaseGateway):
                 raise InvalidAccountNumber(response_reason_text)
 
             if response_reason_code in (27, 127, 290):
-                if avs_response == 'A':
+                if transaction.avs_response == 'A':
                     raise InvalidBillingZipcode(response_reason_text)
                 else:
                     raise InvalidBillingAddress(response_reason_text)

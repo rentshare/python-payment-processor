@@ -527,7 +527,7 @@ class AuthorizeNetAIM(BaseGateway):
 
         transaction.response_data = dict(
             description=response_reason_text,
-            avs_reponse=avs_response,
+            avs_response=avs_response,
             response_code=response_code,
             reason_code=response_reason_code
         )

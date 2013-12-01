@@ -525,7 +525,7 @@ class AuthorizeNetAIM(BaseGateway):
         # Get avs response
         cc_response = response_data[38]
 
-        transaction.response_data = dict(
+        transaction.response_info = dict(
             description=response_reason_text,
             avs_response=avs_response,
             response_code=response_code,

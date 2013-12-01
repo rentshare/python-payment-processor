@@ -23,7 +23,7 @@ class Transaction:
     CCD = 'CCD'
 
     gateway = None
-    response_data = None
+    response_info = None
     _custom_fields = None
 
     status = None
@@ -132,7 +132,7 @@ class Transaction:
     def __init__(self, gateway):
         self.gateway = gateway
         self._custom_fields = {}
-        self.response_data = {}
+        self.response_info = {}
 
     def custom_field(self, field, value):
         """Add a custom field to HTTP gateway parameters.

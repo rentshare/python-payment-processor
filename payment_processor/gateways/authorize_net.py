@@ -560,7 +560,7 @@ class AuthorizeNetAIM(BaseGateway):
                 raise InvalidAccountNumber(response_reason_text)
 
             if response_reason_code in (27, 127, 290):
-                if transaction.avs_response == 'A':
+                if avs_response == 'A':
                     raise InvalidBillingZipcode(response_reason_text)
                 else:
                     raise InvalidBillingAddress(response_reason_text)

@@ -541,7 +541,7 @@ class AuthorizeNetAIM(BaseGateway):
 
         else:
             # Parse response reason code
-            if response_reason_code in (45, 65):
+            if response_reason_code in (45,):
                 raise InvalidCardInformation(response_reason_text)
 
             if response_reason_code in (6, 37, 200, 315):
